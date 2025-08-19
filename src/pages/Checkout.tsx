@@ -170,7 +170,7 @@ export function Checkout() {
                   <h3 className="font-bold text-pink-800">bKash Payment Instructions</h3>
                 </div>
                 <div className="text-sm text-pink-700 space-y-1">
-                  <p><strong>Step 1:</strong> Send money to: <span className="font-mono bg-pink-100 px-2 py-1 rounded">01XXXXXXXXX</span></p>
+                  <p><strong>Step 1:</strong> Send money to: <span className="font-mono bg-pink-100 px-2 py-1 rounded">01534723318</span></p>
                   <p><strong>Step 2:</strong> Amount: <span className="font-bold">৳{state.total}</span></p>
                   <p><strong>Step 3:</strong> Copy the transaction ID from bKash and paste it below</p>
                   <p><strong>Step 4:</strong> Complete this form</p>
