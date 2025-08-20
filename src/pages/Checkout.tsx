@@ -147,14 +147,9 @@ export function Checkout() {
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   >
                     <option value="">Select Department</option>
-                    <option value="CSE">Computer Science & Engineering</option>
-                    <option value="EEE">Electrical & Electronics Engineering</option>
-                    <option value="ME">Mechanical Engineering</option>
-                    <option value="CE">Civil Engineering</option>
-                    <option value="BBA">Business Administration</option>
-                    <option value="English">English</option>
-                    <option value="Economics">Economics</option>
-                    <option value="Other">Other</option>
+                    <option value="Science">Science</option>
+                    <option value="Arts">Arts</option>
+                    <option value="Commerce">Commerce</option>
                   </select>
                 </div>
               </div>
