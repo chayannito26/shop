@@ -73,20 +73,20 @@ export function Checkout() {
 
   if (orderPlaced) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="max-w-md mx-auto bg-white rounded-lg shadow-md p-8 text-center">
-          <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Order Placed Successfully!</h2>
-          <p className="text-gray-600 mb-4">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="max-w-md mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-gray-900/20 p-8 text-center">
+          <CheckCircle className="h-16 w-16 text-green-500 dark:text-green-400 mx-auto mb-4" />
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Order Placed Successfully!</h2>
+          <p className="text-gray-600 dark:text-gray-300 mb-4">
             Your order has been received and will be processed soon.
           </p>
-          <div className="bg-gray-50 rounded-lg p-4 mb-6">
-            <p className="text-sm text-gray-600">Order ID</p>
-            <p className="font-mono text-lg">{orderId}</p>
+          <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 mb-6">
+            <p className="text-sm text-gray-600 dark:text-gray-400">Order ID</p>
+            <p className="font-mono text-lg text-gray-900 dark:text-white">{orderId}</p>
           </div>
           <button
             onClick={() => navigate('/')}
-            className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 transition-colors"
+            className="w-full bg-blue-600 dark:bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 dark:hover:bg-blue-700 transition-colors"
           >
             Continue Shopping
           </button>
@@ -96,18 +96,18 @@ export function Checkout() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">Checkout</h1>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Checkout</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Checkout Form */}
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-6">Order Information</h2>
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-gray-900/20 p-6">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Order Information</h2>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Full Name *
                 </label>
                 <input
@@ -116,13 +116,13 @@ export function Checkout() {
                   value={formData.name}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Roll Number *
                   </label>
                   <input
@@ -131,12 +131,12 @@ export function Checkout() {
                     value={formData.roll}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Department *
                   </label>
                   <select
@@ -144,7 +144,7 @@ export function Checkout() {
                     value={formData.department}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   >
                     <option value="">Select Department</option>
                     <option value="Science">Science</option>
@@ -155,7 +155,7 @@ export function Checkout() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Phone Number *
                 </label>
                 <input
@@ -164,18 +164,18 @@ export function Checkout() {
                   value={formData.phone}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
               </div>
 
               {/* Payment Instructions */}
-              <div className="bg-pink-50 border border-pink-200 rounded-lg p-4 mt-6">
+              <div className="bg-pink-50 dark:bg-pink-900/20 border border-pink-200 dark:border-pink-800 rounded-lg p-4 mt-6">
                 <div className="flex items-center mb-2">
-                  <CreditCard className="h-5 w-5 text-pink-600 mr-2" />
-                  <h3 className="font-bold text-pink-800">bKash Payment Instructions</h3>
+                  <CreditCard className="h-5 w-5 text-pink-600 dark:text-pink-400 mr-2" />
+                  <h3 className="font-bold text-pink-800 dark:text-pink-200">bKash Payment Instructions</h3>
                 </div>
-                <div className="text-sm text-pink-700 space-y-1">
-                  <p><strong>Step 1:</strong> Send money to: <span className="font-mono bg-pink-100 px-2 py-1 rounded">01534723318</span></p>
+                <div className="text-sm text-pink-700 dark:text-pink-300 space-y-1">
+                  <p><strong>Step 1:</strong> Send money to: <span className="font-mono bg-pink-100 dark:bg-pink-800 px-2 py-1 rounded">01XXXXXXXXX</span></p>
                   <p><strong>Step 2:</strong> Amount: <span className="font-bold">৳{state.total}</span></p>
                   <p><strong>Step 3:</strong> Copy the transaction ID from bKash and paste it below</p>
                   <p><strong>Step 4:</strong> Complete this form</p>
@@ -183,7 +183,7 @@ export function Checkout() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   bKash Transaction ID *
                 </label>
                 <input
@@ -193,9 +193,9 @@ export function Checkout() {
                   onChange={handleInputChange}
                   required
                   placeholder="e.g., BH12345678"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                   Please ensure the transaction ID is correct before submitting
                 </p>
               </div>
@@ -203,7 +203,7 @@ export function Checkout() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-6"
+                className="w-full bg-blue-600 dark:bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 dark:hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-6"
               >
                 {isSubmitting ? 'Placing Order...' : 'Place Order'}
               </button>
@@ -211,8 +211,8 @@ export function Checkout() {
           </div>
 
           {/* Order Summary */}
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-6">Order Summary</h2>
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-gray-900/20 p-6">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Order Summary</h2>
             
             <div className="space-y-4 mb-6">
               {state.items.map((item) => (
@@ -223,26 +223,26 @@ export function Checkout() {
                     className="h-16 w-16 object-cover rounded-lg"
                   />
                   <div className="flex-1 ml-4">
-                    <h3 className="font-medium text-gray-900">{item.name}</h3>
+                    <h3 className="font-medium text-gray-900 dark:text-white">{item.name}</h3>
                     {item.selectedVariation && (
-                      <p className="text-sm text-gray-600">Size: {item.selectedVariation}</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">Size: {item.selectedVariation}</p>
                     )}
-                    <p className="text-sm text-gray-600">Qty: {item.quantity}</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">Qty: {item.quantity}</p>
                   </div>
-                  <p className="font-bold text-blue-600">৳{item.price * item.quantity}</p>
+                  <p className="font-bold text-blue-600 dark:text-blue-400">৳{item.price * item.quantity}</p>
                 </div>
               ))}
             </div>
 
-            <div className="border-t pt-4">
+            <div className="border-t dark:border-gray-700 pt-4">
               <div className="flex justify-between text-xl font-bold">
-                <span>Total Amount</span>
-                <span className="text-blue-600">৳{state.total}</span>
+                <span className="text-gray-900 dark:text-white">Total Amount</span>
+                <span className="text-blue-600 dark:text-blue-400">৳{state.total}</span>
               </div>
             </div>
 
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mt-6">
-              <p className="text-sm text-yellow-800">
+            <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 mt-6">
+              <p className="text-sm text-yellow-800 dark:text-yellow-200">
                 <strong>Note:</strong> Your order will be processed after payment verification. 
                 You will be contacted within 24 hours for order confirmation and delivery details.
               </p>
