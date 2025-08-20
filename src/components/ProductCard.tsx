@@ -9,7 +9,7 @@ interface ProductCardProps {
 export function ProductCard({ product }: ProductCardProps) {
   return (
     <Link to={`/product/${product.id}`} className="group">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-gray-900/20 overflow-hidden transition-all duration-200 group-hover:scale-105 group-hover:shadow-lg">
+      <div className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-200 group-hover:scale-105">
         <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden bg-gray-200">
           <img
             src={product.image}
@@ -18,9 +18,9 @@ export function ProductCard({ product }: ProductCardProps) {
           />
         </div>
         <div className="p-4">
-          <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-2">{product.name}</h3>
-          <p className="text-lg font-bold text-blue-600 dark:text-blue-400">৳{product.price}</p>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 capitalize">{product.category}</p>
+          <h3 className="text-sm font-medium text-gray-900 mb-2">{product.name}</h3>
+          <p className="text-lg font-bold text-blue-600">৳{product.price}</p>
+          <p className="text-sm text-gray-500 mt-1 capitalize">{product.category}</p>
         </div>
       </div>
     </Link>
