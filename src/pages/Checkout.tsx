@@ -36,7 +36,17 @@ export function Checkout() {
       const newOrderId = uuidv4();
       const orderData = {
         orderId: newOrderId,
-        items: state.items,
+        items: state.items.map(item => ({
+          id: item.id,
+          name: item.name,
+          price: item.price,
+          image: item.image,
+          description: item.description,
+          category: item.category,
+          quantity: item.quantity,
+          cartItemId: item.cartItemId,
+          ...(item.selectedVariation && { selectedVariation: item.selectedVariation })
+        })),
         total: state.total,
         customerInfo: formData,
         orderDate: new Date().toISOString(),
