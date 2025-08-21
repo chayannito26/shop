@@ -21,15 +21,60 @@ export function Checkout() {
     bkashTransactionId: ''
   });
 
+  const [errors, setErrors] = useState({
+    phone: '',
+    bkashTransactionId: ''
+  });
+
+  const validateField = (name: string, value: string) => {
+    switch (name) {
+      case 'phone':
+        // Validates 11-digit Bangladeshi phone numbers (e.g., 01xxxxxxxxx)
+        if (!/^01[3-9]\d{8}$/.test(value)) {
+          return 'Invalid phone number format. Must be 11 digits.';
+        }
+        break;
+      case 'bkashTransactionId':
+        // Validates a 10-character alphanumeric bKash transaction ID
+        if (!/^[a-zA-Z0-9]{10}$/.test(value)) {
+          return 'Invalid Transaction ID format. Must be 10 characters.';
+        }
+        break;
+      default:
+        break;
+    }
+    return '';
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [name]: value
     });
+    if (name === 'phone' || name === 'bkashTransactionId') {
+      setErrors({
+        ...errors,
+        [name]: validateField(name, value)
+      });
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Perform final validation on all fields before submitting
+    const phoneError = validateField('phone', formData.phone);
+    const bkashError = validateField('bkashTransactionId', formData.bkashTransactionId);
+
+    if (phoneError || bkashError) {
+      setErrors({
+        phone: phoneError,
+        bkashTransactionId: bkashError
+      });
+      return; // Stop submission if there are errors
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -146,6 +191,7 @@ export function Checkout() {
                     required
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   >
+                    <option value="">Select Department</option>
                     <option value="Science">Science</option>
                     <option value="Arts">Arts</option>
                     <option value="Commerce">Commerce</option>
@@ -165,6 +211,7 @@ export function Checkout() {
                   required
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
+                {errors.phone && <p className="text-xs text-red-500 mt-1">{errors.phone}</p>}
               </div>
 
               {/* Payment Instructions */}
@@ -194,6 +241,7 @@ export function Checkout() {
                   placeholder="e.g., BH12345678"
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
+                {errors.bkashTransactionId && <p className="text-xs text-red-500 mt-1">{errors.bkashTransactionId}</p>}
                 <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                   Please ensure the transaction ID is correct before submitting
                 </p>
@@ -201,7 +249,7 @@ export function Checkout() {
 
               <button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isSubmitting || !!errors.phone || !!errors.bkashTransactionId}
                 className="w-full bg-blue-600 dark:bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 dark:hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-6"
               >
                 {isSubmitting ? 'Placing Order...' : 'Place Order'}
