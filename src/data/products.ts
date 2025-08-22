@@ -58,7 +58,7 @@ export const products: Product[] = [
     price: 350,
     image: './images/cap.png',
     description: 'A high quality cap with Chayannito 26 branding on the front. ',
-    category: 'stationery'
+    category: 'clothing'
   },
   {
     id: 'marker',
@@ -75,6 +75,62 @@ export const products: Product[] = [
     price: 80,
     image: './images/badge.png',
     description: 'Collectible metal badge with Chayannito 26 emblem. Perfect for bags, jackets, or display.',
+    category: 'accessories'
+  },
+  {
+    id: 'bottle',
+    name: 'Chayannito 26 Water Bottle',
+    price: 400,
+    image: './images/bottle.png',
+    description: 'Collectible metal bottle with Chayannito 26 emblem.',
+    category: 'accessories'
+  },
+  {
+    id: 'lanyard',
+    name: 'Chayannito 26 ID Card Lanyard',
+    price: 50,
+    image: './images/lanyard.png',
+    description: 'Durable lanyard with Chayannito 26 branding. Perfect for holding your ID card or keys.',
+    category: 'accessories'
+  },
+  {
+    id: 'phonecover',
+    name: 'Chayannito 26 Phone Cover',
+    price: 300,
+    image: './images/phone_cover.png',
+    description: 'Durable phone cover with Chayannito 26 design. Protect your phone in style.',
+    category: 'accessories'
+  },
+  {
+    id: 'sticker',
+    name: 'Chayannito 26 Sticker',
+    price: 30,
+    image: './images/sticker.png',
+    description: 'Vinyl sticker with Chayannito 26 logo. Perfect for laptops, water bottles, and more.',
+    category: 'accessories'
+  },
+  {
+    id: 'ring',
+    name: 'Chayannito 26 Ring',
+    price: 30,
+    image: './images/ring.png',
+    description: 'A beautiful ring with Chayannito 26 engraving. A perfect small memento.',
+    category: 'accessories'
+  },
+  {
+    id: 'umbrella',
+    name: 'Chayannito 26 Umbrella',
+    price: 600,
+    image: './images/umbrella.png',
+    description: 'A sturdy umbrella with Chayannito 26 branding. Stay dry in style.',
+    category: 'accessories'
+  },
+  {
+    id: 'calendar',
+    name: 'Chayannito 26 Calendar',
+    price: 600,
+    image: './images/calendar.png',
+    description: 'A beautiful calendar featuring Chayannito 26 designs for each month. Perfect for keeping track of important dates.',
     category: 'accessories'
   }
 ];
