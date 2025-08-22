@@ -60,7 +60,7 @@ export const products: Product[] = [
     description: 'A high quality cap with Chayannito 26 branding on the front. ',
     category: 'clothing'
   },
-  {
+  /*{
     id: 'marker',
     name: 'Basic Marker',
     price: 20,
@@ -68,7 +68,7 @@ export const products: Product[] = [
     description: 'A marker. Perfect for signing.',
     category: 'stationery',
     variations: ['Red', 'Blue', 'Black', 'Green']
-  },
+  },*/
   {
     id: 'badge',
     name: 'Chayannito 26 Badge',
