@@ -47,7 +47,7 @@ export const products: Product[] = [
     id: 'notebook',
     name: 'Chayannito 26 Notebook',
     price: 250,
-    image: './images/notebook.png',
+    image: './images/notebook.jpg',
     description: 'Premium quality notebook with Chayannito 26 cover design. Perfect for notes and journaling.',
     category: 'stationery',
     variations: ['Diary', 'Notebook']
@@ -81,7 +81,7 @@ export const products: Product[] = [
     id: 'bottle',
     name: 'Chayannito 26 Water Bottle',
     price: 400,
-    image: './images/bottle.png',
+    image: './images/bottle.jpg',
     description: 'Collectible metal bottle with Chayannito 26 emblem.',
     category: 'accessories'
   },
@@ -89,7 +89,7 @@ export const products: Product[] = [
     id: 'lanyard',
     name: 'Chayannito 26 ID Card Lanyard',
     price: 50,
-    image: './images/lanyard.png',
+    image: './images/lanyard.jpg',
     description: 'Durable lanyard with Chayannito 26 branding. Perfect for holding your ID card or keys.',
     category: 'accessories'
   },
@@ -97,7 +97,7 @@ export const products: Product[] = [
     id: 'phonecover',
     name: 'Chayannito 26 Phone Cover',
     price: 300,
-    image: './images/phone_cover.png',
+    image: './images/phone_cover.jpg',
     description: 'Durable phone cover with Chayannito 26 design. Protect your phone in style.',
     category: 'accessories'
   },
