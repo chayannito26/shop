@@ -13,7 +13,7 @@ export const products: Product[] = [
       { label: 'M', price: 350 },
       { label: 'L', price: 350 },
       { label: 'XL', price: 350 },
-      { label: 'XXL', price: 380 } // XXL slightly higher
+      { label: 'XXL', price: 350 } // XXL slightly higher
     ]
   },
   {
@@ -28,7 +28,7 @@ export const products: Product[] = [
       { label: 'M', price: 700 },
       { label: 'L', price: 700 },
       { label: 'XL', price: 700 },
-      { label: 'XXL', price: 800 } // XXL higher
+      { label: 'XXL', price: 700 } // XXL higher
     ]
   },
   {
@@ -115,28 +115,28 @@ export const products: Product[] = [
     description: 'Vinyl sticker with Chayannito 26 logo. Perfect for laptops, water bottles, and more.',
     category: 'accessories'
   },
-  {
-    id: 'ring',
-    name: 'Chayannito 26 Ring',
-    price: 30,
-    image: 'https://shop.chayannito26.com/images/ring.png',
-    description: 'A beautiful ring with Chayannito 26 engraving. A perfect small memento.',
-    category: 'accessories'
-  },
-  {
-    id: 'umbrella',
-    name: 'Chayannito 26 Umbrella',
-    price: 600,
-    image: 'https://shop.chayannito26.com/images/umbrella.png',
-    description: 'A sturdy umbrella with Chayannito 26 branding. Stay dry in style.',
-    category: 'accessories'
-  },
-  {
-    id: 'calendar',
-    name: 'Chayannito 26 Calendar',
-    price: 600,
-    image: 'https://shop.chayannito26.com/images/calendar.png',
-    description: 'A beautiful calendar featuring Chayannito 26 designs for each month. Perfect for keeping track of important dates.',
-    category: 'accessories'
-  }
+  // {
+  //   id: 'ring',
+  //   name: 'Chayannito 26 Ring',
+  //   price: 30,
+  //   image: 'https://shop.chayannito26.com/images/ring.png',
+  //   description: 'A beautiful ring with Chayannito 26 engraving. A perfect small memento.',
+  //   category: 'accessories'
+  // },
+  // {
+  //   id: 'umbrella',
+  //   name: 'Chayannito 26 Umbrella',
+  //   price: 600,
+  //   image: 'https://shop.chayannito26.com/images/umbrella.png',
+  //   description: 'A sturdy umbrella with Chayannito 26 branding. Stay dry in style.',
+  //   category: 'accessories'
+  // },
+  // {
+  //   id: 'calendar',
+  //   name: 'Chayannito 26 Desk Calendar',
+  //   price: 600,
+  //   image: 'https://shop.chayannito26.com/images/calendar.png',
+  //   description: 'A beautiful calendar featuring Chayannito 26 designs for each month. Perfect for keeping track of important dates.',
+  //   category: 'accessories'
+  // }
 ];
