@@ -12,7 +12,7 @@ export function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <Link to="/" className="flex items-center space-x-2">
-            <GraduationCap className="h-8 w-8 text-blue-600" />
+            <img src="./logo.png" alt="Chayannito 26 logo" className="h-8 w-8 rounded object-cover" />
             <div>
               <h1 className="text-xl font-bold text-gray-900 dark:text-white">Chayannito 26</h1>
               <p className="text-xs text-gray-600 dark:text-gray-300">Merchandise Store</p>
