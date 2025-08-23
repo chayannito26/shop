@@ -19,6 +19,7 @@ export interface CartItem extends Product {
 interface CartState {
   items: CartItem[];
   total: number;
+  isDirectOrder: boolean; // track direct "Buy Now" orders
 }
 
 type CartAction =
@@ -30,7 +31,8 @@ type CartAction =
 
 const initialState: CartState = {
   items: [],
-  total: 0
+  total: 0,
+  isDirectOrder: false
 };
 
 function cartReducer(state: CartState, action: CartAction): CartState {
@@ -49,7 +51,8 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       const newItems = [...state.items, newItem];
       return {
         items: newItems,
-        total: newItems.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+        total: newItems.reduce((sum, item) => sum + (item.price * item.quantity), 0),
+        isDirectOrder: false
       };
     }
 
@@ -57,7 +60,8 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       const newItems = state.items.filter(item => item.cartItemId !== action.payload);
       return {
         items: newItems,
-        total: newItems.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+        total: newItems.reduce((sum, item) => sum + (item.price * item.quantity), 0),
+        isDirectOrder: false
       };
     }
 
@@ -69,7 +73,8 @@ function cartReducer(state: CartState, action: CartAction): CartState {
 
       return {
         items: newItems,
-        total: newItems.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+        total: newItems.reduce((sum, item) => sum + (item.price * item.quantity), 0),
+        isDirectOrder: state.isDirectOrder
       };
     }
 
@@ -89,7 +94,8 @@ function cartReducer(state: CartState, action: CartAction): CartState {
 
       return {
         items: [directOrderItem],
-        total: product.price * quantity
+        total: product.price * quantity,
+        isDirectOrder: true
       };
     }
 

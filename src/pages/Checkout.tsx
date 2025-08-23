@@ -343,7 +343,7 @@ export function Checkout() {
                 <strong>Note:</strong> Your order will be processed after payment verification.
                 You will be contacted within 24 hours for order confirmation and delivery details.
               </p>
-              {cartState.items.length === 1 && (
+              {cartState.isDirectOrder && (
                 <p className="text-sm text-green-800 dark:text-green-200 mt-2">
                   <strong>Express Order:</strong> This is a direct purchase - no cart items will be affected.
                 </p>
