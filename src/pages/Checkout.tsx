@@ -111,6 +111,12 @@ export function Checkout() {
     }
   };
 
+  const variationLabel = (item: any) => {
+    if (item.id === 'phonecover') return 'Model';
+    if (item.category === 'clothing') return 'Size';
+    return 'Option';
+  };
+
   if (state.items.length === 0 && !orderPlaced) {
     navigate('/cart');
     return null;
@@ -280,7 +286,7 @@ export function Checkout() {
                   <div className="flex-1 ml-4">
                     <h3 className="font-medium text-gray-900 dark:text-white">{item.name}</h3>
                     {item.selectedVariation && (
-                      <p className="text-sm text-gray-600 dark:text-gray-400">Size: {item.selectedVariation}</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">{variationLabel(item)}: {item.selectedVariation}</p>
                     )}
                     <p className="text-sm text-gray-600 dark:text-gray-400">Qty: {item.quantity}</p>
                   </div>

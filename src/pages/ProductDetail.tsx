@@ -35,6 +35,10 @@ export function ProductDetail() {
       alert('Please select a size/variation');
       return;
     }
+    if (product.id === 'phonecover' && !selectedVariation) {
+      alert('Please enter your phone model (e.g., iPhone 12, Samsung A12)');
+      return;
+    }
 
     dispatch({
       type: 'ADD_ITEM',
@@ -51,6 +55,10 @@ export function ProductDetail() {
   const handleBuyNow = () => {
     if (product.variations && !selectedVariation) {
       alert('Please select a size/variation');
+      return;
+    }
+    if (product.id === 'phonecover' && !selectedVariation) {
+      alert('Please enter your phone model (e.g., iPhone 12, Samsung A12)');
       return;
     }
 
@@ -100,28 +108,42 @@ export function ProductDetail() {
 
             <p className="text-gray-700 dark:text-gray-300 mb-8 leading-relaxed">{product.description}</p>
 
-            {/* Variations */}
-            {product.variations && (
+            {/* Variations OR Phone Model input */}
+            {product.id === 'phonecover' ? (
               <div className="mb-6">
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">
-                  {product.category === 'clothing' ? 'Size' : 'Options'}:
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {product.variations.map((variation) => (
-                    <button
-                      key={variation}
-                      onClick={() => setSelectedVariation(variation)}
-                      className={`px-4 py-2 border rounded-md transition-colors ${
-                        selectedVariation === variation
-                          ? 'border-blue-500 bg-blue-50 dark:bg-blue-900 text-blue-700 dark:text-blue-200'
-                          : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 text-gray-900 dark:text-white'
-                      }`}
-                    >
-                      {variation}
-                    </button>
-                  ))}
-                </div>
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">Phone Model:</h3>
+                <input
+                  type="text"
+                  placeholder="e.g., iPhone 12, Samsung Galaxy A12"
+                  value={selectedVariation}
+                  onChange={(e) => setSelectedVariation(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                />
+                <p className="text-xs text-gray-500 mt-1">Please provide exact model for a proper fit.</p>
               </div>
+            ) : (
+              product.variations && (
+                <div className="mb-6">
+                  <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">
+                    {product.category === 'clothing' ? 'Size' : 'Options'}:
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {product.variations.map((variation) => (
+                      <button
+                        key={variation}
+                        onClick={() => setSelectedVariation(variation)}
+                        className={`px-4 py-2 border rounded-md transition-colors ${
+                          selectedVariation === variation
+                            ? 'border-blue-500 bg-blue-50 dark:bg-blue-900 text-blue-700 dark:text-blue-200'
+                            : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 text-gray-900 dark:text-white'
+                        }`}
+                      >
+                        {variation}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )
             )}
 
             {/* Quantity Selector */}

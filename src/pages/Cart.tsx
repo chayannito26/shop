@@ -20,6 +20,12 @@ export function Cart() {
     });
   };
 
+  const variationLabel = (item: any) => {
+    if (item.id === 'phonecover') return 'Model';
+    if (item.category === 'clothing') return 'Size';
+    return 'Option';
+  };
+
   if (state.items.length === 0) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
@@ -58,7 +64,7 @@ export function Cart() {
                   <div className="flex-1 ml-6">
                     <h3 className="text-lg font-medium text-gray-900 dark:text-white">{item.name}</h3>
                     {item.selectedVariation && (
-                      <p className="text-sm text-gray-600 dark:text-gray-400">Size: {item.selectedVariation}</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">{variationLabel(item)}: {item.selectedVariation}</p>
                     )}
                     <p className="text-lg font-bold text-blue-600 dark:text-blue-400">৳{item.price}</p>
                   </div>
@@ -100,7 +106,7 @@ export function Cart() {
               <div className="space-y-2 mb-4">
                 {state.items.map((item) => (
                   <div key={item.cartItemId} className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
-                    <span>{item.name} {item.selectedVariation && `(${item.selectedVariation})`} × {item.quantity}</span>
+                    <span>{item.name} {item.selectedVariation && `(${variationLabel(item)}: ${item.selectedVariation})`} × {item.quantity}</span>
                     <span>৳{item.price * item.quantity}</span>
                   </div>
                 ))}
