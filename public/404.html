@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Redirecting...</title>
+    <meta name="robots" content="noindex" />
+    <meta http-equiv="refresh" content="0;url=/" />
+    <script>
+      (function () {
+        var l = window.location;
+        var fullPath = l.pathname + l.search + l.hash;
+        var target = '/' + '?p=' + encodeURIComponent(fullPath);
+        // Avoid infinite loops if someone hits 404.html directly
+        if (l.pathname !== '/index.html') {
+          l.replace(target);
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <p>Redirecting...</p>
+    <noscript>
+      This site requires JavaScript. <a href="/">Go to the homepage</a>.
+    </noscript>
+  </body>
+</html>
