@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer, ReactNode } from 'react';
-import { getVariationPrice } from '../utils/pricing';
+import { getVariationPrice, getVariationImage } from '../utils/pricing';
 
 export interface Product {
   id: string;
@@ -8,7 +8,7 @@ export interface Product {
   image: string;
   description: string;
   category: string;
-  variations?: (string | { label: string; price?: number })[]; // updated to support per-variation price
+  variations?: (string | { label: string; price?: number; image?: string })[]; // support per-variation price and image
 }
 
 export interface CartItem extends Product {
@@ -42,9 +42,11 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       const { product, selectedVariation } = action.payload;
       const cartItemId = `${product.id}-${selectedVariation || 'default'}-${Date.now()}`;
       const unitPrice = getVariationPrice(product.price, product.variations, selectedVariation);
+      const resolvedImage = getVariationImage(product.image, product.variations, selectedVariation);
 
       const newItem: CartItem = {
         ...product,
+        image: resolvedImage, // store resolved image at add time
         price: unitPrice, // ensure cart uses the unit price for the selected variation
         quantity: 1,
         selectedVariation,
@@ -88,9 +90,11 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       const { product, selectedVariation, quantity } = action.payload;
       const cartItemId = `${product.id}-${selectedVariation || 'default'}-${Date.now()}`;
       const unitPrice = getVariationPrice(product.price, product.variations, selectedVariation);
+      const resolvedImage = getVariationImage(product.image, product.variations, selectedVariation);
 
       const directOrderItem: CartItem = {
         ...product,
+        image: resolvedImage, // ensure unit image reflects selection
         price: unitPrice, // ensure unit price reflects selection
         quantity,
         selectedVariation,

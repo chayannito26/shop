@@ -1,10 +1,12 @@
-export type VariationInput = string | { label: string; price?: number };
-type NormalizedVariation = { label: string; price?: number };
+export type VariationInput = string | { label: string; price?: number; image?: string };
+type NormalizedVariation = { label: string; price?: number; image?: string };
 
 function normalize(variations?: VariationInput[]): NormalizedVariation[] {
   if (!variations) return [];
   return variations.map(v =>
-    typeof v === 'string' ? { label: v } : { label: v.label, price: v.price }
+    typeof v === 'string'
+      ? { label: v }
+      : { label: v.label, price: v.price, image: v.image }
   );
 }
 
@@ -33,4 +35,16 @@ export function getMinMaxPrice(basePrice: number, variations?: VariationInput[])
 
 export function getNormalizedVariations(variations?: VariationInput[]): NormalizedVariation[] {
   return normalize(variations);
+}
+
+export function getVariationImage(
+  baseImage: string,
+  variations?: VariationInput[],
+  selectedVariation?: string
+): string {
+  const v = findMatch(variations, selectedVariation);
+  if (v && v.image && typeof v.image === 'string' && v.image.trim().length > 0) {
+    return v.image;
+  }
+  return baseImage;
 }

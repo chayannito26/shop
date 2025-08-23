@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ShoppingCart, ArrowLeft, Zap } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { products } from '../data/products';
-import { getMinMaxPrice, getVariationPrice, getNormalizedVariations } from '../utils/pricing';
+import { getMinMaxPrice, getVariationPrice, getNormalizedVariations, getVariationImage } from '../utils/pricing';
 
 export function ProductDetail() {
   const { id } = useParams<{ id: string }>();
@@ -35,6 +35,10 @@ export function ProductDetail() {
   const variations = getNormalizedVariations(product?.variations);
   const unitPrice = product ? getVariationPrice(product.price, product.variations, selectedVariation) : 0;
   const { min, max } = product ? getMinMaxPrice(product.price, product.variations) : { min: 0, max: 0 };
+  const displayImage = useMemo(
+    () => (product ? getVariationImage(product.image, product.variations, selectedVariation) : ''),
+    [product, selectedVariation]
+  );
 
   const handleAddToCart = () => {
     if (product?.variations && product.variations.length > 0 && product.id !== 'phonecover' && !selectedVariation) {
@@ -95,7 +99,7 @@ export function ProductDetail() {
           {/* Product Image */}
           <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-200 dark:bg-gray-700">
             <img
-              src={product.image}
+              src={displayImage}
               alt={product.name}
               className="h-96 w-full object-cover object-center"
             />
@@ -107,7 +111,7 @@ export function ProductDetail() {
             <p className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-6">
               ৳{selectedVariation ? unitPrice : (min === max ? min : `${min} - ${max}`)}
             </p>
-            
+
             <div className="mb-6">
               <span className="inline-block px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm font-medium capitalize">
                 {product.category}
