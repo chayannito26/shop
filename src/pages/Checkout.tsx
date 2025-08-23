@@ -38,7 +38,7 @@ export function Checkout() {
     if (cartState.items.length === 0) return;
     const cartTotal = cartState.total - discount;
     trackInitiateCheckout(
-      cartState.items.map(i => ({ id: i.id })),
+      cartState.items.map(i => ({ id: i.id, quantity: i.quantity, price: i.price })),
       cartTotal,
       {
         name: formData.name || undefined,
@@ -107,6 +107,7 @@ export function Checkout() {
       // Track AddPaymentInfo (bKash) just before we create the order
       trackAddPaymentInfo(
         cartState.total - discount,
+        cartState.items.map(i => ({ id: i.id, quantity: i.quantity, price: i.price })),
         {
           name: formData.name || undefined,
           phone: formData.phone || undefined,
@@ -161,7 +162,7 @@ export function Checkout() {
       // Meta Pixel: Purchase (after successful confirmation) with user data
       trackPurchase(
         newOrderId,
-        orderData.items.map((i) => ({ id: i.id })),
+        orderData.items.map((i: any) => ({ id: i.id, quantity: i.quantity, price: i.price })),
         orderData.finalTotal,
         {
           name: formData.name || undefined,
