@@ -123,7 +123,7 @@ export function Checkout() {
           <CheckCircle className="h-16 w-16 text-green-500 dark:text-green-400 mx-auto mb-4" />
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Order Placed Successfully!</h2>
           <p className="text-gray-600 dark:text-gray-300 mb-4">
-            Your order has been received and will be processed soon.
+            Your order has been received and will be processed soon. Take a screenshot of your Order ID for future reference.
           </p>
           <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 mb-6">
             <p className="text-sm text-gray-600 dark:text-gray-400">Order ID</p>
