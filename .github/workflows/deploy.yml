@@ -39,6 +39,8 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
+        env:
+          SITE_URL: https://shop.chayannito26.com
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact
