@@ -9,6 +9,11 @@ export function Cart() {
   const { state: cartState, dispatch: cartDispatch } = useCart();
   const { appliedCoupon, discount } = useCoupon();
 
+  // One-time normalization to squash any historical duplicates
+  React.useEffect(() => {
+    cartDispatch({ type: 'SQUASH_DUPLICATES' as any });
+  }, [cartDispatch]);
+
   const updateQuantity = (cartItemId: string, quantity: number) => {
     cartDispatch({
       type: 'UPDATE_QUANTITY',
