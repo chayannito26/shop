@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { ProductCard } from '../components/ProductCard';
 import { products } from '../data/products';
 import { useSearchParams } from 'react-router-dom';
+import { trackSearch } from '../analytics/metaPixel';
 
 export function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -36,6 +37,9 @@ export function Home() {
       const sp = new URLSearchParams(searchParams);
       sp.delete('category');
       setSearchParams(sp, { replace: true });
+    } else {
+      // Track category filter as a "Search" event
+      trackSearch(match, match);
     }
   }, [searchParams, categories, setSearchParams]);
 
@@ -55,6 +59,7 @@ export function Home() {
       sp.delete('category');
     }
     setSearchParams(sp);
+    // Note: trackSearch is called from the effect above when the URL param changes
   };
 
   return (

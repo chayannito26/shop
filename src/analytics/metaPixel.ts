@@ -40,7 +40,39 @@ export function trackAddToCart(p: { id: string; name: string; category?: string 
     content_type: 'product',
     content_category: p.category,
     value: unitPrice,
-    currency: CURRENCY
+    currency: CURRENCY,
+    // enrich with 'contents' as recommended by Meta
+    contents: [
+      {
+        id: p.id,
+        quantity: 1,
+        item_price: unitPrice
+      }
+    ]
+  });
+}
+
+// New: Search
+export function trackSearch(searchString: string, category?: string) {
+  track('Search', {
+    search_string: searchString,
+    content_category: category
+  });
+}
+
+// New: CustomizeProduct (e.g., size/option/model selected)
+export function trackCustomizeProduct(
+  p: { id: string; name: string; category?: string },
+  selectedOption: string,
+  unitPrice?: number
+) {
+  track('CustomizeProduct', {
+    content_ids: [p.id],
+    content_name: `${p.name} - ${selectedOption}`,
+    content_type: 'product',
+    content_category: p.category,
+    // price is optional but useful if available
+    ...(typeof unitPrice === 'number' ? { value: unitPrice, currency: CURRENCY } : {})
   });
 }
 
@@ -67,6 +99,16 @@ export function trackInitiateCheckout(cartItems: { id: string }[], cartTotal: nu
     currency: CURRENCY,
     content_ids: cartItems.map(i => i.id),
     num_items: cartItems.length,
+    ...buildUserParams(user)
+  });
+}
+
+// New: AddPaymentInfo (e.g., when user submits bKash transaction)
+export function trackAddPaymentInfo(totalPayable: number, user?: UserData, paymentMethod?: string) {
+  track('AddPaymentInfo', {
+    value: totalPayable,
+    currency: CURRENCY,
+    payment_method: paymentMethod || 'unknown',
     ...buildUserParams(user)
   });
 }

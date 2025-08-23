@@ -7,7 +7,7 @@ import { useCart } from '../contexts/CartContext';
 import { useCoupon } from '../contexts/CouponContext';
 import { db } from '../firebase/config';
 import { CouponInput } from '../components/CouponInput';
-import { trackInitiateCheckout, trackPurchase } from '../analytics/metaPixel';
+import { trackInitiateCheckout, trackPurchase, trackAddPaymentInfo } from '../analytics/metaPixel';
 
 export function Checkout() {
   const { state: cartState, dispatch: cartDispatch } = useCart();
@@ -103,6 +103,19 @@ export function Checkout() {
 
     try {
       const newOrderId = uuidv4();
+
+      // Track AddPaymentInfo (bKash) just before we create the order
+      trackAddPaymentInfo(
+        cartState.total - discount,
+        {
+          name: formData.name || undefined,
+          phone: formData.phone || undefined,
+          email: formData.email || undefined,
+          country: 'Bangladesh'
+        },
+        'bKash'
+      );
+
       const orderData = {
         orderId: newOrderId,
         items: cartState.items.map(item => ({

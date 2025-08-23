@@ -5,7 +5,7 @@ import { useCart } from '../contexts/CartContext';
 import { products } from '../data/products';
 import { getMinMaxPrice, getVariationPrice, getNormalizedVariations, getVariationImage } from '../utils/pricing';
 import { getBulkUnitCost, pickActiveBulkRate } from '../utils/pricing';
-import { trackViewContent, trackAddToCart } from '../analytics/metaPixel';
+import { trackViewContent, trackAddToCart, trackCustomizeProduct } from '../analytics/metaPixel';
 
 export function ProductDetail() {
   const { id } = useParams<{ id: string }>();
@@ -235,6 +235,15 @@ export function ProductDetail() {
                   placeholder="e.g., iPhone 12, Samsung Galaxy A12"
                   value={selectedVariation}
                   onChange={(e) => setSelectedVariation(e.target.value)}
+                  onBlur={() => {
+                    if (selectedVariation.trim()) {
+                      trackCustomizeProduct(
+                        { id: product.id, name: product.name, category: product.category },
+                        selectedVariation.trim(),
+                        product.price
+                      );
+                    }
+                  }}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
                 <p className="text-xs text-gray-500 mt-1">Please provide exact model for a proper fit.</p>
@@ -249,7 +258,15 @@ export function ProductDetail() {
                     {variations.map((v) => (
                       <button
                         key={v.label}
-                        onClick={() => setSelectedVariation(v.label)}
+                        onClick={() => {
+                          setSelectedVariation(v.label);
+                          const priceForV = getVariationPrice(product.price, product.variations, v.label);
+                          trackCustomizeProduct(
+                            { id: product.id, name: product.name, category: product.category },
+                            v.label,
+                            priceForV
+                          );
+                        }}
                         className={`px-4 py-2 border rounded-md transition-colors ${
                           selectedVariation === v.label
                             ? 'border-blue-500 bg-blue-50 dark:bg-blue-900 text-blue-700 dark:text-blue-200'
