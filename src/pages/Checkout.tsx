@@ -23,6 +23,7 @@ export function Checkout() {
     roll: '',
     department: '',
     phone: '',
+    email: '', // optional email
     bkashTransactionId: ''
   });
 
@@ -38,10 +39,16 @@ export function Checkout() {
     const cartTotal = cartState.total - discount;
     trackInitiateCheckout(
       cartState.items.map(i => ({ id: i.id })),
-      cartTotal
+      cartTotal,
+      {
+        name: formData.name || undefined,
+        phone: formData.phone || undefined,
+        email: formData.email || undefined,
+        country: 'Bangladesh'
+      }
     );
     initiatedRef.current = true;
-  }, [cartState.items, cartState.total, discount, orderPlaced]);
+  }, [cartState.items, cartState.total, discount, orderPlaced, formData.name, formData.phone, formData.email]);
 
   const validateField = (name: string, value: string) => {
     switch (name) {
@@ -138,11 +145,17 @@ export function Checkout() {
         });
       }
 
-      // Meta Pixel: Purchase (after successful confirmation)
+      // Meta Pixel: Purchase (after successful confirmation) with user data
       trackPurchase(
         newOrderId,
         orderData.items.map((i) => ({ id: i.id })),
-        orderData.finalTotal
+        orderData.finalTotal,
+        {
+          name: formData.name || undefined,
+          phone: formData.phone || undefined,
+          email: formData.email || undefined,
+          country: 'Bangladesh'
+        }
       );
 
       setOrderId(newOrderId);
@@ -272,6 +285,20 @@ export function Checkout() {
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
                 {errors.phone && <p className="text-xs text-red-500 mt-1">{errors.phone}</p>}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  Email (optional)
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  placeholder="you@example.com"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                />
               </div>
 
               {/* Payment Instructions */}

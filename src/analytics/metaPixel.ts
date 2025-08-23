@@ -44,21 +44,40 @@ export function trackAddToCart(p: { id: string; name: string; category?: string 
   });
 }
 
-export function trackInitiateCheckout(cartItems: { id: string }[], cartTotal: number) {
+type UserData = {
+  name?: string;
+  phone?: string;
+  email?: string;
+  country?: string; // default to Bangladesh when building params
+};
+
+function buildUserParams(user?: UserData) {
+  if (!user) return {};
+  return {
+    customer_name: user.name || undefined,
+    customer_phone: user.phone || undefined,
+    customer_email: user.email || undefined,
+    customer_country: user.country || 'Bangladesh',
+  };
+}
+
+export function trackInitiateCheckout(cartItems: { id: string }[], cartTotal: number, user?: UserData) {
   track('InitiateCheckout', {
     value: cartTotal,
     currency: CURRENCY,
     content_ids: cartItems.map(i => i.id),
-    num_items: cartItems.length
+    num_items: cartItems.length,
+    ...buildUserParams(user)
   });
 }
 
-export function trackPurchase(orderId: string, purchasedItems: { id: string }[], orderTotal: number) {
+export function trackPurchase(orderId: string, purchasedItems: { id: string }[], orderTotal: number, user?: UserData) {
   track('Purchase', {
     value: orderTotal,
     currency: CURRENCY,
     content_ids: purchasedItems.map(i => i.id),
     num_items: purchasedItems.length,
-    order_id: orderId
+    order_id: orderId,
+    ...buildUserParams(user)
   });
 }
