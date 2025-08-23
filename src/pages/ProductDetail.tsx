@@ -117,7 +117,7 @@ export function ProductDetail() {
                   placeholder="e.g., iPhone 12, Samsung Galaxy A12"
                   value={selectedVariation}
                   onChange={(e) => setSelectedVariation(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
                 <p className="text-xs text-gray-500 mt-1">Please provide exact model for a proper fit.</p>
               </div>
