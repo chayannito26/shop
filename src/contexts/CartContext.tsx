@@ -25,7 +25,8 @@ type CartAction =
   | { type: 'ADD_ITEM'; payload: { product: Product; selectedVariation?: string } }
   | { type: 'REMOVE_ITEM'; payload: string }
   | { type: 'UPDATE_QUANTITY'; payload: { cartItemId: string; quantity: number } }
-  | { type: 'CLEAR_CART' };
+  | { type: 'CLEAR_CART' }
+  | { type: 'SET_DIRECT_ORDER'; payload: { product: Product; selectedVariation?: string; quantity: number } };
 
 const initialState: CartState = {
   items: [],
@@ -74,6 +75,23 @@ function cartReducer(state: CartState, action: CartAction): CartState {
 
     case 'CLEAR_CART':
       return initialState;
+
+    case 'SET_DIRECT_ORDER': {
+      const { product, selectedVariation, quantity } = action.payload;
+      const cartItemId = `${product.id}-${selectedVariation || 'default'}-${Date.now()}`;
+
+      const directOrderItem: CartItem = {
+        ...product,
+        quantity,
+        selectedVariation,
+        cartItemId
+      };
+
+      return {
+        items: [directOrderItem],
+        total: product.price * quantity
+      };
+    }
 
     default:
       return state;

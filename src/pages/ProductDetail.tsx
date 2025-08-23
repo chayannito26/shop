@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ShoppingCart, ArrowLeft } from 'lucide-react';
+import { ShoppingCart, ArrowLeft, Zap } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { products } from '../data/products';
 
@@ -9,6 +9,7 @@ export function ProductDetail() {
   const navigate = useNavigate();
   const { dispatch } = useCart();
   const [selectedVariation, setSelectedVariation] = useState<string>('');
+  const [quantity, setQuantity] = useState<number>(1);
   const [showSuccess, setShowSuccess] = useState(false);
 
   const product = products.find(p => p.id === id);
@@ -45,6 +46,24 @@ export function ProductDetail() {
 
     setShowSuccess(true);
     setTimeout(() => setShowSuccess(false), 3000);
+  };
+
+  const handleBuyNow = () => {
+    if (product.variations && !selectedVariation) {
+      alert('Please select a size/variation');
+      return;
+    }
+
+    dispatch({
+      type: 'SET_DIRECT_ORDER',
+      payload: {
+        product,
+        selectedVariation: selectedVariation || undefined,
+        quantity
+      }
+    });
+
+    navigate('/checkout');
   };
 
   return (
@@ -105,14 +124,46 @@ export function ProductDetail() {
               </div>
             )}
 
-            {/* Add to Cart Button */}
-            <button
-              onClick={handleAddToCart}
-             className="w-full bg-blue-600 dark:bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 dark:hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2"
-            >
-              <ShoppingCart className="h-5 w-5" />
-              <span>Add to Cart</span>
-            </button>
+            {/* Quantity Selector */}
+            <div className="mb-6">
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">Quantity:</h3>
+              <div className="flex items-center space-x-3">
+                <button
+                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  className="w-10 h-10 rounded-full border border-gray-300 dark:border-gray-600 flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-gray-900 dark:text-white"
+                >
+                  -
+                </button>
+                <span className="text-xl font-medium px-4 text-gray-900 dark:text-white">{quantity}</span>
+                <button
+                  onClick={() => setQuantity(quantity + 1)}
+                  className="w-10 h-10 rounded-full border border-gray-300 dark:border-gray-600 flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-gray-900 dark:text-white"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="space-y-3">
+              {/* Buy Now Button */}
+              <button
+                onClick={handleBuyNow}
+                className="w-full bg-green-600 dark:bg-green-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-green-700 dark:hover:bg-green-700 transition-colors flex items-center justify-center space-x-2"
+              >
+                <Zap className="h-5 w-5" />
+                <span>Buy Now - ৳{product.price * quantity}</span>
+              </button>
+
+              {/* Add to Cart Button */}
+              <button
+                onClick={handleAddToCart}
+                className="w-full bg-blue-600 dark:bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 dark:hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2"
+              >
+                <ShoppingCart className="h-5 w-5" />
+                <span>Add to Cart</span>
+              </button>
+            </div>
 
             {/* Success Message */}
             {showSuccess && (

@@ -129,12 +129,20 @@ export function Checkout() {
             <p className="text-sm text-gray-600 dark:text-gray-400">Order ID</p>
             <p className="font-mono text-lg text-gray-900 dark:text-white">{orderId}</p>
           </div>
-          <button
-            onClick={() => navigate('/')}
-            className="w-full bg-blue-600 dark:bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 dark:hover:bg-blue-700 transition-colors"
-          >
-            Continue Shopping
-          </button>
+          <div className="space-y-3">
+            <button
+              onClick={() => navigate('/')}
+              className="w-full bg-blue-600 dark:bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 dark:hover:bg-blue-700 transition-colors"
+            >
+              Continue Shopping
+            </button>
+            <button
+              onClick={() => navigate('/cart')}
+              className="w-full border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 py-3 px-6 rounded-lg font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+            >
+              View Cart
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -293,6 +301,11 @@ export function Checkout() {
                 <strong>Note:</strong> Your order will be processed after payment verification. 
                 You will be contacted within 24 hours for order confirmation and delivery details.
               </p>
+              {state.items.length === 1 && (
+                <p className="text-sm text-green-800 dark:text-green-200 mt-2">
+                  <strong>Express Order:</strong> This is a direct purchase - no cart items will be affected.
+                </p>
+              )}
             </div>
           </div>
         </div>
