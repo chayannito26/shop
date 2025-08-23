@@ -33,11 +33,15 @@ interface CouponContextType extends CouponState {
 
 const CouponContext = createContext<CouponContextType | null>(null);
 
+function toNumber(v: unknown, fallback = 0): number {
+  const s = typeof v === 'string' ? v.replace('%', '').trim() : v;
+  const n = typeof s === 'number' ? s : parseFloat(String(s));
+  return Number.isFinite(n) ? n : fallback;
+}
+
 function calculateDiscount(items: CartItem[], coupon: Coupon | null): number {
   const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  if (!coupon) {
-    return 0;
-  }
+  if (!coupon) return 0;
 
   let eligibleTotal = 0;
   if (coupon.scope === 'all') {
@@ -52,16 +56,24 @@ function calculateDiscount(items: CartItem[], coupon: Coupon | null): number {
       .reduce((sum, item) => sum + item.price * item.quantity, 0);
   }
 
+  const maxDiscount = toNumber((coupon as any).maxDiscount, 0);
   let discount = 0;
+
   if (coupon.type === 'fixed') {
-    discount = Math.min(coupon.value, eligibleTotal);
+    const value = toNumber((coupon as any).value, 0);
+    discount = Math.min(value, eligibleTotal);
   } else if (coupon.type === 'percentage') {
-    discount = eligibleTotal * (coupon.value / 100);
-    if (coupon.maxDiscount) {
-      discount = Math.min(discount, coupon.maxDiscount);
+    const raw = toNumber((coupon as any).value, 0);
+    // Support 10 => 10% and 0.1 => 10%
+    let rate = raw > 1 ? raw / 100 : raw;
+    rate = Math.min(Math.max(rate, 0), 1); // clamp 0..1
+    discount = eligibleTotal * rate;
+    if (maxDiscount > 0) {
+      discount = Math.min(discount, maxDiscount);
     }
   }
 
+  discount = Math.min(discount, eligibleTotal);
   return Math.round(discount);
 }
 
