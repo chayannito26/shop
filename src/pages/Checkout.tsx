@@ -6,6 +6,7 @@ import { CheckCircle, CreditCard } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { useCoupon } from '../contexts/CouponContext';
 import { db } from '../firebase/config';
+import { CouponInput } from '../components/CouponInput';
 
 export function Checkout() {
   const { state: cartState, dispatch: cartDispatch } = useCart();
@@ -330,6 +331,11 @@ export function Checkout() {
                   <span className="text-gray-600 dark:text-gray-400 line-through">৳{cartState.total}</span>
                 </div>
               )}
+            </div>
+
+            {/* Coupon input for direct Buy Now flow */}
+            <div className="mt-6">
+              <CouponInput />
             </div>
 
             <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 mt-6">
