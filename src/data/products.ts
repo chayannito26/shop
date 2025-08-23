@@ -8,7 +8,13 @@ export const products: Product[] = [
     image: 'https://shop.chayannito26.com/images/tshirt.png',
     description: 'Premium cotton t-shirt with Chayannito 26 batch design. Perfect for representing your batch pride.',
     category: 'clothing',
-    variations: ['S', 'M', 'L', 'XL', 'XXL']
+    variations: [
+      { label: 'S', price: 350 },
+      { label: 'M', price: 350 },
+      { label: 'L', price: 350 },
+      { label: 'XL', price: 350 },
+      { label: 'XXL', price: 380 } // XXL slightly higher
+    ]
   },
   {
     id: 'hoodie',
@@ -17,7 +23,13 @@ export const products: Product[] = [
     image: 'https://shop.chayannito26.com/images/hoodie.png',
     description: 'Cozy hoodie with embroidered Chayannito 26 logo. Stay warm while showing your batch spirit.',
     category: 'clothing',
-    variations: ['S', 'M', 'L', 'XL', 'XXL']
+    variations: [
+      { label: 'S', price: 700 },
+      { label: 'M', price: 700 },
+      { label: 'L', price: 700 },
+      { label: 'XL', price: 700 },
+      { label: 'XXL', price: 800 } // XXL higher
+    ]
   },
   {
     id: 'mug',
@@ -50,7 +62,10 @@ export const products: Product[] = [
     image: 'https://shop.chayannito26.com/images/notebook.jpg',
     description: 'Premium quality notebook with Chayannito 26 cover design. Perfect for notes and journaling.',
     category: 'stationery',
-    variations: ['Diary', 'Notebook']
+    variations: [
+      { label: 'Diary', price: 300 },
+      { label: 'Notebook', price: 250 }
+    ]
   },
   {
     id: 'pen',
@@ -60,15 +75,6 @@ export const products: Product[] = [
     description: 'A high quality cap with Chayannito 26 branding on the front. ',
     category: 'clothing'
   },
-  /*{
-    id: 'marker',
-    name: 'Basic Marker',
-    price: 20,
-    image: 'https://shop.chayannito26.com/images/marker.webp',
-    description: 'A marker. Perfect for signing.',
-    category: 'stationery',
-    variations: ['Red', 'Blue', 'Black', 'Green']
-  },*/
   {
     id: 'badge',
     name: 'Chayannito 26 Badge',

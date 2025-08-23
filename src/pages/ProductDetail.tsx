@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ShoppingCart, ArrowLeft, Zap } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { products } from '../data/products';
+import { getMinMaxPrice, getVariationPrice, getNormalizedVariations } from '../utils/pricing';
 
 export function ProductDetail() {
   const { id } = useParams<{ id: string }>();
@@ -30,12 +31,17 @@ export function ProductDetail() {
     );
   }
 
+  // Normalized variations and pricing
+  const variations = getNormalizedVariations(product?.variations);
+  const unitPrice = product ? getVariationPrice(product.price, product.variations, selectedVariation) : 0;
+  const { min, max } = product ? getMinMaxPrice(product.price, product.variations) : { min: 0, max: 0 };
+
   const handleAddToCart = () => {
-    if (product.variations && !selectedVariation) {
+    if (product?.variations && product.variations.length > 0 && product.id !== 'phonecover' && !selectedVariation) {
       alert('Please select a size/variation');
       return;
     }
-    if (product.id === 'phonecover' && !selectedVariation) {
+    if (product?.id === 'phonecover' && !selectedVariation) {
       alert('Please enter your phone model (e.g., iPhone 12, Samsung A12)');
       return;
     }
@@ -53,11 +59,11 @@ export function ProductDetail() {
   };
 
   const handleBuyNow = () => {
-    if (product.variations && !selectedVariation) {
+    if (product?.variations && product.variations.length > 0 && product.id !== 'phonecover' && !selectedVariation) {
       alert('Please select a size/variation');
       return;
     }
-    if (product.id === 'phonecover' && !selectedVariation) {
+    if (product?.id === 'phonecover' && !selectedVariation) {
       alert('Please enter your phone model (e.g., iPhone 12, Samsung A12)');
       return;
     }
@@ -98,7 +104,9 @@ export function ProductDetail() {
           {/* Product Info */}
           <div>
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">{product.name}</h1>
-            <p className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-6">৳{product.price}</p>
+            <p className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-6">
+              ৳{selectedVariation ? unitPrice : (min === max ? min : `${min} - ${max}`)}
+            </p>
             
             <div className="mb-6">
               <span className="inline-block px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm font-medium capitalize">
@@ -128,17 +136,18 @@ export function ProductDetail() {
                     {product.category === 'clothing' ? 'Size' : 'Options'}:
                   </h3>
                   <div className="flex flex-wrap gap-2">
-                    {product.variations.map((variation) => (
+                    {variations.map((v) => (
                       <button
-                        key={variation}
-                        onClick={() => setSelectedVariation(variation)}
+                        key={v.label}
+                        onClick={() => setSelectedVariation(v.label)}
                         className={`px-4 py-2 border rounded-md transition-colors ${
-                          selectedVariation === variation
+                          selectedVariation === v.label
                             ? 'border-blue-500 bg-blue-50 dark:bg-blue-900 text-blue-700 dark:text-blue-200'
                             : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 text-gray-900 dark:text-white'
                         }`}
+                        title={typeof v.price === 'number' ? `৳${v.price}` : `৳${product.price}`}
                       >
-                        {variation}
+                        {v.label}
                       </button>
                     ))}
                   </div>
@@ -174,7 +183,7 @@ export function ProductDetail() {
                 className="w-full bg-green-600 dark:bg-green-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-green-700 dark:hover:bg-green-700 transition-colors flex items-center justify-center space-x-2"
               >
                 <Zap className="h-5 w-5" />
-                <span>Buy Now - ৳{product.price * quantity}</span>
+                <span>Buy Now - ৳{unitPrice * quantity}</span>
               </button>
 
               {/* Add to Cart Button */}

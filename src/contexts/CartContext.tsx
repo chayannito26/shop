@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useReducer, ReactNode } from 'react';
+import { getVariationPrice } from '../utils/pricing';
 
 export interface Product {
   id: string;
@@ -7,7 +8,7 @@ export interface Product {
   image: string;
   description: string;
   category: string;
-  variations?: string[];
+  variations?: (string | { label: string; price?: number })[]; // updated to support per-variation price
 }
 
 export interface CartItem extends Product {
@@ -40,9 +41,11 @@ function cartReducer(state: CartState, action: CartAction): CartState {
     case 'ADD_ITEM': {
       const { product, selectedVariation } = action.payload;
       const cartItemId = `${product.id}-${selectedVariation || 'default'}-${Date.now()}`;
+      const unitPrice = getVariationPrice(product.price, product.variations, selectedVariation);
 
       const newItem: CartItem = {
         ...product,
+        price: unitPrice, // ensure cart uses the unit price for the selected variation
         quantity: 1,
         selectedVariation,
         cartItemId
@@ -84,9 +87,11 @@ function cartReducer(state: CartState, action: CartAction): CartState {
     case 'SET_DIRECT_ORDER': {
       const { product, selectedVariation, quantity } = action.payload;
       const cartItemId = `${product.id}-${selectedVariation || 'default'}-${Date.now()}`;
+      const unitPrice = getVariationPrice(product.price, product.variations, selectedVariation);
 
       const directOrderItem: CartItem = {
         ...product,
+        price: unitPrice, // ensure unit price reflects selection
         quantity,
         selectedVariation,
         cartItemId
@@ -94,7 +99,7 @@ function cartReducer(state: CartState, action: CartAction): CartState {
 
       return {
         items: [directOrderItem],
-        total: product.price * quantity,
+        total: unitPrice * quantity,
         isDirectOrder: true
       };
     }
