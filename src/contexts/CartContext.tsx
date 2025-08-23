@@ -38,7 +38,7 @@ function cartReducer(state: CartState, action: CartAction): CartState {
     case 'ADD_ITEM': {
       const { product, selectedVariation } = action.payload;
       const cartItemId = `${product.id}-${selectedVariation || 'default'}-${Date.now()}`;
-      
+
       const newItem: CartItem = {
         ...product,
         quantity: 1,

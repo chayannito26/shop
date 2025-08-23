@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, doc, runTransaction } from 'firebase/firestore';
 import { v4 as uuidv4 } from 'uuid';
 import { CheckCircle, CreditCard } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
+import { useCoupon } from '../contexts/CouponContext';
 import { db } from '../firebase/config';
 
 export function Checkout() {
-  const { state, dispatch } = useCart();
+  const { state: cartState, dispatch: cartDispatch } = useCart();
+  const { appliedCoupon, discount, removeCoupon } = useCoupon();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [orderPlaced, setOrderPlaced] = useState(false);
@@ -81,7 +83,7 @@ export function Checkout() {
       const newOrderId = uuidv4();
       const orderData = {
         orderId: newOrderId,
-        items: state.items.map(item => ({
+        items: cartState.items.map(item => ({
           id: item.id,
           name: item.name,
           price: item.price,
@@ -92,17 +94,39 @@ export function Checkout() {
           cartItemId: item.cartItemId,
           ...(item.selectedVariation && { selectedVariation: item.selectedVariation })
         })),
-        total: state.total,
+        total: cartState.total,
+        discount: discount,
+        finalTotal: cartState.total - discount,
+        ...(appliedCoupon && {
+          appliedCoupon: {
+            code: appliedCoupon.code,
+            discountValue: discount
+          }
+        }),
         customerInfo: formData,
         orderDate: new Date().toISOString(),
         status: 'pending'
       };
 
       await addDoc(collection(db, 'orders'), orderData);
-      
+
+      // If a coupon was used, increment its usedCount atomically
+      if (appliedCoupon) {
+        const couponRef = doc(db, 'coupons', appliedCoupon.id);
+        await runTransaction(db, async (transaction) => {
+          const couponDoc = await transaction.get(couponRef);
+          if (!couponDoc.exists()) {
+            throw "Coupon document does not exist!";
+          }
+          const newUsedCount = (couponDoc.data().usedCount || 0) + 1;
+          transaction.update(couponRef, { usedCount: newUsedCount });
+        });
+      }
+
       setOrderId(newOrderId);
       setOrderPlaced(true);
-      dispatch({ type: 'CLEAR_CART' });
+      cartDispatch({ type: 'CLEAR_CART' });
+      removeCoupon();
     } catch (error) {
       console.error('Error placing order:', error);
       alert('Error placing order. Please try again.');
@@ -117,7 +141,7 @@ export function Checkout() {
     return 'Option';
   };
 
-  if (state.items.length === 0 && !orderPlaced) {
+  if (cartState.items.length === 0 && !orderPlaced) {
     navigate('/cart');
     return null;
   }
@@ -236,7 +260,7 @@ export function Checkout() {
                 </div>
                 <div className="text-sm text-pink-700 dark:text-pink-300 space-y-1">
                   <p><strong>Step 1:</strong> Send money to: <span className="font-mono bg-pink-100 dark:bg-pink-800 px-2 py-1 rounded">01534723318</span></p>
-                  <p><strong>Step 2:</strong> Amount: <span className="font-bold">৳{state.total}</span></p>
+                  <p><strong>Step 2:</strong> Amount: <span className="font-bold">৳{cartState.total - discount}</span></p>
                   <p><strong>Step 3:</strong> Copy the transaction ID from bKash and paste it below</p>
                   <p><strong>Step 4:</strong> Complete this form</p>
                 </div>
@@ -274,9 +298,9 @@ export function Checkout() {
           {/* Order Summary */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-gray-900/20 p-6">
             <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Order Summary</h2>
-            
+
             <div className="space-y-4 mb-6">
-              {state.items.map((item) => (
+              {cartState.items.map((item) => (
                 <div key={item.cartItemId} className="flex items-center">
                   <img
                     src={item.image}
@@ -298,16 +322,22 @@ export function Checkout() {
             <div className="border-t dark:border-gray-700 pt-4">
               <div className="flex justify-between text-xl font-bold">
                 <span className="text-gray-900 dark:text-white">Total Amount</span>
-                <span className="text-blue-600 dark:text-blue-400">৳{state.total}</span>
+                <span className="text-blue-600 dark:text-blue-400">৳{cartState.total - discount}</span>
               </div>
+              {appliedCoupon && (
+                <div className="flex justify-between text-sm mt-2">
+                  <span className="text-gray-600 dark:text-gray-400">Original Price</span>
+                  <span className="text-gray-600 dark:text-gray-400 line-through">৳{cartState.total}</span>
+                </div>
+              )}
             </div>
 
             <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 mt-6">
               <p className="text-sm text-yellow-800 dark:text-yellow-200">
-                <strong>Note:</strong> Your order will be processed after payment verification. 
+                <strong>Note:</strong> Your order will be processed after payment verification.
                 You will be contacted within 24 hours for order confirmation and delivery details.
               </p>
-              {state.items.length === 1 && (
+              {cartState.items.length === 1 && (
                 <p className="text-sm text-green-800 dark:text-green-200 mt-2">
                   <strong>Express Order:</strong> This is a direct purchase - no cart items will be affected.
                 </p>

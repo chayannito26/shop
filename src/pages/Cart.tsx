@@ -2,19 +2,22 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Trash2, Plus, Minus, ShoppingBag } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
+import { useCoupon } from '../contexts/CouponContext';
+import { CouponInput } from '../components/CouponInput';
 
 export function Cart() {
-  const { state, dispatch } = useCart();
+  const { state: cartState, dispatch: cartDispatch } = useCart();
+  const { appliedCoupon, discount } = useCoupon();
 
   const updateQuantity = (cartItemId: string, quantity: number) => {
-    dispatch({
+    cartDispatch({
       type: 'UPDATE_QUANTITY',
       payload: { cartItemId, quantity }
     });
   };
 
   const removeItem = (cartItemId: string) => {
-    dispatch({
+    cartDispatch({
       type: 'REMOVE_ITEM',
       payload: cartItemId
     });
@@ -26,7 +29,7 @@ export function Cart() {
     return 'Option';
   };
 
-  if (state.items.length === 0) {
+  if (cartState.items.length === 0) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
@@ -53,14 +56,14 @@ export function Cart() {
           {/* Cart Items */}
           <div className="lg:col-span-2">
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-gray-900/20 p-6">
-              {state.items.map((item) => (
+              {cartState.items.map((item) => (
                 <div key={item.cartItemId} className="flex items-center py-6 border-b last:border-b-0">
                   <img
                     src={item.image}
                     alt={item.name}
                     className="h-20 w-20 object-cover rounded-lg"
                   />
-                  
+
                   <div className="flex-1 ml-6">
                     <h3 className="text-lg font-medium text-gray-900 dark:text-white">{item.name}</h3>
                     {item.selectedVariation && (
@@ -76,9 +79,9 @@ export function Cart() {
                     >
                       <Minus className="h-4 w-4" />
                     </button>
-                    
+
                     <span className="text-lg font-medium px-3 text-gray-900 dark:text-white">{item.quantity}</span>
-                    
+
                     <button
                       onClick={() => updateQuantity(item.cartItemId, item.quantity + 1)}
                       className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-400"
@@ -102,21 +105,29 @@ export function Cart() {
           <div className="lg:col-span-1">
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-gray-900/20 p-6 sticky top-24">
               <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Order Summary</h2>
-              
+
               <div className="space-y-2 mb-4">
-                {state.items.map((item) => (
-                  <div key={item.cartItemId} className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
-                    <span>{item.name} {item.selectedVariation && `(${variationLabel(item)}: ${item.selectedVariation})`} × {item.quantity}</span>
-                    <span>৳{item.price * item.quantity}</span>
+                <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+                  <span>Subtotal</span>
+                  <span>৳{cartState.total}</span>
+                </div>
+                {appliedCoupon && (
+                  <div className="flex justify-between text-sm text-green-600 dark:text-green-400">
+                    <span>Discount ({appliedCoupon.code})</span>
+                    <span>-৳{discount}</span>
                   </div>
-                ))}
+                )}
               </div>
 
               <div className="border-t dark:border-gray-700 pt-4">
                 <div className="flex justify-between text-xl font-bold">
                   <span className="text-gray-900 dark:text-white">Total</span>
-                  <span className="text-blue-600 dark:text-blue-400">৳{state.total}</span>
+                  <span className="text-blue-600 dark:text-blue-400">৳{cartState.total - discount}</span>
                 </div>
+              </div>
+
+              <div className="mt-6">
+                <CouponInput />
               </div>
 
               <Link
