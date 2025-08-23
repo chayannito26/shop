@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { collection, addDoc, doc, runTransaction } from 'firebase/firestore';
 import { v4 as uuidv4 } from 'uuid';
@@ -7,6 +7,7 @@ import { useCart } from '../contexts/CartContext';
 import { useCoupon } from '../contexts/CouponContext';
 import { db } from '../firebase/config';
 import { CouponInput } from '../components/CouponInput';
+import { trackInitiateCheckout, trackPurchase } from '../analytics/metaPixel';
 
 export function Checkout() {
   const { state: cartState, dispatch: cartDispatch } = useCart();
@@ -15,6 +16,7 @@ export function Checkout() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [orderPlaced, setOrderPlaced] = useState(false);
   const [orderId, setOrderId] = useState('');
+  const initiatedRef = useRef(false);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -28,6 +30,18 @@ export function Checkout() {
     phone: '',
     bkashTransactionId: ''
   });
+
+  useEffect(() => {
+    if (initiatedRef.current) return;
+    if (orderPlaced) return; // don't track if already placed (post-confirmation view)
+    if (cartState.items.length === 0) return;
+    const cartTotal = cartState.total - discount;
+    trackInitiateCheckout(
+      cartState.items.map(i => ({ id: i.id })),
+      cartTotal
+    );
+    initiatedRef.current = true;
+  }, [cartState.items, cartState.total, discount, orderPlaced]);
 
   const validateField = (name: string, value: string) => {
     switch (name) {
@@ -123,6 +137,13 @@ export function Checkout() {
           transaction.update(couponRef, { usedCount: newUsedCount });
         });
       }
+
+      // Meta Pixel: Purchase (after successful confirmation)
+      trackPurchase(
+        newOrderId,
+        orderData.items.map((i) => ({ id: i.id })),
+        orderData.finalTotal
+      );
 
       setOrderId(newOrderId);
       setOrderPlaced(true);

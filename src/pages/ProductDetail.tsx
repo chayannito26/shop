@@ -1,10 +1,11 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ShoppingCart, ArrowLeft, Zap } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { products } from '../data/products';
 import { getMinMaxPrice, getVariationPrice, getNormalizedVariations, getVariationImage } from '../utils/pricing';
 import { getBulkUnitCost, pickActiveBulkRate } from '../utils/pricing';
+import { trackViewContent, trackAddToCart } from '../analytics/metaPixel';
 
 export function ProductDetail() {
   const { id } = useParams<{ id: string }>();
@@ -15,6 +16,17 @@ export function ProductDetail() {
   const [showSuccess, setShowSuccess] = useState(false);
 
   const product = products.find(p => p.id === id);
+
+  useEffect(() => {
+    if (!product) return;
+    // ViewContent once when the product page loads
+    trackViewContent({
+      id: product.id,
+      name: product.name,
+      category: product.category,
+      price: product.price
+    });
+  }, [product?.id]); // run once per product view
 
   if (!product) {
     return (
@@ -80,6 +92,13 @@ export function ProductDetail() {
         selectedVariation: selectedVariation || undefined
       }
     });
+
+    // Meta Pixel: AddToCart (one per click)
+    trackAddToCart(
+      { id: product.id, name: product.name, category: product.category },
+      unitPrice,
+      selectedVariation || undefined
+    );
 
     setShowSuccess(true);
     setTimeout(() => setShowSuccess(false), 3000);
