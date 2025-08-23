@@ -81,7 +81,16 @@ export const products: Product[] = [
     price: 80,
     image: 'https://shop.chayannito26.com/images/badge.png',
     description: 'Collectible metal badge with Chayannito 26 emblem. Perfect for bags, jackets, or display.',
-    category: 'accessories'
+    category: 'accessories',
+    // Demo: per-unit pricing tiers
+    unitsSold: 120,
+    bulkRates: [
+      { units: 100, unitPrice: 2.8 },
+      { units: 200, unitPrice: 2.25 },
+      { units: 300, unitPrice: 1.83 },
+      { units: 500, unitPrice: 1.5 },
+      { units: 1000, unitPrice: 1.29 }
+    ]
   },
   {
     id: 'bottle',
@@ -113,30 +122,15 @@ export const products: Product[] = [
     price: 30,
     image: 'https://shop.chayannito26.com/images/sticker.png',
     description: 'Vinyl sticker with Chayannito 26 logo. Perfect for laptops, water bottles, and more.',
-    category: 'accessories'
-  },
-  // {
-  //   id: 'ring',
-  //   name: 'Chayannito 26 Ring',
-  //   price: 30,
-  //   image: 'https://shop.chayannito26.com/images/ring.png',
-  //   description: 'A beautiful ring with Chayannito 26 engraving. A perfect small memento.',
-  //   category: 'accessories'
-  // },
-  // {
-  //   id: 'umbrella',
-  //   name: 'Chayannito 26 Umbrella',
-  //   price: 600,
-  //   image: 'https://shop.chayannito26.com/images/umbrella.png',
-  //   description: 'A sturdy umbrella with Chayannito 26 branding. Stay dry in style.',
-  //   category: 'accessories'
-  // },
-  // {
-  //   id: 'calendar',
-  //   name: 'Chayannito 26 Desk Calendar',
-  //   price: 600,
-  //   image: 'https://shop.chayannito26.com/images/calendar.png',
-  //   description: 'A beautiful calendar featuring Chayannito 26 designs for each month. Perfect for keeping track of important dates.',
-  //   category: 'accessories'
-  // }
+    category: 'accessories',
+    // Demo: total-price tiers (exact amount totals)
+    unitsSold: 240,
+    bulkRates: [
+      { units: 100, totalPrice: 280 },
+      { units: 200, totalPrice: 450 },
+      { units: 300, totalPrice: 550 },
+      { units: 500, totalPrice: 750 },
+      { units: 1000, totalPrice: 1290 }
+    ]
+  }
 ];

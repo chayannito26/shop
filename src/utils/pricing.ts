@@ -48,3 +48,44 @@ export function getVariationImage(
   }
   return baseImage;
 }
+
+// Bulk tier support: either specify totalPrice for exactly 'units' pcs,
+// or specify unitPrice for 'units' pcs. Both systems are supported.
+export type BulkRate = {
+  units: number;
+  totalPrice?: number; // e.g., 100 pcs => 280 Tk (total)
+  unitPrice?: number;  // e.g., 100 pcs => 2.8 Tk per unit
+};
+
+// Pick the best tier for a given 'unitsSold'.
+// Priority: exact match -> greatest tier <= unitsSold -> smallest tier (fallback).
+export function pickActiveBulkRate(
+  rates?: BulkRate[],
+  unitsSold?: number
+): BulkRate | undefined {
+  if (!rates || rates.length === 0 || typeof unitsSold !== 'number') return undefined;
+  const sorted = [...rates].sort((a, b) => a.units - b.units);
+  const exact = sorted.find(r => r.units === unitsSold);
+  if (exact) return exact;
+  const lower = sorted.filter(r => r.units <= unitsSold);
+  if (lower.length > 0) return lower[lower.length - 1];
+  return sorted[0];
+}
+
+// Compute per-unit cost for the current active tier.
+// If the tier uses totalPrice, divide by units; if unitPrice provided, use directly.
+export function getBulkUnitCost(
+  rates?: BulkRate[],
+  unitsSold?: number
+): number | null {
+  const tier = pickActiveBulkRate(rates, unitsSold);
+  if (!tier) return null;
+  const unit = typeof tier.unitPrice === 'number'
+    ? tier.unitPrice
+    : (typeof tier.totalPrice === 'number' && tier.units > 0
+        ? tier.totalPrice / tier.units
+        : NaN);
+  if (!Number.isFinite(unit)) return null;
+  // round to 2 decimals for display
+  return Math.round(unit * 100) / 100;
+}

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useReducer, ReactNode } from 'react';
 import { getVariationPrice, getVariationImage } from '../utils/pricing';
+import type { BulkRate } from '../utils/pricing';
 
 export interface Product {
   id: string;
@@ -9,6 +10,9 @@ export interface Product {
   description: string;
   category: string;
   variations?: (string | { label: string; price?: number; image?: string })[]; // support per-variation price and image
+  // New: internal procurement tiers (optional)
+  unitsSold?: number;                // manually edited in products.ts
+  bulkRates?: BulkRate[];            // supports total-price or per-unit-price tiers
 }
 
 export interface CartItem extends Product {

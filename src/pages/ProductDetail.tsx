@@ -4,6 +4,7 @@ import { ShoppingCart, ArrowLeft, Zap } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { products } from '../data/products';
 import { getMinMaxPrice, getVariationPrice, getNormalizedVariations, getVariationImage } from '../utils/pricing';
+import { getBulkUnitCost, pickActiveBulkRate } from '../utils/pricing';
 
 export function ProductDetail() {
   const { id } = useParams<{ id: string }>();
@@ -39,6 +40,28 @@ export function ProductDetail() {
     () => (product ? getVariationImage(product.image, product.variations, selectedVariation) : ''),
     [product, selectedVariation]
   );
+
+  // Developer-only visibility for the internal “bought-at” panel:
+  const showBoughtRates = useMemo(() => {
+    if (typeof window === 'undefined') return false;
+    const host = window.location.hostname || '';
+    const isLocal =
+      host === 'localhost' ||
+      host.startsWith('127.') ||
+      host.startsWith('192.');
+    const unlocked = localStorage.getItem('SHOW_BULK_RATES') === '1';
+    return isLocal || unlocked;
+  }, []);
+
+  const currentUnitCost = useMemo(() => {
+    if (!product) return null;
+    return getBulkUnitCost(product.bulkRates, product.unitsSold);
+  }, [product]);
+
+  const activeTier = useMemo(() => {
+    if (!product) return undefined;
+    return pickActiveBulkRate(product.bulkRates, product.unitsSold);
+  }, [product]);
 
   const handleAddToCart = () => {
     if (product?.variations && product.variations.length > 0 && product.id !== 'phonecover' && !selectedVariation) {
@@ -119,6 +142,70 @@ export function ProductDetail() {
             </div>
 
             <p className="text-gray-700 dark:text-gray-300 mb-8 leading-relaxed">{product.description}</p>
+
+            {/* Internal: Bought-at (procurement) rate panel */}
+            {showBoughtRates && product.bulkRates && product.bulkRates.length > 0 && (
+              <div className="mb-6 rounded-lg border border-dashed border-gray-300 dark:border-gray-700 p-4 bg-gray-50/60 dark:bg-gray-800/60">
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100">
+                    Bought-at rate (internal)
+                  </h3>
+                  <span className="text-[10px] uppercase tracking-wide px-2 py-0.5 rounded bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+                    Dev-only
+                  </span>
+                </div>
+
+                <div className="text-xs text-gray-600 dark:text-gray-300 mb-2">
+                  Units sold: <span className="font-semibold">{product.unitsSold ?? 0}</span>
+                  {currentUnitCost !== null && (
+                    <>
+                      {' '}• Current unit cost:{' '}
+                      <span className="font-semibold">৳{currentUnitCost}</span>
+                    </>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {product.bulkRates
+                    .slice()
+                    .sort((a, b) => a.units - b.units)
+                    .map((r) => {
+                      const perUnit =
+                        typeof r.unitPrice === 'number'
+                          ? r.unitPrice
+                          : (typeof r.totalPrice === 'number' && r.units > 0
+                              ? Math.round((r.totalPrice / r.units) * 100) / 100
+                              : undefined);
+                      const total =
+                        typeof r.totalPrice === 'number'
+                          ? r.totalPrice
+                          : (typeof r.unitPrice === 'number'
+                              ? Math.round(r.unitPrice * r.units * 100) / 100
+                              : undefined);
+                      const isActive = activeTier && activeTier.units === r.units;
+                      return (
+                        <div
+                          key={r.units}
+                          className={`rounded border p-2 text-xs ${
+                            isActive
+                              ? 'border-green-500 bg-green-50 dark:bg-green-900/20'
+                              : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800'
+                          }`}
+                          title={isActive ? 'Active tier' : undefined}
+                        >
+                          <div className="font-medium text-gray-800 dark:text-gray-100">
+                            {r.units} pcs
+                          </div>
+                          <div className="text-gray-600 dark:text-gray-300">
+                            {total !== undefined && <>Total: ৳{total}</>}{' '}
+                            {perUnit !== undefined && <>({`৳${perUnit}`} ea)</>}
+                          </div>
+                        </div>
+                      );
+                    })}
+                </div>
+              </div>
+            )}
 
             {/* Variations OR Phone Model input */}
             {product.id === 'phonecover' ? (
