@@ -5,7 +5,7 @@ export const products: Product[] = [
     id: 'tshirt',
     name: 'Chayannito 26 T-Shirt',
     price: 350,
-    image: 'https://shop.chayannito26.com/images/tshirt.png',
+    image: 'https://shop.chayannito26.com/images/tshirt.jpg',
     description: 'Premium cotton t-shirt with Chayannito 26 batch design. Perfect for representing your batch pride.',
     category: 'clothing',
     variations: [
@@ -20,7 +20,7 @@ export const products: Product[] = [
     id: 'hoodie',
     name: 'Chayannito 26 Hoodie',
     price: 700,
-    image: 'https://shop.chayannito26.com/images/hoodie.png',
+    image: 'https://shop.chayannito26.com/images/hoodie.jpg',
     description: 'Cozy hoodie with embroidered Chayannito 26 logo. Stay warm while showing your batch spirit.',
     category: 'clothing',
     variations: [
@@ -35,7 +35,7 @@ export const products: Product[] = [
     id: 'mug',
     name: 'Chayannito 26 Ceramic Mug',
     price: 300,
-    image: 'https://shop.chayannito26.com/images/mug.png',
+    image: 'https://shop.chayannito26.com/images/mug.jpg',
     description: 'High-quality ceramic mug with Chayannito 26 design. Perfect for your morning coffee or tea.',
     category: 'accessories'
   },
@@ -43,7 +43,7 @@ export const products: Product[] = [
     id: 'totebag',
     name: 'Chayannito 26 Tote Bag',
     price: 200,
-    image: 'https://shop.chayannito26.com/images/totebag.png',
+    image: 'https://shop.chayannito26.com/images/totebag.jpg',
     description: 'Durable canvas tote bag with stylish Chayannito 26 print. Eco-friendly and practical.',
     category: 'accessories'
   },
@@ -51,7 +51,7 @@ export const products: Product[] = [
     id: 'keychain',
     name: 'Chayannito 26 Keychain',
     price: 50,
-    image: 'https://shop.chayannito26.com/images/keychain.png',
+    image: 'https://shop.chayannito26.com/images/keychain.jpg',
     description: 'Metal keychain with engraved Chayannito 26 logo. A perfect small memento.',
     category: 'accessories'
   },
@@ -59,7 +59,7 @@ export const products: Product[] = [
     id: 'notebook',
     name: 'Chayannito 26 Notebook',
     price: 250,
-    image: 'https://shop.chayannito26.com/images/notebook.png',
+    image: 'https://shop.chayannito26.com/images/notebook.jpg',
     description: 'Premium quality notebook with Chayannito 26 cover design. Perfect for notes and journaling.',
     category: 'stationery',
     variations: [
@@ -71,7 +71,7 @@ export const products: Product[] = [
     id: 'pen',
     name: 'Chayannito 26 Cap',
     price: 350,
-    image: 'https://shop.chayannito26.com/images/cap.png',
+    image: 'https://shop.chayannito26.com/images/cap.jpg',
     description: 'A high quality cap with Chayannito 26 branding on the front. ',
     category: 'clothing'
   },
@@ -79,7 +79,7 @@ export const products: Product[] = [
     id: 'badge',
     name: 'Chayannito 26 Badge',
     price: 80,
-    image: 'https://shop.chayannito26.com/images/badge.png',
+    image: 'https://shop.chayannito26.com/images/badge.jpg',
     description: 'Collectible metal badge with Chayannito 26 emblem. Perfect for bags, jackets, or display.',
     category: 'accessories',
     // Demo: per-unit pricing tiers
@@ -96,7 +96,7 @@ export const products: Product[] = [
     id: 'bottle',
     name: 'Chayannito 26 Water Bottle',
     price: 400,
-    image: 'https://shop.chayannito26.com/images/bottle.png',
+    image: 'https://shop.chayannito26.com/images/bottle.jpg',
     description: 'Collectible metal bottle with Chayannito 26 emblem.',
     category: 'accessories'
   },
@@ -104,7 +104,7 @@ export const products: Product[] = [
     id: 'lanyard',
     name: 'Chayannito 26 ID Card Lanyard',
     price: 50,
-    image: 'https://shop.chayannito26.com/images/lanyard.png',
+    image: 'https://shop.chayannito26.com/images/lanyard.jpg',
     description: 'Durable lanyard with Chayannito 26 branding. Perfect for holding your ID card or keys.',
     category: 'accessories'
   },
@@ -112,7 +112,7 @@ export const products: Product[] = [
     id: 'phonecover',
     name: 'Chayannito 26 Phone Cover',
     price: 300,
-    image: 'https://shop.chayannito26.com/images/phone_cover.png',
+    image: 'https://shop.chayannito26.com/images/phone_cover.jpg',
     description: 'Durable phone cover with Chayannito 26 design. Protect your phone in style.',
     category: 'accessories'
   },
@@ -120,7 +120,7 @@ export const products: Product[] = [
     id: 'sticker',
     name: 'Chayannito 26 Sticker',
     price: 30,
-    image: 'https://shop.chayannito26.com/images/sticker.png',
+    image: 'https://shop.chayannito26.com/images/sticker.jpg',
     description: 'Vinyl sticker with Chayannito 26 logo. Perfect for laptops, water bottles, and more.',
     category: 'accessories',
     // Demo: total-price tiers (exact amount totals)
