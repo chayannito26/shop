@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, ReactNode, useCallback, use
 import { getDocs, collection, query, where } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import { useCart, CartItem } from './CartContext';
+import { useI18n } from '../i18n';
 
 export interface Coupon {
   id: string; // Firestore document ID
@@ -79,6 +80,7 @@ function calculateDiscount(items: CartItem[], coupon: Coupon | null): number {
 
 export function CouponProvider({ children }: { children: ReactNode }) {
   const { state: cartState } = useCart();
+  const { t } = useI18n();
   const [state, setState] = useState<CouponState>({
     appliedCoupon: null,
     discount: 0,
@@ -97,7 +99,7 @@ export function CouponProvider({ children }: { children: ReactNode }) {
 
   const applyCoupon = useCallback(async (couponCode: string) => {
     if (!couponCode.trim()) {
-      setState(s => ({ ...s, error: 'Please enter a coupon code.' }));
+      setState(s => ({ ...s, error: t('coupon.errors.enterCode') }));
       return;
     }
 
@@ -108,7 +110,7 @@ export function CouponProvider({ children }: { children: ReactNode }) {
       const querySnapshot = await getDocs(q);
 
       if (querySnapshot.empty) {
-        setState(s => ({ ...s, isLoading: false, error: 'Invalid coupon code.' }));
+        setState(s => ({ ...s, isLoading: false, error: t('coupon.errors.invalid') }));
         return;
       }
 
@@ -116,13 +118,13 @@ export function CouponProvider({ children }: { children: ReactNode }) {
       const coupon = { id: couponDoc.id, ...couponDoc.data() } as Coupon;
 
       if (!coupon.isActive) {
-        setState(s => ({ ...s, isLoading: false, error: 'This coupon is no longer active.' }));
+        setState(s => ({ ...s, isLoading: false, error: t('coupon.errors.notActive') }));
       } else if (coupon.expiryDate && new Date(coupon.expiryDate) < new Date()) {
-        setState(s => ({ ...s, isLoading: false, error: 'This coupon has expired.' }));
+        setState(s => ({ ...s, isLoading: false, error: t('coupon.errors.expired') }));
       } else if (coupon.usageLimit && coupon.usedCount >= coupon.usageLimit) {
-        setState(s => ({ ...s, isLoading: false, error: 'This coupon has reached its usage limit.' }));
+        setState(s => ({ ...s, isLoading: false, error: t('coupon.errors.usageLimit') }));
       } else if (coupon.minOrderAmount && cartState.total < coupon.minOrderAmount) {
-        setState(s => ({ ...s, isLoading: false, error: `This coupon requires a minimum order of ৳${coupon.minOrderAmount}.` }));
+        setState(s => ({ ...s, isLoading: false, error: t('coupon.errors.minOrder', { min: coupon.minOrderAmount }) }));
       } else {
         const discount = calculateDiscount(cartState.items, coupon);
         setState({
@@ -130,14 +132,14 @@ export function CouponProvider({ children }: { children: ReactNode }) {
           discount,
           isLoading: false,
           error: null,
-          success: 'Coupon applied successfully!',
+          success: t('coupon.success.applied'),
         });
       }
     } catch (err) {
       console.error("Error fetching coupon:", err);
-      setState(s => ({ ...s, isLoading: false, error: 'Could not validate coupon. Please try again.' }));
+      setState(s => ({ ...s, isLoading: false, error: t('coupon.errors.fetchError') }));
     }
-  }, [cartState.items, cartState.total]);
+  }, [cartState.items, cartState.total, t]);
 
   const removeCoupon = useCallback(() => {
     setState({

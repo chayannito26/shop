@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Loader2, CheckCircle, XCircle, Tag, Trash2, Clock } from 'lucide-react';
 import { useCoupon } from '../contexts/CouponContext';
+import { useI18n } from '../i18n';
 
 export function CouponInput() {
   const { appliedCoupon, isLoading, error, success, applyCoupon, removeCoupon } = useCoupon();
   const [couponCode, setCouponCode] = useState('');
   const [expiresIn, setExpiresIn] = useState<string>('');
+  const { t } = useI18n();
 
   useEffect(() => {
     if (appliedCoupon?.expiryDate) {
@@ -74,7 +76,7 @@ export function CouponInput() {
               setCouponCode(e.target.value);
             }}
             onKeyDown={handleKeyDown}
-            placeholder="Enter Coupon Code"
+            placeholder={t('coupon.placeholder')}
             disabled={!!appliedCoupon || isLoading}
             className="w-full pl-10 pr-24 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white disabled:bg-gray-100 dark:disabled:bg-gray-800"
           />
@@ -84,7 +86,7 @@ export function CouponInput() {
               disabled={isLoading}
               className="absolute right-1 top-1/2 -translate-y-1/2 bg-blue-600 text-white px-4 py-1 rounded-md text-sm font-medium hover:bg-blue-700 disabled:opacity-50"
             >
-              {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Apply'}
+              {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : t('coupon.apply')}
             </button>
           )}
         </div>
@@ -92,7 +94,7 @@ export function CouponInput() {
           <button
             onClick={handleRemove}
             className="ml-2 p-2 text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 transition-colors"
-            title="Remove Coupon"
+            title={t('coupon.removeTitle')}
           >
             <Trash2 className="h-5 w-5" />
           </button>
@@ -113,7 +115,7 @@ export function CouponInput() {
       {appliedCoupon?.expiryDate && expiresIn && expiresIn !== 'expired' && (
         <div className="flex items-center mt-1 text-xs text-gray-600 dark:text-gray-400">
           <Clock className="h-3.5 w-3.5 mr-1.5 flex-shrink-0" />
-          <span>Expires in {expiresIn}</span>
+          <span>{t('coupon.expiresIn', { time: expiresIn })}</span>
         </div>
       )}
     </div>

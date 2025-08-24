@@ -6,6 +6,7 @@ import { products } from '../data/products';
 import { getMinMaxPrice, getVariationPrice, getNormalizedVariations, getVariationImage } from '../utils/pricing';
 import { getBulkUnitCost, pickActiveBulkRate } from '../utils/pricing';
 import { trackViewContent, trackAddToCart, trackCustomizeProduct } from '../analytics/metaPixel';
+import { useI18n } from '../i18n';
 
 export function ProductDetail() {
   const { id } = useParams<{ id: string }>();
@@ -14,6 +15,7 @@ export function ProductDetail() {
   const [selectedVariation, setSelectedVariation] = useState<string>('');
   const [quantity, setQuantity] = useState<number>(1);
   const [showSuccess, setShowSuccess] = useState(false);
+  const { t, productName, productDescription, categoryLabel } = useI18n();
 
   const product = products.find(p => p.id === id);
 
@@ -32,12 +34,12 @@ export function ProductDetail() {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Product Not Found</h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">{t('product.notFound')}</h2>
           <button
             onClick={() => navigate('/')}
             className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
           >
-            Return to Home
+            {t('product.returnHome')}
           </button>
         </div>
       </div>
@@ -77,11 +79,11 @@ export function ProductDetail() {
 
   const handleAddToCart = () => {
     if (product?.variations && product.variations.length > 0 && product.id !== 'phonecover' && !selectedVariation) {
-      alert('Please select a size/variation');
+      alert(t('product.validation.selectVariation'));
       return;
     }
     if (product?.id === 'phonecover' && !selectedVariation) {
-      alert('Please enter your phone model (e.g., iPhone 12, Samsung A12)');
+      alert(t('product.validation.enterPhoneModel'));
       return;
     }
 
@@ -106,11 +108,11 @@ export function ProductDetail() {
 
   const handleBuyNow = () => {
     if (product?.variations && product.variations.length > 0 && product.id !== 'phonecover' && !selectedVariation) {
-      alert('Please select a size/variation');
+      alert(t('product.validation.selectVariation'));
       return;
     }
     if (product?.id === 'phonecover' && !selectedVariation) {
-      alert('Please enter your phone model (e.g., iPhone 12, Samsung A12)');
+      alert(t('product.validation.enterPhoneModel'));
       return;
     }
 
@@ -134,7 +136,7 @@ export function ProductDetail() {
           className="flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white mb-8 transition-colors"
         >
           <ArrowLeft className="h-5 w-5 mr-2" />
-          Back to Products
+          {t('product.back')}
         </button>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -149,18 +151,22 @@ export function ProductDetail() {
 
           {/* Product Info */}
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">{product.name}</h1>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+              {productName(product.id, product.name)}
+            </h1>
             <p className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-6">
               ৳{selectedVariation ? unitPrice : (min === max ? min : `${min} - ${max}`)}
             </p>
 
             <div className="mb-6">
               <span className="inline-block px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm font-medium capitalize">
-                {product.category}
+                {categoryLabel(product.category)}
               </span>
             </div>
 
-            <p className="text-gray-700 dark:text-gray-300 mb-8 leading-relaxed">{product.description}</p>
+            <p className="text-gray-700 dark:text-gray-300 mb-8 leading-relaxed">
+              {productDescription(product.id, product.description)}
+            </p>
 
             {/* Internal: Bought-at (procurement) rate panel */}
             {showBoughtRates && product.bulkRates && product.bulkRates.length > 0 && (
@@ -229,10 +235,10 @@ export function ProductDetail() {
             {/* Variations OR Phone Model input */}
             {product.id === 'phonecover' ? (
               <div className="mb-6">
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">Phone Model:</h3>
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">{t('product.phoneModel.label')}</h3>
                 <input
                   type="text"
-                  placeholder="e.g., iPhone 12, Samsung Galaxy A12"
+                  placeholder={t('product.phoneModel.placeholder')}
                   value={selectedVariation}
                   onChange={(e) => setSelectedVariation(e.target.value)}
                   onBlur={() => {
@@ -246,13 +252,13 @@ export function ProductDetail() {
                   }}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
-                <p className="text-xs text-gray-500 mt-1">Please provide exact model for a proper fit.</p>
+                <p className="text-xs text-gray-500 mt-1">{t('product.phoneModel.help')}</p>
               </div>
             ) : (
               product.variations && (
                 <div className="mb-6">
                   <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">
-                    {product.category === 'clothing' ? 'Size' : 'Options'}:
+                    {product.category === 'clothing' ? t('product.sizeLabel') : t('product.optionsLabel')}
                   </h3>
                   <div className="flex flex-wrap gap-2">
                     {variations.map((v) => (
@@ -284,7 +290,7 @@ export function ProductDetail() {
 
             {/* Quantity Selector */}
             <div className="mb-6">
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">Quantity:</h3>
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">{t('product.quantity')}</h3>
               <div className="flex items-center space-x-3">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -310,7 +316,7 @@ export function ProductDetail() {
                 className="w-full bg-green-600 dark:bg-green-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-green-700 dark:hover:bg-green-700 transition-colors flex items-center justify-center space-x-2"
               >
                 <Zap className="h-5 w-5" />
-                <span>Buy Now - ৳{unitPrice * quantity}</span>
+                <span>{t('product.buyNow')} - ৳{unitPrice * quantity}</span>
               </button>
 
               {/* Add to Cart Button */}
@@ -319,14 +325,14 @@ export function ProductDetail() {
                 className="w-full bg-blue-600 dark:bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 dark:hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2"
               >
                 <ShoppingCart className="h-5 w-5" />
-                <span>Add to Cart</span>
+                <span>{t('product.addToCart')}</span>
               </button>
             </div>
 
             {/* Success Message */}
             {showSuccess && (
              <div className="mt-4 p-4 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-lg">
-                Product added to cart successfully!
+                {t('product.addedToCart')}
               </div>
             )}
           </div>

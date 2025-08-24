@@ -8,10 +8,12 @@ import { useCoupon } from '../contexts/CouponContext';
 import { db } from '../firebase/config';
 import { CouponInput } from '../components/CouponInput';
 import { trackInitiateCheckout, trackPurchase, trackAddPaymentInfo } from '../analytics/metaPixel';
+import { useI18n } from '../i18n';
 
 export function Checkout() {
   const { state: cartState, dispatch: cartDispatch } = useCart();
   const { appliedCoupon, discount, removeCoupon } = useCoupon();
+  const { t, productName } = useI18n();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [orderPlaced, setOrderPlaced] = useState(false);
@@ -55,13 +57,13 @@ export function Checkout() {
       case 'phone':
         // Validates 11-digit Bangladeshi phone numbers (e.g., 01xxxxxxxxx)
         if (!/^01[3-9]\d{8}$/.test(value)) {
-          return 'Invalid phone number format. Must be 11 digits.';
+          return t('checkout.validation.phoneInvalid');
         }
         break;
       case 'bkashTransactionId':
         // Validates a 10-character alphanumeric bKash transaction ID
         if (!/^[a-zA-Z0-9]{10}$/.test(value)) {
-          return 'Invalid Transaction ID format. Must be 10 characters.';
+          return t('checkout.validation.bkashInvalid');
         }
         break;
       default:
@@ -185,9 +187,9 @@ export function Checkout() {
   };
 
   const variationLabel = (item: any) => {
-    if (item.id === 'phonecover') return 'Model';
-    if (item.category === 'clothing') return 'Size';
-    return 'Option';
+    if (item.id === 'phonecover') return t('cart.variation.model');
+    if (item.category === 'clothing') return t('cart.variation.size');
+    return t('cart.variation.option');
   };
 
   if (cartState.items.length === 0 && !orderPlaced) {
@@ -200,12 +202,12 @@ export function Checkout() {
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="max-w-md mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-gray-900/20 p-8 text-center">
           <CheckCircle className="h-16 w-16 text-green-500 dark:text-green-400 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Order Placed Successfully!</h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">{t('checkout.placed.title')}</h2>
           <p className="text-gray-600 dark:text-gray-300 mb-4">
-            Your order has been received and will be processed soon. Take a screenshot of your Order ID for future reference.
+            {t('checkout.placed.instruction')}
           </p>
           <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 mb-6">
-            <p className="text-sm text-gray-600 dark:text-gray-400">Order ID</p>
+            <p className="text-sm text-gray-600 dark:text-gray-400">{t('checkout.placed.orderId')}</p>
             <p className="font-mono text-lg text-gray-900 dark:text-white">{orderId}</p>
           </div>
           <div className="space-y-3">
@@ -213,13 +215,13 @@ export function Checkout() {
               onClick={() => navigate('/')}
               className="w-full bg-blue-600 dark:bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 dark:hover:bg-blue-700 transition-colors"
             >
-              Continue Shopping
+              {t('checkout.placed.continue')}
             </button>
             <button
               onClick={() => navigate('/cart')}
               className="w-full border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 py-3 px-6 rounded-lg font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
             >
-              View Cart
+              {t('checkout.placed.viewCart')}
             </button>
           </div>
         </div>
@@ -230,20 +232,17 @@ export function Checkout() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Checkout</h1>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">{t('checkout.title')}</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Checkout Form */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-gray-900/20 p-6">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Order Information</h2>
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">{t('checkout.form.title')}</h2>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="group">
-                <label
-                  htmlFor="name"
-                  className="block text-sm font-medium mb-1 transition-colors text-gray-700 dark:text-gray-300 group-focus-within:text-blue-600 dark:group-focus-within:text-blue-400"
-                >
-                  Full Name *
+                <label htmlFor="name" className="block text-sm font-medium mb-1 transition-colors text-gray-700 dark:text-gray-300 group-focus-within:text-blue-600 dark:group-focus-within:text-blue-400">
+                  {t('checkout.form.name')}
                 </label>
                 <input
                   id="name"
@@ -260,11 +259,8 @@ export function Checkout() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="group">
-                  <label
-                    htmlFor="roll"
-                    className="block text-sm font-medium mb-1 transition-colors text-gray-700 dark:text-gray-300 group-focus-within:text-blue-600 dark:group-focus-within:text-blue-400"
-                  >
-                    Roll Number *
+                  <label htmlFor="roll" className="block text-sm font-medium mb-1 transition-colors text-gray-700 dark:text-gray-300 group-focus-within:text-blue-600 dark:group-focus-within:text-blue-400">
+                    {t('checkout.form.roll')}
                   </label>
                   <input
                     id="roll"
@@ -279,11 +275,8 @@ export function Checkout() {
                 </div>
 
                 <div className="group">
-                  <label
-                    htmlFor="department"
-                    className="block text-sm font-medium mb-1 transition-colors text-gray-700 dark:text-gray-300 group-focus-within:text-blue-600 dark:group-focus-within:text-blue-400"
-                  >
-                    Department *
+                  <label htmlFor="department" className="block text-sm font-medium mb-1 transition-colors text-gray-700 dark:text-gray-300 group-focus-within:text-blue-600 dark:group-focus-within:text-blue-400">
+                    {t('checkout.form.department')}
                   </label>
                   <select
                     id="department"
@@ -293,10 +286,10 @@ export function Checkout() {
                     required
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   >
-                    <option value="">Select Department</option>
-                    <option value="Science">Science</option>
-                    <option value="Arts">Arts</option>
-                    <option value="Commerce">Commerce</option>
+                    <option value="">{t('checkout.form.selectDepartment')}</option>
+                    <option value="Science">{t('checkout.form.dept.science')}</option>
+                    <option value="Arts">{t('checkout.form.dept.arts')}</option>
+                    <option value="Commerce">{t('checkout.form.dept.commerce')}</option>
                   </select>
                 </div>
               </div>
@@ -310,7 +303,7 @@ export function Checkout() {
                       : 'text-gray-700 dark:text-gray-300 group-focus-within:text-blue-600 dark:group-focus-within:text-blue-400'
                   }`}
                 >
-                  Phone Number *
+                  {t('checkout.form.phone')}
                 </label>
                 <input
                   id="phone"
@@ -328,11 +321,8 @@ export function Checkout() {
               </div>
 
               <div className="group">
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium mb-1 transition-colors text-gray-700 dark:text-gray-300 group-focus-within:text-blue-600 dark:group-focus-within:text-blue-400"
-                >
-                  Email (optional)
+                <label htmlFor="email" className="block text-sm font-medium mb-1 transition-colors text-gray-700 dark:text-gray-300 group-focus-within:text-blue-600 dark:group-focus-within:text-blue-400">
+                  {t('checkout.form.email')}
                 </label>
                 <input
                   id="email"
@@ -350,13 +340,13 @@ export function Checkout() {
               <div className="bg-pink-50 dark:bg-pink-900/20 border border-pink-200 dark:border-pink-800 rounded-lg p-4 mt-6">
                 <div className="flex items-center mb-2">
                   <CreditCard className="h-5 w-5 text-pink-600 dark:text-pink-400 mr-2" />
-                  <h3 className="font-bold text-pink-800 dark:text-pink-200">bKash Payment Instructions</h3>
+                  <h3 className="font-bold text-pink-800 dark:text-pink-200">{t('checkout.payment.title')}</h3>
                 </div>
                 <div className="text-sm text-pink-700 dark:text-pink-300 space-y-1">
-                  <p><strong>Step 1:</strong> Send money to: <span className="font-mono bg-pink-100 dark:bg-pink-800 px-2 py-1 rounded">01534723318</span></p>
-                  <p><strong>Step 2:</strong> Amount: <span className="font-bold">৳{cartState.total - discount}</span></p>
-                  <p><strong>Step 3:</strong> Copy the transaction ID from bKash and paste it below</p>
-                  <p><strong>Step 4:</strong> Complete this form</p>
+                  <p><strong>{t('checkout.payment.step1')}</strong> {t('checkout.payment.step1Text', { number: '01534723318' })}</p>
+                  <p><strong>{t('checkout.payment.step2')}</strong> {t('checkout.payment.step2Text', { amount: String(cartState.total - discount) })}</p>
+                  <p><strong>{t('checkout.payment.step3')}</strong> {t('checkout.payment.step3Text')}</p>
+                  <p><strong>{t('checkout.payment.step4')}</strong> {t('checkout.payment.step4Text')}</p>
                 </div>
               </div>
 
@@ -369,7 +359,7 @@ export function Checkout() {
                       : 'text-gray-700 dark:text-gray-300 group-focus-within:text-blue-600 dark:group-focus-within:text-blue-400'
                   }`}
                 >
-                  bKash Transaction ID *
+                  {t('checkout.bkash.label')}
                 </label>
                 <input
                   id="bkashTransactionId"
@@ -378,14 +368,14 @@ export function Checkout() {
                   value={formData.bkashTransactionId}
                   onChange={handleInputChange}
                   required
-                  placeholder="e.g., BH12345678"
+                  placeholder={t('checkout.bkash.placeholder')}
                   aria-invalid={!!errors.bkashTransactionId}
                   aria-describedby={errors.bkashTransactionId ? 'err-bkash' : undefined}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
                 {errors.bkashTransactionId && <p id="err-bkash" className="text-xs text-red-500 mt-1">{errors.bkashTransactionId}</p>}
                 <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                  Please ensure the transaction ID is correct before submitting
+                  {t('checkout.bkash.help')}
                 </p>
               </div>
 
@@ -394,14 +384,14 @@ export function Checkout() {
                 disabled={isSubmitting || !!errors.phone || !!errors.bkashTransactionId}
                 className="w-full bg-blue-600 dark:bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 dark:hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-6"
               >
-                {isSubmitting ? 'Placing Order...' : 'Place Order'}
+                {isSubmitting ? t('checkout.placingOrder') : t('checkout.placeOrder')}
               </button>
             </form>
           </div>
 
           {/* Order Summary */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-gray-900/20 p-6">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Order Summary</h2>
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">{t('cart.summary.title')}</h2>
 
             <div className="space-y-4 mb-6">
               {cartState.items.map((item) => (
@@ -412,7 +402,9 @@ export function Checkout() {
                     className="h-16 w-16 object-cover rounded-lg"
                   />
                   <div className="flex-1 ml-4">
-                    <h3 className="font-medium text-gray-900 dark:text-white">{item.name}</h3>
+                    <h3 className="font-medium text-gray-900 dark:text-white">
+                      {productName(item.id, item.name)}
+                    </h3>
                     {item.selectedVariation && (
                       <p className="text-sm text-gray-600 dark:text-gray-400">{variationLabel(item)}: {item.selectedVariation}</p>
                     )}
@@ -425,7 +417,7 @@ export function Checkout() {
 
             <div className="border-t dark:border-gray-700 pt-4">
               <div className="flex justify-between text-xl font-bold">
-                <span className="text-gray-900 dark:text-white">Total Amount</span>
+                <span className="text-gray-900 dark:text-white">{t('cart.summary.total')}</span>
                 <span className="text-blue-600 dark:text-blue-400">৳{cartState.total - discount}</span>
               </div>
               {appliedCoupon && (
@@ -443,12 +435,11 @@ export function Checkout() {
 
             <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 mt-6">
               <p className="text-sm text-yellow-800 dark:text-yellow-200">
-                <strong>Note:</strong> Your order will be processed after payment verification.
-                You will be contacted within 24 hours for order confirmation and delivery details.
+                <strong>{t('checkout.note.title')}</strong> {t('checkout.note.text')}
               </p>
               {cartState.isDirectOrder && (
                 <p className="text-sm text-green-800 dark:text-green-200 mt-2">
-                  <strong>Express Order:</strong> This is a direct purchase - no cart items will be affected.
+                  <strong> {/* keep bold */}</strong> {t('checkout.note.express')}
                 </p>
               )}
             </div>

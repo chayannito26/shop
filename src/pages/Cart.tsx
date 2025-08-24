@@ -4,10 +4,12 @@ import { Trash2, Plus, Minus, ShoppingBag } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { useCoupon } from '../contexts/CouponContext';
 import { CouponInput } from '../components/CouponInput';
+import { useI18n } from '../i18n';
 
 export function Cart() {
   const { state: cartState, dispatch: cartDispatch } = useCart();
   const { appliedCoupon, discount } = useCoupon();
+  const { t, productName } = useI18n();
 
   // One-time normalization to squash any historical duplicates
   React.useEffect(() => {
@@ -29,9 +31,9 @@ export function Cart() {
   };
 
   const variationLabel = (item: any) => {
-    if (item.id === 'phonecover') return 'Model';
-    if (item.category === 'clothing') return 'Size';
-    return 'Option';
+    if (item.id === 'phonecover') return t('cart.variation.model');
+    if (item.category === 'clothing') return t('cart.variation.size');
+    return t('cart.variation.option');
   };
 
   if (cartState.items.length === 0) {
@@ -39,13 +41,13 @@ export function Cart() {
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
           <ShoppingBag className="h-16 w-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Your cart is empty</h2>
-          <p className="text-gray-600 dark:text-gray-300 mb-8">Add some awesome Chayannito 26 merchandise!</p>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">{t('cart.empty.title')}</h2>
+          <p className="text-gray-600 dark:text-gray-300 mb-8">{t('cart.empty.subtitle')}</p>
           <Link
             to="/"
             className="bg-blue-600 dark:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 dark:hover:bg-blue-700 transition-colors"
           >
-            Continue Shopping
+            {t('cart.empty.continue')}
           </Link>
         </div>
       </div>
@@ -55,7 +57,7 @@ export function Cart() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Shopping Cart</h1>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">{t('cart.title')}</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Cart Items */}
@@ -70,7 +72,9 @@ export function Cart() {
                   />
 
                   <div className="flex-1 ml-6">
-                    <h3 className="text-lg font-medium text-gray-900 dark:text-white">{item.name}</h3>
+                    <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+                      {productName(item.id, item.name)}
+                    </h3>
                     {item.selectedVariation && (
                       <p className="text-sm text-gray-600 dark:text-gray-400">{variationLabel(item)}: {item.selectedVariation}</p>
                     )}
@@ -109,16 +113,16 @@ export function Cart() {
           {/* Order Summary */}
           <div className="lg:col-span-1">
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-gray-900/20 p-6 sticky top-24">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Order Summary</h2>
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">{t('cart.summary.title')}</h2>
 
               <div className="space-y-2 mb-4">
                 <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
-                  <span>Subtotal</span>
+                  <span>{t('cart.summary.subtotal')}</span>
                   <span>৳{cartState.total}</span>
                 </div>
                 {appliedCoupon && (
                   <div className="flex justify-between text-sm text-green-600 dark:text-green-400">
-                    <span>Discount ({appliedCoupon.code})</span>
+                    <span>{t('cart.summary.discount')} ({appliedCoupon.code})</span>
                     <span>-৳{discount}</span>
                   </div>
                 )}
@@ -126,7 +130,7 @@ export function Cart() {
 
               <div className="border-t dark:border-gray-700 pt-4">
                 <div className="flex justify-between text-xl font-bold">
-                  <span className="text-gray-900 dark:text-white">Total</span>
+                  <span className="text-gray-900 dark:text-white">{t('cart.summary.total')}</span>
                   <span className="text-blue-600 dark:text-blue-400">৳{cartState.total - discount}</span>
                 </div>
               </div>
@@ -139,14 +143,14 @@ export function Cart() {
                 to="/checkout"
                 className="w-full bg-blue-600 dark:bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 dark:hover:bg-blue-700 transition-colors mt-6 block text-center"
               >
-                Proceed to Checkout
+                {t('cart.summary.checkout')}
               </Link>
 
               <Link
                 to="/"
                 className="w-full border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 py-3 px-6 rounded-lg font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors mt-3 block text-center"
               >
-                Continue Shopping
+                {t('cart.summary.continue')}
               </Link>
             </div>
           </div>

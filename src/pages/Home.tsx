@@ -3,9 +3,11 @@ import { ProductCard } from '../components/ProductCard';
 import { products } from '../data/products';
 import { useSearchParams } from 'react-router-dom';
 import { trackSearch } from '../analytics/metaPixel';
+import { useI18n } from '../i18n';
 
 export function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { t, categoryLabel, localizeProduct } = useI18n();
 
   const categories = useMemo(
     () => Array.from(new Set(products.map(p => p.category))).sort(),
@@ -67,10 +69,10 @@ export function Home() {
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-700 dark:to-blue-900 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold mb-4">Chayannito 26</h1>
-          <p className="text-xl md:text-2xl mb-8">Official Merchandise Store</p>
+          <h1 className="text-4xl md:text-6xl font-bold mb-4">{t('home.hero.title')}</h1>
+          <p className="text-xl md:text-2xl mb-8">{t('home.hero.subtitle')}</p>
           <p className="text-lg opacity-90">
-            Represent your batch with pride! High-quality merchandise designed for Chayannito 26.
+            {t('home.hero.tagline')}
           </p>
         </div>
       </div>
@@ -78,9 +80,9 @@ export function Home() {
       {/* Products Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Our Products</h2>
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">{t('home.sections.products.title')}</h2>
           <p className="text-gray-600 dark:text-gray-300">
-            Discover our collection of premium merchandise designed exclusively for Chayannito 26
+            {t('home.sections.products.subtitle')}
           </p>
         </div>
 
@@ -96,7 +98,7 @@ export function Home() {
                 : 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 hover:bg-blue-200 dark:hover:bg-blue-800'
             }`}
           >
-            All ({products.length})
+            {t('home.filter.all')} ({products.length})
           </button>
           {categories.map((category) => (
             <button
@@ -110,7 +112,7 @@ export function Home() {
                   : 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 hover:bg-blue-200 dark:hover:bg-blue-800'
               }`}
             >
-              {category} ({counts[category] ?? 0})
+              {categoryLabel(category)} ({counts[category] ?? 0})
             </button>
           ))}
         </div>
@@ -118,19 +120,19 @@ export function Home() {
         {/* Product Grid */}
         {filteredProducts.length === 0 ? (
           <div className="text-center text-gray-600 dark:text-gray-300">
-            <p className="mb-4">No products found for the selected category.</p>
+            <p className="mb-4">{t('home.filter.noneFound')}</p>
             <button
               type="button"
               onClick={() => toggleCategory(null)}
               className="px-4 py-2 bg-blue-600 dark:bg-blue-600 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-700 transition-colors"
             >
-              Clear Filter
+              {t('home.filter.clear')}
             </button>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {filteredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard key={product.id} product={localizeProduct(product)} />
             ))}
           </div>
         )}
