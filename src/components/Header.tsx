@@ -5,7 +5,7 @@ import { useCart } from '../contexts/CartContext';
 
 export function Header() {
   const { state } = useCart();
-  const itemCount = state.items.reduce((sum, item) => sum + item.quantity, 0);
+  const itemCount = state.isDirectOrder ? 0 : state.items.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
     <header className="bg-white dark:bg-gray-800 shadow-lg sticky top-0 z-50 transition-colors">

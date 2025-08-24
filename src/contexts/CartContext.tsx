@@ -25,6 +25,7 @@ interface CartState {
   items: CartItem[];
   total: number;
   isDirectOrder: boolean; // track direct "Buy Now" orders
+  backupItems: CartItem[] | null; // NEW: snapshot original cart for Buy Now
 }
 
 type CartAction =
@@ -33,7 +34,8 @@ type CartAction =
   | { type: 'UPDATE_QUANTITY'; payload: { cartItemId: string; quantity: number } }
   | { type: 'CLEAR_CART' }
   | { type: 'SET_DIRECT_ORDER'; payload: { product: Product; selectedVariation?: string; quantity: number } }
-  | { type: 'SQUASH_DUPLICATES' }; // NEW
+  | { type: 'SQUASH_DUPLICATES' }
+  | { type: 'FINALIZE_DIRECT_ORDER' }; // NEW
 
 // Stable key helpers
 function normalizeVariationLabel(v?: string): string {
@@ -47,7 +49,8 @@ function makeKey(productId: string, selectedVariation?: string): string {
 const initialState: CartState = {
   items: [],
   total: 0,
-  isDirectOrder: false
+  isDirectOrder: false,
+  backupItems: null
 };
 
 function cartReducer(state: CartState, action: CartAction): CartState {
@@ -85,7 +88,8 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       return {
         items: newItems,
         total: newItems.reduce((sum, item) => sum + item.price * item.quantity, 0),
-        isDirectOrder: false
+        isDirectOrder: false,
+        backupItems: null
       };
     }
 
@@ -94,7 +98,8 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       return {
         items: newItems,
         total: newItems.reduce((sum, item) => sum + item.price * item.quantity, 0),
-        isDirectOrder: false
+        isDirectOrder: false,
+        backupItems: null
       };
     }
 
@@ -109,7 +114,8 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       return {
         items: newItems,
         total: newItems.reduce((sum, item) => sum + item.price * item.quantity, 0),
-        isDirectOrder: state.isDirectOrder
+        isDirectOrder: state.isDirectOrder,
+        backupItems: state.backupItems
       };
     }
 
@@ -131,10 +137,14 @@ function cartReducer(state: CartState, action: CartAction): CartState {
         cartItemId: key
       };
 
+      // Preserve the original cart once (if not already in direct order mode)
+      const backup = state.isDirectOrder ? state.backupItems : state.items;
+
       return {
         items: [directOrderItem],
         total: unitPrice * quantity,
-        isDirectOrder: true
+        isDirectOrder: true,
+        backupItems: backup ?? []
       };
     }
 
@@ -159,8 +169,23 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       return {
         items: squashed,
         total: squashed.reduce((sum, item) => sum + item.price * item.quantity, 0),
-        isDirectOrder: state.isDirectOrder && squashed.length === 1
+        isDirectOrder: state.isDirectOrder && squashed.length === 1,
+        backupItems: state.backupItems
       };
+    }
+
+    case 'FINALIZE_DIRECT_ORDER': {
+      // If this was a Buy Now flow, restore the previous cart; otherwise clear
+      if (state.isDirectOrder && state.backupItems) {
+        const restored = state.backupItems;
+        return {
+          items: restored,
+          total: restored.reduce((sum, item) => sum + item.price * item.quantity, 0),
+          isDirectOrder: false,
+          backupItems: null
+        };
+      }
+      return initialState;
     }
 
     default:

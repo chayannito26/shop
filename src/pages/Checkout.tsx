@@ -174,7 +174,7 @@ export function Checkout() {
 
       setOrderId(newOrderId);
       setOrderPlaced(true);
-      cartDispatch({ type: 'CLEAR_CART' });
+      cartDispatch({ type: 'FINALIZE_DIRECT_ORDER' });
       removeCoupon();
     } catch (error) {
       console.error('Error placing order:', error);
