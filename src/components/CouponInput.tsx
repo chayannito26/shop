@@ -1,10 +1,41 @@
 import React, { useState, useEffect } from 'react';
-import { Loader2, CheckCircle, XCircle, Tag, Trash2 } from 'lucide-react';
+import { Loader2, CheckCircle, XCircle, Tag, Trash2, Clock } from 'lucide-react';
 import { useCoupon } from '../contexts/CouponContext';
 
 export function CouponInput() {
   const { appliedCoupon, isLoading, error, success, applyCoupon, removeCoupon } = useCoupon();
   const [couponCode, setCouponCode] = useState('');
+  const [expiresIn, setExpiresIn] = useState<string>('');
+
+  useEffect(() => {
+    if (appliedCoupon?.expiryDate) {
+      const compute = () => {
+        const exp = new Date(appliedCoupon.expiryDate!).getTime();
+        const now = Date.now();
+        const diff = exp - now;
+        if (isNaN(exp) || diff <= 0) return setExpiresIn('expired');
+
+        const DAY = 24 * 60 * 60 * 1000;
+        const HOUR = 60 * 60 * 1000;
+        const MIN = 60 * 1000;
+
+        const days = Math.floor(diff / DAY);
+        if (days >= 1) return setExpiresIn(`${days} day${days > 1 ? 's' : ''}`);
+
+        const hours = Math.floor(diff / HOUR);
+        if (hours >= 1) return setExpiresIn(`${hours} hour${hours > 1 ? 's' : ''}`);
+
+        const mins = Math.floor(diff / MIN);
+        return setExpiresIn(`${mins} minute${mins !== 1 ? 's' : ''}`);
+      };
+
+      compute();
+      const timer = setInterval(compute, 60_000);
+      return () => clearInterval(timer);
+    } else {
+      setExpiresIn('');
+    }
+  }, [appliedCoupon?.expiryDate]);
 
   useEffect(() => {
     if (appliedCoupon) {
@@ -77,6 +108,12 @@ export function CouponInput() {
         <div className="flex items-center mt-2 text-sm text-green-600 dark:text-green-400">
           <CheckCircle className="h-4 w-4 mr-1.5 flex-shrink-0" />
           <span>{success}</span>
+        </div>
+      )}
+      {appliedCoupon?.expiryDate && expiresIn && expiresIn !== 'expired' && (
+        <div className="flex items-center mt-1 text-xs text-gray-600 dark:text-gray-400">
+          <Clock className="h-3.5 w-3.5 mr-1.5 flex-shrink-0" />
+          <span>Expires in {expiresIn}</span>
         </div>
       )}
     </div>
