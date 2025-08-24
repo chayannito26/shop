@@ -238,8 +238,11 @@ export function Checkout() {
             <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Order Information</h2>
 
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <div className="group">
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium mb-1 transition-colors text-gray-700 dark:text-gray-300 group-focus-within:text-blue-600 dark:group-focus-within:text-blue-400"
+                >
                   Full Name *
                 </label>
                 <input
@@ -256,8 +259,11 @@ export function Checkout() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label htmlFor="roll" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <div className="group">
+                  <label
+                    htmlFor="roll"
+                    className="block text-sm font-medium mb-1 transition-colors text-gray-700 dark:text-gray-300 group-focus-within:text-blue-600 dark:group-focus-within:text-blue-400"
+                  >
                     Roll Number *
                   </label>
                   <input
@@ -272,8 +278,11 @@ export function Checkout() {
                   />
                 </div>
 
-                <div>
-                  <label htmlFor="department" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <div className="group">
+                  <label
+                    htmlFor="department"
+                    className="block text-sm font-medium mb-1 transition-colors text-gray-700 dark:text-gray-300 group-focus-within:text-blue-600 dark:group-focus-within:text-blue-400"
+                  >
                     Department *
                   </label>
                   <select
@@ -292,8 +301,15 @@ export function Checkout() {
                 </div>
               </div>
 
-              <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <div className="group">
+                <label
+                  htmlFor="phone"
+                  className={`block text-sm font-medium mb-1 transition-colors ${
+                    errors.phone
+                      ? 'text-red-600 dark:text-red-400'
+                      : 'text-gray-700 dark:text-gray-300 group-focus-within:text-blue-600 dark:group-focus-within:text-blue-400'
+                  }`}
+                >
                   Phone Number *
                 </label>
                 <input
@@ -311,8 +327,11 @@ export function Checkout() {
                 {errors.phone && <p id="err-phone" className="text-xs text-red-500 mt-1">{errors.phone}</p>}
               </div>
 
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <div className="group">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium mb-1 transition-colors text-gray-700 dark:text-gray-300 group-focus-within:text-blue-600 dark:group-focus-within:text-blue-400"
+                >
                   Email (optional)
                 </label>
                 <input
@@ -341,8 +360,15 @@ export function Checkout() {
                 </div>
               </div>
 
-              <div>
-                <label htmlFor="bkashTransactionId" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <div className="group">
+                <label
+                  htmlFor="bkashTransactionId"
+                  className={`block text-sm font-medium mb-1 transition-colors ${
+                    errors.bkashTransactionId
+                      ? 'text-red-600 dark:text-red-400'
+                      : 'text-gray-700 dark:text-gray-300 group-focus-within:text-blue-600 dark:group-focus-within:text-blue-400'
+                  }`}
+                >
                   bKash Transaction ID *
                 </label>
                 <input
