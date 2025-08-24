@@ -135,27 +135,43 @@ export function useI18n() {
 
 // First-visit language prompt (modal)
 export function LanguagePrompt() {
-  const { needsPrompt, setLang, t } = useI18n() as any;
+  const { needsPrompt, setLang } = useI18n() as any;
 
   if (!needsPrompt) return null;
 
   return (
     <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/40 p-4">
       <div className="w-full max-w-sm rounded-lg bg-white dark:bg-gray-800 shadow-lg p-6">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">{t('prompt.title')}</h2>
-        <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">{t('prompt.description')}</p>
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+          <span lang="en">{RESOURCES.en.prompt.title}</span>
+          <span aria-hidden="true" className="mx-1">|</span>
+          <span lang="bn">{RESOURCES.bn.prompt.title}</span>
+        </h2>
+        <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
+          <span lang="en">{RESOURCES.en.prompt.description}</span>
+          <span aria-hidden="true" className="mx-1">|</span>
+          <span lang="bn">{RESOURCES.bn.prompt.description}</span>
+        </p>
         <div className="grid grid-cols-2 gap-3">
           <button
             onClick={() => setLang('en')}
             className="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-900 dark:text-white"
+            aria-label="Select English language"
           >
-            {t('prompt.english')}
+            <span role="img" aria-label="UK flag" className="mr-1">🇬🇧</span>
+            <span lang="en">English</span>
+            <span aria-hidden="true" className="mx-1">|</span>
+            <span lang="bn">ইংরেজি</span>
           </button>
           <button
             onClick={() => setLang('bn')}
             className="w-full px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700"
+            aria-label="বাংলা ভাষা নির্বাচন করুন"
           >
-            {t('prompt.bengali')}
+            <span role="img" aria-label="Bangladesh flag" className="mr-1">🇧🇩</span>
+            <span lang="bn">{RESOURCES.bn.lang.bengali}</span>
+            <span aria-hidden="true" className="mx-1">|</span>
+            <span lang="en">{RESOURCES.en.lang.bengali}</span>
           </button>
         </div>
       </div>
