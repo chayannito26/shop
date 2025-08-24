@@ -239,39 +239,45 @@ export function Checkout() {
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Full Name *
                 </label>
                 <input
+                  id="name"
                   type="text"
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
                   required
+                  autoFocus
+                  autoComplete="name"
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label htmlFor="roll" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Roll Number *
                   </label>
                   <input
+                    id="roll"
                     type="text"
                     name="roll"
                     value={formData.roll}
                     onChange={handleInputChange}
                     required
+                    autoComplete="off"
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label htmlFor="department" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Department *
                   </label>
                   <select
+                    id="department"
                     name="department"
                     value={formData.department}
                     onChange={handleInputChange}
@@ -287,30 +293,36 @@ export function Checkout() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Phone Number *
                 </label>
                 <input
+                  id="phone"
                   type="tel"
                   name="phone"
                   value={formData.phone}
                   onChange={handleInputChange}
                   required
+                  autoComplete="tel"
+                  aria-invalid={!!errors.phone}
+                  aria-describedby={errors.phone ? 'err-phone' : undefined}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
-                {errors.phone && <p className="text-xs text-red-500 mt-1">{errors.phone}</p>}
+                {errors.phone && <p id="err-phone" className="text-xs text-red-500 mt-1">{errors.phone}</p>}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Email (optional)
                 </label>
                 <input
+                  id="email"
                   type="email"
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
                   placeholder="you@example.com"
+                  autoComplete="email"
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
               </div>
@@ -330,19 +342,22 @@ export function Checkout() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label htmlFor="bkashTransactionId" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   bKash Transaction ID *
                 </label>
                 <input
+                  id="bkashTransactionId"
                   type="text"
                   name="bkashTransactionId"
                   value={formData.bkashTransactionId}
                   onChange={handleInputChange}
                   required
                   placeholder="e.g., BH12345678"
+                  aria-invalid={!!errors.bkashTransactionId}
+                  aria-describedby={errors.bkashTransactionId ? 'err-bkash' : undefined}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
-                {errors.bkashTransactionId && <p className="text-xs text-red-500 mt-1">{errors.bkashTransactionId}</p>}
+                {errors.bkashTransactionId && <p id="err-bkash" className="text-xs text-red-500 mt-1">{errors.bkashTransactionId}</p>}
                 <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                   Please ensure the transaction ID is correct before submitting
                 </p>
