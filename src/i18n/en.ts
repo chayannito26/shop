@@ -138,6 +138,7 @@ const en = {
       clothing: 'Clothing',
       accessories: 'Accessories',
       phone: 'Phone Accessories',
+      stationery: 'Stationery',
     },
     products: {
       phonecover: {

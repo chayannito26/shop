@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Product } from '../contexts/CartContext';
 import { getMinMaxPrice } from '../utils/pricing';
+import { useI18n } from '../i18n';
 
 interface ProductCardProps {
   product: Product;
@@ -10,6 +11,7 @@ interface ProductCardProps {
 export function ProductCard({ product }: ProductCardProps) {
   const { min, max } = getMinMaxPrice(product.price, product.variations);
   const priceLabel = min === max ? `৳${min}` : `৳${min} - ৳${max}`;
+  const { categoryLabel } = useI18n();
 
   return (
     <div className="group">
@@ -25,7 +27,9 @@ export function ProductCard({ product }: ProductCardProps) {
           <div className="p-4">
             <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-2">{product.name}</h3>
             <p className="text-lg font-bold text-blue-600 dark:text-blue-400">{priceLabel}</p>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 capitalize">{product.category}</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 capitalize">
+              {categoryLabel(product.category)}
+            </p>
           </div>
         </div>
       </Link>

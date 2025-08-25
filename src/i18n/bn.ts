@@ -140,7 +140,7 @@ const bn = {
       clothing: 'পোশাক',
       accessories: 'অ্যাক্সেসরিজ',
       phone: 'ফোন অ্যাক্সেসরিজ',
-      stationary: 'ষ্টেশনারী',
+      stationery: 'ষ্টেশনারী',
     },
     products: {
       phonecover: {
