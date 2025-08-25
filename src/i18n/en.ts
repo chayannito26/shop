@@ -10,7 +10,7 @@ const en = {
     title: 'Chayannito 26',
     subtitle: 'Merchandise Store',
     nav: { home: 'Home', cart: 'Cart' },
-    switch: { toEnglish: 'English', toBengali: 'বাংলা' },
+    switch: { toEnglish: 'English', toBengali: 'বাংলা ভাষা' },
   },
   home: {
     hero: {
