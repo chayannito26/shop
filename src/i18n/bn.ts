@@ -79,7 +79,8 @@ const bn = {
       selectDepartment: 'বিভাগ নির্বাচন করুন',
       dept: { science: 'বিজ্ঞান', arts: 'মানবিক', commerce: 'বাণিজ্য' },
       phone: 'ফোন নম্বর *',
-      email: 'ইমেইল (না দিলেও চলবে তবে দিলে ভালো)',
+  email: 'ইমেইল (না দিলেও চলবে তবে দিলে ভালো)',
+  emailPlaceholder: 'you@example.com',
     },
     payment: {
       title: 'বিকাশে টাকা কিভাবে পাঠাবেনঃ',
@@ -127,6 +128,11 @@ const bn = {
     validation: {
       phoneInvalid: 'ফোন নম্বর সঠিক নয়। ১১ সংখ্যার হতে হবে।',
       bkashInvalid: 'ট্রানজ্যাকশন আইডি সঠিক নয়। ১০ অক্ষরের হতে হবে।',
+  required: 'অনুগ্রহ করে এই ঘরটি পূরণ করুন।',
+  emailInvalid: 'অনুগ্রহ করে একটি বৈধ ইমেইল ঠিকানা দিন।',
+    },
+    error: {
+      placeOrder: 'অর্ডার সাবমিট করার সময় সমস্যা হয়েছে। আবার চেষ্টা করুন।',
     },
   },
   coupon: {

@@ -78,7 +78,8 @@ const en = {
       selectDepartment: 'Select Department',
       dept: { science: 'Science', arts: 'Arts', commerce: 'Commerce' },
       phone: 'Phone Number *',
-      email: 'Email (optional)',
+  email: 'Email (optional)',
+  emailPlaceholder: 'you@example.com',
     },
     payment: {
       title: 'bKash Payment Instructions',
@@ -125,6 +126,11 @@ const en = {
     validation: {
       phoneInvalid: 'Invalid phone number format. Must be 11 digits.',
       bkashInvalid: 'Invalid Transaction ID format. Must be 10 characters.',
+  required: 'Please fill out this field.',
+  emailInvalid: 'Please enter a valid email address.',
+    },
+    error: {
+      placeOrder: 'Error placing order. Please try again.',
     },
   },
   coupon: {

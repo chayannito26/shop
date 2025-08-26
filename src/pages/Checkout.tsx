@@ -344,7 +344,7 @@ export function Checkout() {
       }
     } catch (error) {
       console.error('Error placing order:', error);
-      await showAlert('Error placing order. Please try again.');
+      await showAlert(t('checkout.error.placeOrder') || 'Error placing order. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -417,6 +417,10 @@ export function Checkout() {
                   required
                   autoFocus
                   autoComplete="name"
+                  onInvalid={(e) => {
+                    (e.currentTarget as HTMLInputElement).setCustomValidity(t('checkout.validation.required'));
+                  }}
+                  onInput={(e) => {(e.currentTarget as HTMLInputElement).setCustomValidity('');}}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
               </div>
@@ -434,6 +438,8 @@ export function Checkout() {
                     onChange={handleInputChange}
                     required
                     autoComplete="off"
+                    onInvalid={(e) => {(e.currentTarget as HTMLInputElement).setCustomValidity(t('checkout.validation.required'))}}
+                    onInput={(e) => {(e.currentTarget as HTMLInputElement).setCustomValidity('')}}
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   />
                 </div>
@@ -448,6 +454,8 @@ export function Checkout() {
                     value={formData.department}
                     onChange={handleInputChange}
                     required
+                    onInvalid={(e) => {(e.currentTarget as HTMLSelectElement).setCustomValidity(t('checkout.validation.required'))}}
+                    onInput={(e) => {(e.currentTarget as HTMLSelectElement).setCustomValidity('')}}
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   >
                     <option value="">{t('checkout.form.selectDepartment')}</option>
@@ -479,6 +487,8 @@ export function Checkout() {
                   autoComplete="tel"
                   aria-invalid={!!errors.phone}
                   aria-describedby={errors.phone ? 'err-phone' : undefined}
+                  onInvalid={(e) => {(e.currentTarget as HTMLInputElement).setCustomValidity(t('checkout.validation.required'))}}
+                  onInput={(e) => {(e.currentTarget as HTMLInputElement).setCustomValidity('')}}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
                 {errors.phone && <p id="err-phone" className="text-xs text-red-500 mt-1">{errors.phone}</p>}
@@ -494,8 +504,19 @@ export function Checkout() {
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  placeholder="you@example.com"
+                  placeholder={t('checkout.form.emailPlaceholder') || 'you@example.com'}
                   autoComplete="email"
+                  onInvalid={(e) => {
+                    const input = e.currentTarget as HTMLInputElement;
+                    if (!input.value) {
+                      input.setCustomValidity(t('checkout.validation.required'));
+                    } else {
+                      input.setCustomValidity(t('checkout.validation.emailInvalid'));
+                    }
+                  }}
+                  onInput={(e) => {
+                    (e.currentTarget as HTMLInputElement).setCustomValidity('');
+                  }}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
               </div>
@@ -535,6 +556,15 @@ export function Checkout() {
                   placeholder={t('checkout.bkash.placeholder')}
                   aria-invalid={!!errors.bkashTransactionId}
                   aria-describedby={errors.bkashTransactionId ? 'err-bkash' : undefined}
+                  onInvalid={(e) => {
+                    const input = e.currentTarget as HTMLInputElement;
+                    if (!input.value) {
+                      input.setCustomValidity(t('checkout.validation.required'));
+                    } else {
+                      input.setCustomValidity(t('checkout.validation.bkashInvalid'));
+                    }
+                  }}
+                  onInput={(e) => {(e.currentTarget as HTMLInputElement).setCustomValidity('')}}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
                 {errors.bkashTransactionId && <p id="err-bkash" className="text-xs text-red-500 mt-1">{errors.bkashTransactionId}</p>}
