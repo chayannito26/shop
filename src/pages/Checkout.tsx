@@ -109,10 +109,31 @@ export function Checkout() {
   };
 
   // Extract 10-character alphanumeric Transaction ID using regex
+  // Strategy:
+  // - Find all 10-char alphanumeric sequences.
+  // - Prefer a candidate that contains both letters and digits (most bKash IDs do).
+  // - Skip sequences that look like Bangladeshi phone numbers (start with "01").
   const extractTransactionId = (text: string): string | null => {
-    // Commonly bKash shows a 10-char alphanumeric like TX1234ABCD or similar
-    const match = text.match(/[A-Za-z0-9]{10}/);
-    return match ? match[0] : null;
+    if (!text) return null;
+    // Gather all 10-char alphanumeric candidates
+    const matches = Array.from(text.matchAll(/[A-Za-z0-9]{10}/g), (m) => m[0]);
+    if (matches.length === 0) return null;
+
+    // Primary pass: prefer candidates that contain at least one letter and one digit
+    // and do not start with the phone prefix '01'
+    for (const candidate of matches) {
+      if (/^01/.test(candidate)) continue; // skip phone-like sequences
+      if (/[A-Za-z]/.test(candidate) && /\d/.test(candidate)) return candidate;
+    }
+
+    // Secondary pass: accept any non-phone candidate that isn't purely numeric
+    for (const candidate of matches) {
+      if (/^01/.test(candidate)) continue;
+      if (!/^\d{10}$/.test(candidate)) return candidate;
+    }
+
+    // No suitable candidate found
+    return null;
   };
 
   const handleOcrFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
