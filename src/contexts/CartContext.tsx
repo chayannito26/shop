@@ -1,6 +1,9 @@
-import React, { createContext, useContext, useReducer, ReactNode } from 'react';
+import React, { createContext, useContext, useReducer, ReactNode, useEffect, useRef } from 'react';
 import { getVariationPrice, getVariationImage } from '../utils/pricing';
 import type { BulkRate } from '../utils/pricing';
+import { Cart as PersistedCart } from '../persistence/shopState';
+import type { CartItem as PersistCartItem } from '../persistence/shopState';
+import { products } from '../data/products';
 
 export interface Product {
   id: string;
@@ -35,7 +38,8 @@ type CartAction =
   | { type: 'CLEAR_CART' }
   | { type: 'SET_DIRECT_ORDER'; payload: { product: Product; selectedVariation?: string; quantity: number } }
   | { type: 'SQUASH_DUPLICATES' }
-  | { type: 'FINALIZE_DIRECT_ORDER' }; // NEW
+  | { type: 'FINALIZE_DIRECT_ORDER' }
+  | { type: 'REPLACE'; payload: CartState };
 
 // Stable key helpers
 function normalizeVariationLabel(v?: string): string {
@@ -188,6 +192,10 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       return initialState;
     }
 
+    case 'REPLACE': {
+      return action.payload;
+    }
+
     default:
       return state;
   }
@@ -200,6 +208,70 @@ const CartContext = createContext<{
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(cartReducer, initialState);
+  const lastWriteRef = useRef<number>(0);
+
+  // Map persisted cart items to our CartItem shape
+  function mapPersistedToCartState(persisted: ReturnType<typeof PersistedCart.get>): CartState {
+    const items = (persisted.items || []).map((it) => {
+      const prod = products.find((p) => p.id === it.id);
+      const selectedVariation = it.sku ?? (it.attrs && (it.attrs['variation'] as string)) ?? undefined;
+      const baseProduct: Product = prod ?? ({ id: it.id, name: it.id, price: it.price ?? 0, image: '', description: '', category: '' });
+      const unitPrice = typeof it.price === 'number' && Number.isFinite(it.price) ? it.price : getVariationPrice(baseProduct.price, baseProduct.variations, selectedVariation);
+      const resolvedImage = getVariationImage(baseProduct.image, baseProduct.variations, selectedVariation);
+      const cartItemId = makeKey(baseProduct.id, selectedVariation);
+      return {
+        ...baseProduct,
+        image: resolvedImage,
+        price: unitPrice,
+        quantity: Math.max(1, Math.floor(it.qty || 1)),
+        selectedVariation,
+        cartItemId,
+      } as CartItem;
+    });
+
+    const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    return { items, total, isDirectOrder: false, backupItems: null };
+  }
+
+  // Hydrate once and subscribe to persisted changes (cross-tab)
+  useEffect(() => {
+    try {
+      const p = PersistedCart.get();
+      const mapped = mapPersistedToCartState(p);
+      dispatch({ type: 'REPLACE', payload: mapped });
+    } catch (e) {
+      // ignore
+    }
+
+    const unsub = PersistedCart.subscribe((next) => {
+      // ignore updates that we just wrote
+      if (next.updatedAt && next.updatedAt <= lastWriteRef.current) return;
+      const mapped = mapPersistedToCartState(next);
+      dispatch({ type: 'REPLACE', payload: mapped });
+    });
+    return unsub;
+  }, []);
+
+  // Persist local cart changes back to persisted store
+  useEffect(() => {
+    try {
+      const mapped: PersistCartItem[] = state.items.map((it: CartItem) => ({
+        id: it.id,
+        sku: it.selectedVariation ?? undefined,
+        qty: it.quantity,
+        price: it.price,
+        attrs: undefined,
+      }));
+      lastWriteRef.current = Date.now();
+      // Replace persisted items by clearing and re-adding. This keeps the persisted helpers' validation.
+      PersistedCart.clear();
+      for (const mi of mapped) {
+        PersistedCart.addItem(mi);
+      }
+    } catch {
+      // ignore
+    }
+  }, [state.items, state.total, state.isDirectOrder, state.backupItems]);
 
   return (
     <CartContext.Provider value={{ state, dispatch }}>
