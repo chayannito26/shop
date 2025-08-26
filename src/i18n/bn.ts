@@ -10,7 +10,7 @@ const bn = {
     title: 'ছায়ান্বিত ২৬',
     subtitle: 'মার্চেন্ডাইজ স্টোর',
     nav: { home: 'হোম', cart: 'ঝুড়ি' },
-    switch: { toEnglish: 'English Langauge', toBengali: 'বাংলা ভাষা' },
+    switch: { toEnglish: 'English', toBengali: 'বাংলা ভাষা' },
   },
   home: {
     hero: {
