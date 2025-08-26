@@ -67,6 +67,7 @@
   font-display: swap;
 }
 
+}
 .font-bn {
   font-family: 'Baloo Da 2', cursive, sans-serif !important;
 }
@@ -74,7 +75,6 @@
   * {
     transition: none !important;
   }
-}
 
 /* Custom utility classes using CSS variables */
 .bg-theme-primary {
