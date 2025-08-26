@@ -94,7 +94,17 @@ const en = {
     bkash: {
       label: 'bKash Transaction ID *',
       placeholder: 'e.g., BH12345678',
-      help: 'Please ensure the transaction ID is correct before submitting',
+      help: 'Alternatively, upload a screenshot of the bKash success page and we’ll detect the 10‑character transaction ID automatically.',
+      ocr: {
+        orUpload: 'Or upload a screenshot of the bKash success page',
+        uploadBtn: 'Upload Screenshot',
+        changeBtn: 'Change Screenshot',
+        detecting: 'Detecting transaction ID…',
+        progress: 'Processing image… {percent}%',
+        found: 'Detected Transaction ID: {id}',
+        notFound: 'Couldn’t find a valid 10‑character ID. Please try a clearer screenshot or enter it manually.',
+        tip: 'Tip: Crop to the area showing “Transaction ID” for better results.'
+      }
     },
     placeOrder: 'Place Order',
     placingOrder: 'Placing Order...',

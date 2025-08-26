@@ -34,6 +34,28 @@ export function Checkout() {
     bkashTransactionId: ''
   });
 
+  // OCR state
+  const [ocrImageUrl, setOcrImageUrl] = useState<string | null>(null);
+  const [ocrInProgress, setOcrInProgress] = useState(false);
+  const [ocrProgress, setOcrProgress] = useState(0);
+  const [ocrMessage, setOcrMessage] = useState<string | null>(null);
+
+  // Ensure Tesseract is available; if not, load from CDN dynamically
+  const ensureTesseract = async (): Promise<any> => {
+    // @ts-ignore
+    if ((window as any).Tesseract) return (window as any).Tesseract;
+    await new Promise<void>((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';
+      script.async = true;
+      script.onload = () => resolve();
+      script.onerror = () => reject(new Error('Failed to load Tesseract'));
+      document.head.appendChild(script);
+    });
+    // @ts-ignore
+    return (window as any).Tesseract;
+  };
+
   useEffect(() => {
     if (initiatedRef.current) return;
     if (orderPlaced) return; // don't track if already placed (post-confirmation view)
@@ -85,6 +107,66 @@ export function Checkout() {
       });
     }
   };
+
+  // Extract 10-character alphanumeric Transaction ID using regex
+  const extractTransactionId = (text: string): string | null => {
+    // Commonly bKash shows a 10-char alphanumeric like TX1234ABCD or similar
+    const match = text.match(/[A-Za-z0-9]{10}/);
+    return match ? match[0] : null;
+  };
+
+  const handleOcrFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const url = URL.createObjectURL(file);
+    // Cleanup previous object URL if present
+  setOcrImageUrl((prev: string | null) => {
+      if (prev) URL.revokeObjectURL(prev);
+      return url;
+    });
+    setOcrInProgress(true);
+    setOcrProgress(0);
+    setOcrMessage(t('checkout.bkash.ocr.detecting'));
+
+    try {
+      const Tesseract = await ensureTesseract();
+
+      const { data } = await Tesseract.recognize(url, 'eng', {
+        logger: (m: any) => {
+          if (m.status === 'recognizing text' && m.progress != null) {
+            const percent = Math.round(m.progress * 100);
+            setOcrProgress(percent);
+            setOcrMessage(t('checkout.bkash.ocr.progress', { percent: String(percent) }));
+          }
+        }
+      });
+
+      const text: string = data?.text || '';
+      const id = extractTransactionId(text);
+      if (id) {
+        // Autofill and validate
+        const value = id.toUpperCase();
+        setFormData((prev: typeof formData) => ({ ...prev, bkashTransactionId: value }));
+        const err = validateField('bkashTransactionId', value);
+        setErrors((prev: typeof errors) => ({ ...prev, bkashTransactionId: err }));
+        setOcrMessage(t('checkout.bkash.ocr.found', { id: value }));
+      } else {
+        setOcrMessage(t('checkout.bkash.ocr.notFound'));
+      }
+    } catch (err) {
+      console.error('OCR error', err);
+      setOcrMessage(t('checkout.bkash.ocr.notFound'));
+    } finally {
+      setOcrInProgress(false);
+    }
+  };
+
+  // Cleanup object URL on unmount
+  useEffect(() => {
+    return () => {
+      if (ocrImageUrl) URL.revokeObjectURL(ocrImageUrl);
+    };
+  }, [ocrImageUrl]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -374,9 +456,38 @@ export function Checkout() {
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
                 {errors.bkashTransactionId && <p id="err-bkash" className="text-xs text-red-500 mt-1">{errors.bkashTransactionId}</p>}
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                  {t('checkout.bkash.help')}
-                </p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{t('checkout.bkash.help')}</p>
+
+                {/* OCR Upload Helper */}
+                <div className="mt-3 p-3 border border-dashed border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700/40">
+                  <p className="text-xs text-gray-600 dark:text-gray-300 mb-2">{t('checkout.bkash.ocr.orUpload')}</p>
+                  <div className="flex items-center gap-3">
+                    <label className="inline-flex items-center px-3 py-2 text-sm font-medium rounded-md text-white bg-pink-600 hover:bg-pink-700 cursor-pointer">
+                      <input type="file" accept="image/*" capture="environment" className="hidden" onChange={handleOcrFileChange} />
+                      {ocrImageUrl ? t('checkout.bkash.ocr.changeBtn') : t('checkout.bkash.ocr.uploadBtn')}
+                    </label>
+                    {ocrInProgress && (
+                      <div className="flex-1">
+                        <div className="w-full h-2 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
+                          <div className="h-2 bg-pink-600 dark:bg-pink-500" style={{ width: `${ocrProgress}%` }} />
+                        </div>
+                        <p className="text-xs text-gray-600 dark:text-gray-300 mt-1">{ocrMessage}</p>
+                      </div>
+                    )}
+                  </div>
+
+                  {ocrImageUrl && (
+                    <div className="mt-3 flex items-center gap-3">
+                      <img src={ocrImageUrl} alt="Uploaded screenshot" className="h-16 w-28 object-cover rounded border border-gray-200 dark:border-gray-600" />
+                      {!ocrInProgress && ocrMessage && (
+                        <div>
+                          <p className="text-xs text-gray-700 dark:text-gray-200">{ocrMessage}</p>
+                          <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-1">{t('checkout.bkash.ocr.tip')}</p>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
 
               <button
