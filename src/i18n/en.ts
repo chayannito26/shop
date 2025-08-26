@@ -78,8 +78,8 @@ const en = {
       selectDepartment: 'Select Department',
       dept: { science: 'Science', arts: 'Arts', commerce: 'Commerce' },
       phone: 'Phone Number *',
-  email: 'Email (optional)',
-  emailPlaceholder: 'you@example.com',
+      email: 'Email (optional)',
+      emailPlaceholder: 'abc@gmail.com',
     },
     payment: {
       title: 'bKash Payment Instructions',
@@ -124,8 +124,10 @@ const en = {
         'Express Order: This is a direct purchase - no cart items will be affected.',
     },
     validation: {
-      phoneInvalid: 'Invalid phone number format. Must be 11 digits.',
-      bkashInvalid: 'Invalid Transaction ID format. Must be 10 characters.',
+      phoneInvalid:
+        'Invalid phone number. Use an 11-digit Bangladeshi number starting with 01 (e.g., 01712345678).',
+      bkashInvalid:
+        'Invalid bKash Transaction ID. Enter the 10-character alphanumeric ID (e.g., BH12A3B4C5).',
   required: 'Please fill out this field.',
   emailInvalid: 'Please enter a valid email address.',
     },
