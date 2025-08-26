@@ -1,4 +1,4 @@
-import { createPersistedState, validators, withMaxLength } from '../utils/persist';
+import { createPersistedState, withMaxLength } from '../utils/persist';
 
 // Cart types are intentionally minimal to avoid coupling. Extend as needed.
 export type CartItem = {
@@ -346,4 +346,45 @@ export const Filters = {
 		return { byKey };
 	}),
 	clearAll: () => filtersState.clear(),
+};
+
+// CHECKOUT FORM (persist non-PII payment form fields to survive refresh)
+export type CheckoutFormState = {
+	name?: string;
+	roll?: string;
+	department?: string;
+	phone?: string;
+	email?: string;
+	bkashTransactionId?: string; // sensitive-ish but needed for UX; will be cleared after order
+};
+
+export const checkoutFormState = createPersistedState<CheckoutFormState>({
+	key: 'checkoutForm',
+	version: 1,
+	ttlMs: 365 * DAY, // keep as last-used for a year
+	initial: () => ({ name: '', roll: '', department: '', phone: '', email: '', bkashTransactionId: '' }),
+	validate: (x) => {
+		if (!x || typeof x !== 'object') return { name: '', roll: '', department: '', phone: '', email: '', bkashTransactionId: '' };
+		const o = x as any;
+		const safe = {
+			name: typeof o.name === 'string' ? o.name.slice(0, 200) : '',
+			roll: typeof o.roll === 'string' ? o.roll.slice(0, 100) : '',
+			department: typeof o.department === 'string' ? o.department.slice(0, 100) : '',
+			phone: typeof o.phone === 'string' ? o.phone.slice(0, 20) : '',
+			email: typeof o.email === 'string' ? o.email.slice(0, 200) : '',
+			bkashTransactionId: typeof o.bkashTransactionId === 'string' ? o.bkashTransactionId.slice(0, 64) : '',
+		};
+		return safe;
+	},
+	redact: (data) => ({ ...data }),
+	maxBytes: 20_000,
+});
+
+export const CheckoutForm = {
+	get: () => checkoutFormState.get(),
+	set: (next: CheckoutFormState | ((prev: CheckoutFormState) => CheckoutFormState)) => checkoutFormState.set(next),
+	clearTransactionId: () => checkoutFormState.set((p) => ({ ...p, bkashTransactionId: '' })),
+	updateField: (k: keyof CheckoutFormState, v: string) => checkoutFormState.set((p) => ({ ...p, [k]: v } as any)),
+	subscribe: checkoutFormState.subscribe,
+	clear: () => checkoutFormState.clear(),
 };

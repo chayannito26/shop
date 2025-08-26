@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { CheckCircle, CreditCard } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { useCoupon } from '../contexts/CouponContext';
+import { CheckoutForm as PersistedCheckoutForm, Cart as PersistCart } from '../persistence/shopState';
 import { db } from '../firebase/config';
 import { CouponInput } from '../components/CouponInput';
 import { trackInitiateCheckout, trackPurchase, trackAddPaymentInfo } from '../analytics/metaPixel';
@@ -107,6 +108,45 @@ export function Checkout() {
       });
     }
   };
+
+  // Persist form live with debounce to avoid excessive writes
+  const saveTimer = useRef<number | null>(null);
+
+  useEffect(() => {
+    // hydrate once from persisted store on mount
+    const persisted = PersistedCheckoutForm.get();
+    if (persisted) {
+      setFormData((prev) => ({ ...prev, ...(persisted as any) }));
+    }
+
+    // subscribe to cross-tab updates
+    const unsub = PersistedCheckoutForm.subscribe((next) => {
+      // merge incoming persisted values but don't clobber local typing in-flight
+      setFormData((prev) => ({ ...prev, ...(next as any) }));
+    });
+
+    return () => {
+      unsub();
+      if (saveTimer.current) window.clearTimeout(saveTimer.current);
+    };
+  }, []);
+
+  // write changes with small debounce
+  useEffect(() => {
+    // write only non-empty state (keeps other fields for future orders)
+    if (saveTimer.current) window.clearTimeout(saveTimer.current);
+    saveTimer.current = window.setTimeout(() => {
+      try {
+        PersistedCheckoutForm.set({ ...formData });
+      } catch (err) {
+        // ignore persistence errors
+      }
+    }, 300);
+
+    return () => {
+      if (saveTimer.current) window.clearTimeout(saveTimer.current);
+    };
+  }, [formData]);
 
   // Extract 10-character alphanumeric Transaction ID using regex
   // Strategy:
@@ -290,7 +330,15 @@ export function Checkout() {
       setOrderId(newOrderId);
       setOrderPlaced(true);
       cartDispatch({ type: 'FINALIZE_DIRECT_ORDER' });
+      // Clear coupon from context and persisted cart coupons and clear sensitive transaction id
       removeCoupon();
+      try {
+        // clear persisted coupon list in cart state (server local store) and clear transaction id saved in form
+        PersistCart.clearCoupons();
+        PersistedCheckoutForm.clearTransactionId();
+      } catch (_) {
+        // ignore
+      }
     } catch (error) {
       console.error('Error placing order:', error);
       alert('Error placing order. Please try again.');
