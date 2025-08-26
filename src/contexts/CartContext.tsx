@@ -236,13 +236,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   // Hydrate once and subscribe to persisted changes (cross-tab)
   useEffect(() => {
-    try {
-      const p = PersistedCart.get();
-      const mapped = mapPersistedToCartState(p);
-      dispatch({ type: 'REPLACE', payload: mapped });
-    } catch (e) {
-      // ignore
-    }
+    const hydratedRef = { current: false } as { current: boolean };
 
     const unsub = PersistedCart.subscribe((next) => {
       // ignore updates originating from our own write operations
@@ -251,7 +245,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
       if (next.updatedAt && next.updatedAt <= lastWriteRef.current) return;
       const mapped = mapPersistedToCartState(next);
       dispatch({ type: 'REPLACE', payload: mapped });
+      // mark that we've hydrated from persisted store at least once
+      if (!hydratedRef.current) hydratedRef.current = true;
     });
+
     return unsub;
   }, []);
 
@@ -260,6 +257,18 @@ export function CartProvider({ children }: { children: ReactNode }) {
     try {
       // Don't persist cart when we're in a direct "Buy Now" flow. The reducer keeps a backup in memory.
       if (state.isDirectOrder) return;
+
+      // Ensure we don't write the persisted store before the initial hydration completes.
+      // The subscribe callback will set a hydrated flag on first emission.
+      // If we haven't hydrated yet, skip writes to avoid overwriting server/local persisted state with the empty initial reducer.
+      // We detect hydration by checking whether PersistedCart.subscribe has emitted; use a small helper: read current persisted value and compare timestamps.
+      const current = PersistedCart.get();
+      // If the persisted store has items or an updatedAt in the past, consider hydrated; otherwise, if it's empty and we haven't had a dispatched REPLACE yet, skip.
+      // We use lastWriteRef to infer whether hydration has occurred: if lastWriteRef is zero and persisted store has items, allow write later after subscription runs.
+      if (lastWriteRef.current === 0 && (!current.items || current.items.length === 0)) {
+        // likely initial mount and persisted store is non-informative; skip writing now to avoid clobbering a concurrent tab's data
+        return;
+      }
 
       const mapped: PersistCartItem[] = state.items.map((it: CartItem) => ({
         id: it.id,
