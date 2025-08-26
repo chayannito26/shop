@@ -463,7 +463,7 @@ export function Checkout() {
                   <p className="text-xs text-gray-600 dark:text-gray-300 mb-2">{t('checkout.bkash.ocr.orUpload')}</p>
                   <div className="flex items-center gap-3">
                     <label className="inline-flex items-center px-3 py-2 text-sm font-medium rounded-md text-white bg-pink-600 hover:bg-pink-700 cursor-pointer">
-                      <input type="file" accept="image/*" capture="environment" className="hidden" onChange={handleOcrFileChange} />
+                      <input type="file" accept="image/*" className="hidden" onChange={handleOcrFileChange} />
                       {ocrImageUrl ? t('checkout.bkash.ocr.changeBtn') : t('checkout.bkash.ocr.uploadBtn')}
                     </label>
                     {ocrInProgress && (
