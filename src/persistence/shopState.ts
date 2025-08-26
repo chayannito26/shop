@@ -235,6 +235,8 @@ export const Cart = {
 			return { ...prev, items: withMaxLength(items, 500), updatedAt: now };
 		});
 	},
+	// Atomically replace the persisted list of items. Use this to avoid multi-step writes (clear + addItem)
+	replaceItems: (items: CartItem[]) => cartState.set((p) => ({ ...p, items: withMaxLength(items, 500), updatedAt: Date.now() })),
 	updateQty: (query: Partial<CartItem> & { id: string }, qty: number) => {
 		return cartState.set((prev) => {
 			const signature = (it: CartItem) => `${it.id}::${it.sku ?? ''}::${JSON.stringify(it.attrs ?? {})}`;

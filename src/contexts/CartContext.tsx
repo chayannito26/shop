@@ -209,6 +209,7 @@ const CartContext = createContext<{
 export function CartProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(cartReducer, initialState);
   const lastWriteRef = useRef<number>(0);
+  const isWritingRef = useRef(false);
 
   // Map persisted cart items to our CartItem shape
   function mapPersistedToCartState(persisted: ReturnType<typeof PersistedCart.get>): CartState {
@@ -244,7 +245,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
 
     const unsub = PersistedCart.subscribe((next) => {
-      // ignore updates that we just wrote
+      // ignore updates originating from our own write operations
+      if (isWritingRef.current) return;
+      // ignore updates older than our last write to reduce race conditions
       if (next.updatedAt && next.updatedAt <= lastWriteRef.current) return;
       const mapped = mapPersistedToCartState(next);
       dispatch({ type: 'REPLACE', payload: mapped });
@@ -255,6 +258,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
   // Persist local cart changes back to persisted store
   useEffect(() => {
     try {
+      // Don't persist cart when we're in a direct "Buy Now" flow. The reducer keeps a backup in memory.
+      if (state.isDirectOrder) return;
+
       const mapped: PersistCartItem[] = state.items.map((it: CartItem) => ({
         id: it.id,
         sku: it.selectedVariation ?? undefined,
@@ -262,14 +268,16 @@ export function CartProvider({ children }: { children: ReactNode }) {
         price: it.price,
         attrs: undefined,
       }));
-      lastWriteRef.current = Date.now();
-      // Replace persisted items by clearing and re-adding. This keeps the persisted helpers' validation.
-      PersistedCart.clear();
-      for (const mi of mapped) {
-        PersistedCart.addItem(mi);
-      }
+
+      // Mark that we're performing writes so subscription ignores the resulting events
+  isWritingRef.current = true;
+  lastWriteRef.current = Date.now();
+  // single atomic replace to avoid cross-tab races
+  PersistedCart.replaceItems(mapped);
+  isWritingRef.current = false;
     } catch {
       // ignore
+      isWritingRef.current = false;
     }
   }, [state.items, state.total, state.isDirectOrder, state.backupItems]);
 
