@@ -40,13 +40,13 @@ export function Checkout() {
   const [ocrProgress, setOcrProgress] = useState(0);
   const [ocrMessage, setOcrMessage] = useState<string | null>(null);
 
-  // Ensure Tesseract is available; if not, load from CDN dynamically
+  // Ensure Tesseract is available; if not, load from CDN dynamically and return the global Tesseract
   const ensureTesseract = async (): Promise<any> => {
     // @ts-ignore
     if ((window as any).Tesseract) return (window as any).Tesseract;
     await new Promise<void>((resolve, reject) => {
       const script = document.createElement('script');
-      script.src = 'https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';
+      script.src = 'https://cdn.jsdelivr.net/npm/tesseract.js@6/dist/tesseract.min.js';
       script.async = true;
       script.onload = () => resolve();
       script.onerror = () => reject(new Error('Failed to load Tesseract'));
@@ -131,7 +131,8 @@ export function Checkout() {
     try {
       const Tesseract = await ensureTesseract();
 
-      const { data } = await Tesseract.recognize(url, 'eng', {
+      // Create a worker per v6 API, passing logger to update progress
+      const worker = await Tesseract.createWorker('eng', undefined, {
         logger: (m: any) => {
           if (m.status === 'recognizing text' && m.progress != null) {
             const percent = Math.round(m.progress * 100);
@@ -140,6 +141,9 @@ export function Checkout() {
           }
         }
       });
+
+      // recognize returns { data }
+      const { data } = await worker.recognize(url);
 
       const text: string = data?.text || '';
       const id = extractTransactionId(text);
@@ -152,6 +156,12 @@ export function Checkout() {
         setOcrMessage(t('checkout.bkash.ocr.found', { id: value }));
       } else {
         setOcrMessage(t('checkout.bkash.ocr.notFound'));
+      }
+      // Clean up worker to free memory
+      try {
+        await worker.terminate();
+      } catch (_) {
+        // ignore
       }
     } catch (err) {
       console.error('OCR error', err);
