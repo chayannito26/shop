@@ -61,8 +61,8 @@
 @media (prefers-reduced-motion: reduce) {
 @font-face {
   font-family: 'Baloo Da 2';
-  src: url('/baloo-da-2.woff2') format('woff2'),
-       url('/baloo-da-2.ttf') format('truetype');
+  src: url('/fonts/baloo-da-2.woff2') format('woff2'),
+       url('/fonts/baloo-da-2.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
