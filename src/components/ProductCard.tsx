@@ -1,4 +1,4 @@
-import React from 'react';
+// React namespace not required with JSX transform; keep imports minimal
 import { Link } from 'react-router-dom';
 import { Product } from '../contexts/CartContext';
 import { getMinMaxPrice } from '../utils/pricing';
@@ -21,7 +21,7 @@ export function ProductCard({ product }: ProductCardProps) {
             <img
               src={product.image}
               alt={product.name}
-              className="h-64 w-full object-cover object-center group-hover:opacity-75 transition-opacity"
+              className="w-full h-full object-cover object-center group-hover:opacity-75 transition-opacity"
             />
           </div>
           <div className="p-4">

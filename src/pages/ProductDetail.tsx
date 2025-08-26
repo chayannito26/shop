@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ShoppingCart, ArrowLeft, Zap } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
@@ -19,35 +19,8 @@ export function ProductDetail() {
 
   const product = products.find(p => p.id === id);
 
-  useEffect(() => {
-    if (!product) return;
-    // ViewContent once when the product page loads
-    trackViewContent({
-      id: product.id,
-      name: product.name,
-      category: product.category,
-      price: product.price
-    });
-  }, [product?.id]); // run once per product view
-
-  if (!product) {
-    return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">{t('product.notFound')}</h2>
-          <button
-            onClick={() => navigate('/')}
-            className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
-          >
-            {t('product.returnHome')}
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  // Normalized variations and pricing
-  const variations = getNormalizedVariations(product?.variations);
+  // Derived values and memoized helpers must be declared unconditionally
+  const variations = useMemo(() => getNormalizedVariations(product?.variations), [product]);
   const unitPrice = product ? getVariationPrice(product.price, product.variations, selectedVariation) : 0;
   const { min, max } = product ? getMinMaxPrice(product.price, product.variations) : { min: 0, max: 0 };
   const displayImage = useMemo(
@@ -76,6 +49,35 @@ export function ProductDetail() {
     if (!product) return undefined;
     return pickActiveBulkRate(product.bulkRates, product.unitsSold);
   }, [product]);
+
+  useEffect(() => {
+    if (!product) return;
+    // ViewContent once when the product page loads
+    trackViewContent({
+      id: product.id,
+      name: product.name,
+      category: product.category,
+      price: product.price
+    });
+  }, [product]); // run once per product view
+
+  if (!product) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">{t('product.notFound')}</h2>
+          <button
+            onClick={() => navigate('/')}
+            className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
+          >
+            {t('product.returnHome')}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // (derived values are declared earlier to keep hooks stable)
 
   const handleAddToCart = () => {
     if (product?.variations && product.variations.length > 0 && product.id !== 'phonecover' && !selectedVariation) {
@@ -145,7 +147,7 @@ export function ProductDetail() {
             <img
               src={displayImage}
               alt={product.name}
-              className="h-96 w-full object-cover object-center"
+              className="w-full h-full object-cover object-center"
             />
           </div>
 
