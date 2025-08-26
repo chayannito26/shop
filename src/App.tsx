@@ -20,20 +20,29 @@ function App() {
             <MetaPixelRouteListener />
             {/* First-visit language prompt */}
             <LanguagePrompt />
-            <div className="App">
-              <Header />
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/product/:id" element={<ProductDetail />} />
-                <Route path="/cart" element={<Cart />} />
-                <Route path="/checkout" element={<Checkout />} />
-              </Routes>
-            </div>
+            <FontBnWrapper>
+              <div className="App">
+                <Header />
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/product/:id" element={<ProductDetail />} />
+                  <Route path="/cart" element={<Cart />} />
+                  <Route path="/checkout" element={<Checkout />} />
+                </Routes>
+              </div>
+            </FontBnWrapper>
           </Router>
         </CouponProvider>
       </CartProvider>
     </I18nProvider>
   );
+}
+
+// Wrapper to apply .font-bn when Bengali is selected
+import { useI18n } from './i18n';
+function FontBnWrapper({ children }: { children: React.ReactNode }) {
+  const { lang } = useI18n();
+  return <div className={lang === 'bn' ? 'font-bn' : ''}>{children}</div>;
 }
 
 export default App;
