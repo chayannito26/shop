@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ShoppingCart, ArrowLeft, Zap } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { products } from '../data/products';
-import { getMinMaxPrice, getVariationPrice, getNormalizedVariations, getVariationImage } from '../utils/pricing';
+import { getMinMaxPrice, getVariationPrice, getNormalizedVariations, getProductImages } from '../utils/pricing';
 import { getBulkUnitCost, pickActiveBulkRate } from '../utils/pricing';
 import { trackViewContent, trackAddToCart, trackCustomizeProduct } from '../analytics/metaPixel';
 import { useI18n } from '../i18n';
@@ -23,10 +23,20 @@ export function ProductDetail() {
   const variations = useMemo(() => getNormalizedVariations(product?.variations), [product]);
   const unitPrice = product ? getVariationPrice(product.price, product.variations, selectedVariation) : 0;
   const { min, max } = product ? getMinMaxPrice(product.price, product.variations) : { min: 0, max: 0 };
-  const displayImage = useMemo(
-    () => (product ? getVariationImage(product.image, product.variations, selectedVariation) : ''),
-    [product, selectedVariation]
-  );
+  const images = useMemo(() => {
+    if (!product) return [] as string[];
+    return getProductImages(product.image, product.variations, selectedVariation);
+  }, [product, selectedVariation]);
+
+  const displayImage = useMemo(() => (images.length > 0 ? images[0] : ''), [images]);
+
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
+
+  // Keep activeImageIndex in sync with images array changes (e.g., variation selected)
+  const serializedImages = images.join('|');
+  useEffect(() => {
+    setActiveImageIndex(0);
+  }, [serializedImages]);
 
   // Developer-only visibility for the internal “bought-at” panel:
   const showBoughtRates = useMemo(() => {
@@ -142,13 +152,34 @@ export function ProductDetail() {
         </button>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Product Image */}
-          <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-200 dark:bg-gray-700">
-            <img
-              src={displayImage}
-              alt={product.name}
-              className="w-full h-full object-cover object-center"
-            />
+          {/* Product Image + Thumbnails */}
+          <div>
+            <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-200 dark:bg-gray-700">
+              {displayImage ? (
+                <img
+                  src={images[activeImageIndex]}
+                  alt={`${product.name} - ${activeImageIndex + 1}`}
+                  className="w-full h-full object-cover object-center"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-gray-500">No image available</div>
+              )}
+            </div>
+
+            {images.length > 1 && (
+              <div className="mt-3 flex gap-2 overflow-x-auto">
+                {images.map((src, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setActiveImageIndex(i)}
+                    className={`border rounded-lg p-0.5 ${i === activeImageIndex ? 'ring-2 ring-blue-500' : ''}`}
+                    aria-label={`View image ${i + 1}`}
+                  >
+                    <img src={src} alt={`${product.name} thumb ${i + 1}`} className="w-20 h-20 object-cover rounded-md" />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Product Info */}

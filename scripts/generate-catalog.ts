@@ -8,7 +8,7 @@ import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { products } from '../src/data/products';
-import { getVariationPrice, getVariationImage, getNormalizedVariations } from '../src/utils/pricing';
+import { getVariationPrice, getProductImages, getNormalizedVariations } from '../src/utils/pricing';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -85,7 +85,8 @@ function buildRows(): Row[] {
       for (const v of variations) {
         const varLabel = v.label.trim();
         const unitPrice = getVariationPrice(p.price, p.variations, varLabel);
-        const image = getVariationImage(p.image, p.variations, varLabel);
+  const imgs = getProductImages(p.image, p.variations, varLabel);
+  const image = imgs.length > 0 ? imgs[0] : '';
 
         const id = `${p.id}-${varLabel.replace(/\s+/g, '-').toLowerCase()}`;
         const title = `${p.name} - ${varLabel}`;
@@ -115,7 +116,7 @@ function buildRows(): Row[] {
         condition: 'new',
         price: `${p.price} BDT`,
         link,
-        image_link: p.image,
+        image_link: Array.isArray(p.image) ? (p.image[0] ?? '') : (p.image ?? ''),
         brand: BRAND,
         item_group_id: p.id,
       });

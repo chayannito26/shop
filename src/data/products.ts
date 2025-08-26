@@ -5,22 +5,29 @@ export const products: Product[] = [
     id: 'tshirt',
     name: 'Chayannito 26 T-Shirt',
     price: 350,
-    image: 'https://shop.chayannito26.com/images/tshirt.jpg',
+    image: [
+      'https://shop.chayannito26.com/images/tshirt.jpg',
+      'https://shop.chayannito26.com/images/tshirt-back.jpg'
+    ],
     description: 'Premium cotton t-shirt with Chayannito 26 batch design. Perfect for representing your batch pride.',
     category: 'clothing',
     variations: [
       { label: 'S', price: 350 },
       { label: 'M', price: 350 },
-      { label: 'L', price: 350 },
+      { label: 'L', price: 350, image: ['https://shop.chayannito26.com/images/tshirt-large.jpg'] },
       { label: 'XL', price: 350 },
-      { label: 'XXL', price: 350 } // XXL slightly higher
+      { label: 'XXL', price: 350 }
     ]
   },
   {
     id: 'hoodie',
     name: 'Chayannito 26 Hoodie',
     price: 700,
-    image: 'https://shop.chayannito26.com/images/hoodie.jpg',
+    image: [
+      'https://shop.chayannito26.com/images/hoodie.jpg',
+      'https://shop.chayannito26.com/images/hoodie-zip.jpg',
+      'https://shop.chayannito26.com/images/hoodie-back.jpg'
+    ],
     description: 'Cozy hoodie with embroidered Chayannito 26 logo. Stay warm while showing your batch spirit.',
     category: 'clothing',
     variations: [
@@ -28,14 +35,14 @@ export const products: Product[] = [
       { label: 'M', price: 700 },
       { label: 'L', price: 700 },
       { label: 'XL', price: 700 },
-      { label: 'XXL', price: 700 } // XXL higher
+      { label: 'XXL', price: 700 }
     ]
   },
   {
     id: 'mug',
     name: 'Chayannito 26 Ceramic Mug',
     price: 300,
-    image: 'https://shop.chayannito26.com/images/mug.jpg',
+  image: ['https://shop.chayannito26.com/images/mug.jpg', 'https://shop.chayannito26.com/images/mug-side.jpg'],
     description: 'High-quality ceramic mug with Chayannito 26 design. Perfect for your morning coffee or tea.',
     category: 'accessories'
   },

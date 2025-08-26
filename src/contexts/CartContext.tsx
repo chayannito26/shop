@@ -9,10 +9,11 @@ export interface Product {
   id: string;
   name: string;
   price: number;
-  image: string;
+  // Support multiple images per product. UI will pick the first suitable image for thumbnails/line-items.
+  image: string | string[];
   description: string;
   category: string;
-  variations?: (string | { label: string; price?: number; image?: string })[]; // support per-variation price and image
+  variations?: (string | { label: string; price?: number; image?: string | string[] })[]; // support per-variation price and image(s)
   // New: internal procurement tiers (optional)
   unitsSold?: number;                // manually edited in products.ts
   bulkRates?: BulkRate[];            // supports total-price or per-unit-price tiers
@@ -63,6 +64,7 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       const { product, selectedVariation } = action.payload;
       const key = makeKey(product.id, selectedVariation);
       const unitPrice = getVariationPrice(product.price, product.variations, selectedVariation);
+      // Ensure line-item image is a single string (first image)
       const resolvedImage = getVariationImage(product.image, product.variations, selectedVariation);
 
       // Find existing line with same product + normalized variation
@@ -80,7 +82,7 @@ function cartReducer(state: CartState, action: CartAction): CartState {
         // Create a new line with deterministic cartItemId
         const newItem: CartItem = {
           ...product,
-          image: resolvedImage,
+            image: resolvedImage,
           price: unitPrice,
           quantity: 1,
           selectedVariation,

@@ -1,19 +1,22 @@
-export type VariationInput = string | { label: string; price?: number; image?: string };
-type NormalizedVariation = { label: string; price?: number; image?: string };
+export type VariationInput =
+  | string
+  | { label: string; price?: number; image?: string | string[] };
+type NormalizedVariation = { label: string; price?: number; image?: string | string[] };
 
 function normalize(variations?: VariationInput[]): NormalizedVariation[] {
   if (!variations) return [];
-  return variations.map(v =>
-    typeof v === 'string'
-      ? { label: v }
-      : { label: v.label, price: v.price, image: v.image }
+  return variations.map((v) =>
+    typeof v === 'string' ? { label: v } : { label: v.label, price: v.price, image: v.image }
   );
 }
 
-function findMatch(variations: VariationInput[] | undefined, selected?: string): NormalizedVariation | undefined {
+function findMatch(
+  variations: VariationInput[] | undefined,
+  selected?: string
+): NormalizedVariation | undefined {
   const sel = (selected || '').trim().toLowerCase();
   if (!sel) return undefined;
-  return normalize(variations).find(v => v.label.trim().toLowerCase() === sel);
+  return normalize(variations).find((v) => v.label.trim().toLowerCase() === sel);
 }
 
 export function getVariationPrice(basePrice: number, variations?: VariationInput[], selectedVariation?: string): number {
@@ -37,16 +40,35 @@ export function getNormalizedVariations(variations?: VariationInput[]): Normaliz
   return normalize(variations);
 }
 
+/**
+ * Return an array of images for a product/variation in display order.
+ * Accepts a base image (string or array) and optional variation images
+ * (string or array). The priority is: variation.images -> baseImage array -> baseImage string.
+ * Returns an empty array when nothing valid is found.
+ */
+export function getProductImages(
+  baseImage: string | string[],
+  variations?: VariationInput[],
+  selectedVariation?: string
+): string[] {
+  const v = findMatch(variations, selectedVariation);
+  if (v && v.image) {
+    if (Array.isArray(v.image)) return v.image.filter(Boolean);
+    if (typeof v.image === 'string' && v.image.trim().length > 0) return [v.image];
+  }
+
+  if (Array.isArray(baseImage)) return baseImage.filter(Boolean);
+  if (typeof baseImage === 'string' && baseImage.trim().length > 0) return [baseImage];
+  return [];
+}
+
 export function getVariationImage(
-  baseImage: string,
+  baseImage: string | string[],
   variations?: VariationInput[],
   selectedVariation?: string
 ): string {
-  const v = findMatch(variations, selectedVariation);
-  if (v && v.image && typeof v.image === 'string' && v.image.trim().length > 0) {
-    return v.image;
-  }
-  return baseImage;
+  const imgs = getProductImages(baseImage, variations, selectedVariation);
+  return imgs.length > 0 ? imgs[0] : '';
 }
 
 // Bulk tier support: either specify totalPrice for exactly 'units' pcs,
