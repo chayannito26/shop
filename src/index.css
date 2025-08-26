@@ -56,7 +56,6 @@
   transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.2s ease-in-out;
 }
 
-}
 /* Reduce motion for users who prefer it */
 @media (prefers-reduced-motion: reduce) {
 @font-face {
