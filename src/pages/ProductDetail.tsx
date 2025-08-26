@@ -7,6 +7,7 @@ import { getMinMaxPrice, getVariationPrice, getNormalizedVariations, getProductI
 import { getBulkUnitCost, pickActiveBulkRate } from '../utils/pricing';
 import { trackViewContent, trackAddToCart, trackCustomizeProduct } from '../analytics/metaPixel';
 import { useI18n } from '../i18n';
+import { useModal } from '../contexts/ModalContext';
 
 export function ProductDetail() {
   const { id } = useParams<{ id: string }>();
@@ -16,6 +17,7 @@ export function ProductDetail() {
   const [quantity, setQuantity] = useState<number>(1);
   const [showSuccess, setShowSuccess] = useState(false);
   const { t, productName, productDescription, categoryLabel } = useI18n();
+  const { showAlert } = useModal();
 
   const product = products.find(p => p.id === id);
 
@@ -91,11 +93,11 @@ export function ProductDetail() {
 
   const handleAddToCart = () => {
     if (product?.variations && product.variations.length > 0 && product.id !== 'phonecover' && !selectedVariation) {
-      alert(t('product.validation.selectVariation'));
+      showAlert(t('product.validation.selectVariation'));
       return;
     }
     if (product?.id === 'phonecover' && !selectedVariation) {
-      alert(t('product.validation.enterPhoneModel'));
+      showAlert(t('product.validation.enterPhoneModel'));
       return;
     }
 
@@ -120,11 +122,11 @@ export function ProductDetail() {
 
   const handleBuyNow = () => {
     if (product?.variations && product.variations.length > 0 && product.id !== 'phonecover' && !selectedVariation) {
-      alert(t('product.validation.selectVariation'));
+  showAlert(t('product.validation.selectVariation'));
       return;
     }
     if (product?.id === 'phonecover' && !selectedVariation) {
-      alert(t('product.validation.enterPhoneModel'));
+  showAlert(t('product.validation.enterPhoneModel'));
       return;
     }
 

@@ -9,29 +9,32 @@ import { Cart } from './pages/Cart';
 import { Checkout } from './pages/Checkout';
 import { MetaPixelRouteListener } from './analytics/MetaPixelRouteListener';
 import { I18nProvider, LanguagePrompt } from './i18n';
+import { ModalProvider } from './contexts/ModalContext';
 
 function App() {
   return (
     <I18nProvider>
       <CartProvider>
         <CouponProvider>
-          <Router>
-            {/* Track SPA route changes */}
-            <MetaPixelRouteListener />
-            {/* First-visit language prompt */}
-            <LanguagePrompt />
-            <FontBnWrapper>
-              <div className="App">
-                <Header />
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/product/:id" element={<ProductDetail />} />
-                  <Route path="/cart" element={<Cart />} />
-                  <Route path="/checkout" element={<Checkout />} />
-                </Routes>
-              </div>
-            </FontBnWrapper>
-          </Router>
+          <ModalProvider>
+            <Router>
+              {/* Track SPA route changes */}
+              <MetaPixelRouteListener />
+              {/* First-visit language prompt */}
+              <LanguagePrompt />
+              <FontBnWrapper>
+                <div className="App">
+                  <Header />
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/product/:id" element={<ProductDetail />} />
+                    <Route path="/cart" element={<Cart />} />
+                    <Route path="/checkout" element={<Checkout />} />
+                  </Routes>
+                </div>
+              </FontBnWrapper>
+            </Router>
+          </ModalProvider>
         </CouponProvider>
       </CartProvider>
     </I18nProvider>

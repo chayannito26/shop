@@ -10,6 +10,7 @@ import { db } from '../firebase/config';
 import { CouponInput } from '../components/CouponInput';
 import { trackInitiateCheckout, trackPurchase, trackAddPaymentInfo } from '../analytics/metaPixel';
 import { useI18n } from '../i18n';
+import { useModal } from '../contexts/ModalContext';
 
 export function Checkout() {
   const { state: cartState, dispatch: cartDispatch } = useCart();
@@ -239,6 +240,8 @@ export function Checkout() {
     };
   }, [ocrImageUrl]);
 
+  const { showAlert } = useModal();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -341,7 +344,7 @@ export function Checkout() {
       }
     } catch (error) {
       console.error('Error placing order:', error);
-      alert('Error placing order. Please try again.');
+      await showAlert('Error placing order. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
