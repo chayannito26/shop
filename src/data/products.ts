@@ -12,11 +12,11 @@ export const products: Product[] = [
     description: 'Premium cotton t-shirt with Chayannito 26 batch design. Perfect for representing your batch pride.',
     category: 'clothing',
     variations: [
-      { label: 'S', price: 350 },
-      { label: 'M', price: 350 },
-      { label: 'L', price: 350, image: ['https://shop.chayannito26.com/images/tshirt-large.jpg'] },
-      { label: 'XL', price: 350 },
-      { label: 'XXL', price: 350 }
+      { label: 'S', price: 300 },
+      { label: 'M', price: 300 },
+      { label: 'L', price: 300, image: ['https://shop.chayannito26.com/images/tshirt-large.jpg'] },
+      { label: 'XL', price: 300 },
+      { label: 'XXL', price: 300 }
     ]
   },
   {
@@ -49,7 +49,7 @@ export const products: Product[] = [
   {
     id: 'totebag',
     name: 'Chayannito 26 Tote Bag',
-    price: 200,
+    price: 300,
     image: 'https://shop.chayannito26.com/images/totebag.jpg',
     description: 'Durable canvas tote bag with stylish Chayannito 26 print. Eco-friendly and practical.',
     category: 'accessories'
@@ -57,7 +57,7 @@ export const products: Product[] = [
   {
     id: 'keychain',
     name: 'Chayannito 26 Keychain',
-    price: 50,
+    price: 100,
     image: 'https://shop.chayannito26.com/images/keychain.jpg',
     description: 'Metal keychain with engraved Chayannito 26 logo. A perfect small memento.',
     category: 'accessories'
@@ -77,7 +77,7 @@ export const products: Product[] = [
   {
     id: 'pen',
     name: 'Chayannito 26 Cap',
-    price: 350,
+    price: 150,
     image: 'https://shop.chayannito26.com/images/cap.jpg',
     description: 'A high quality cap with Chayannito 26 branding on the front. ',
     category: 'clothing'
@@ -110,7 +110,7 @@ export const products: Product[] = [
   {
     id: 'lanyard',
     name: 'Chayannito 26 ID Card Lanyard',
-    price: 50,
+    price: 100,
     image: 'https://shop.chayannito26.com/images/lanyard.jpg',
     description: 'Durable lanyard with Chayannito 26 branding. Perfect for holding your ID card or keys.',
     category: 'accessories'
@@ -126,7 +126,7 @@ export const products: Product[] = [
   {
     id: 'sticker',
     name: 'Chayannito 26 Sticker',
-    price: 30,
+    price: 10,
     image: 'https://shop.chayannito26.com/images/sticker.jpg',
     description: 'Vinyl sticker with Chayannito 26 logo. Perfect for laptops, water bottles, and more.',
     category: 'accessories',
