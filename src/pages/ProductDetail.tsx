@@ -364,6 +364,21 @@ export function ProductDetail() {
               </button>
             </div>
 
+            {/* 'No money' Help Button (localized) */}
+            <div className="mt-4">
+              <button
+                onClick={() =>
+                  showAlert(
+                    t('product.noMoney.message', { name: productName(product.id, product.name) }),
+                    { title: t('product.noMoney.title'), primaryLabel: t('product.noMoney.button') }
+                  )
+                }
+                className="w-full border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 bg-white dark:bg-gray-700 py-2 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+              >
+                {t('product.noMoney.button')}
+              </button>
+            </div>
+
             {/* Success Message */}
             {showSuccess && (
              <div className="mt-4 p-4 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-lg">
