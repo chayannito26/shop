@@ -4,7 +4,7 @@ export const products: Product[] = [
   {
     id: 'tshirt',
     name: 'Chayannito 26 T-Shirt',
-    price: 350,
+    price: 300,
     image: [
       'https://shop.chayannito26.com/images/tshirt.jpg',
       'https://shop.chayannito26.com/images/tshirt-back.jpg'
