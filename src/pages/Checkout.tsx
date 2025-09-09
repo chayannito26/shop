@@ -10,7 +10,6 @@ import { db } from '../firebase/config';
 import { CouponInput } from '../components/CouponInput';
 import { trackInitiateCheckout, trackPurchase, trackAddPaymentInfo } from '../analytics/metaPixel';
 import { useI18n } from '../i18n';
-import { sendOrderConfirmationEmail } from '../utils/email';
 import { useModal } from '../contexts/ModalContext';
 
 export function Checkout() {
@@ -333,12 +332,6 @@ export function Checkout() {
 
       setOrderId(newOrderId);
       setOrderPlaced(true);
-
-      // Send order confirmation email
-      if (formData.email) {
-        sendOrderConfirmationEmail(formData.email, formData.name, orderData.items);
-      }
-
       cartDispatch({ type: 'FINALIZE_DIRECT_ORDER' });
       // Clear coupon from context and persisted cart coupons and clear sensitive transaction id
       removeCoupon();
