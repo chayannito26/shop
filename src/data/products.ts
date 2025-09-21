@@ -14,7 +14,7 @@ export const products: Product[] = [
     variations: [
       { label: 'S', price: 300 },
       { label: 'M', price: 300 },
-      { label: 'L', price: 300, image: ['https://shop.chayannito26.com/images/tshirt-large.jpg'] },
+      { label: 'L', price: 300 },
       { label: 'XL', price: 300 },
       { label: 'XXL', price: 300 }
     ]
@@ -52,7 +52,11 @@ export const products: Product[] = [
     price: 300,
     image: 'https://shop.chayannito26.com/images/totebag.jpg',
     description: 'Durable canvas tote bag with stylish Chayannito 26 print. Eco-friendly and practical.',
-    category: 'accessories'
+    category: 'accessories',
+    variations: [
+      { label: 'Black', price: 300, image: ['https://shop.chayannito26.com/images/totebag.jpg']},
+      { label: 'White', price: 300, image: ['https://shop.chayannito26.com/images/totebag.jpg'] },
+    ]
   },
   {
     id: 'keychain',
@@ -70,8 +74,9 @@ export const products: Product[] = [
     description: 'Premium quality notebook with Chayannito 26 cover design. Perfect for notes and journaling.',
     category: 'stationery',
     variations: [
-      { label: 'Diary', price: 300 },
-      { label: 'Notebook', price: 250 }
+      { label: 'A5 Lined', price: 250, image: ['https://shop.chayannito26.com/images/notebook.jpg'] },
+      { label: 'A5 Blank', price: 250, image: ['https://shop.chayannito26.com/images/notebook.jpg'] },
+      { label: 'A4 Blank', price: 300, image: ['https://shop.chayannito26.com/images/notebook.jpg'] },
     ]
   },
   {
@@ -80,7 +85,11 @@ export const products: Product[] = [
     price: 150,
     image: 'https://shop.chayannito26.com/images/cap.jpg',
     description: 'A high quality cap with Chayannito 26 branding on the front. ',
-    category: 'clothing'
+    category: 'clothing',
+    variations: [
+      { label: 'Black', price: 300, image: ['https://shop.chayannito26.com/images/cap.jpg']},
+      { label: 'White', price: 300, image: ['https://shop.chayannito26.com/images/cap.jpg'] },
+    ]
   },
   {
     id: 'badge',
