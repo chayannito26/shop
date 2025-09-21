@@ -46,7 +46,3 @@ What not to change without CI or author confirmation
 If you need more info or permission to make larger changes, ask for the owner's intent on:
 - Intended durable product shape (should products be treated as authoritative source-of-truth or derived from CSV?)
 - Any active Firebase integrations or API keys that should not be modified.
-
-End
-
-Please review and tell me any unclear or missing sections to iterate.
