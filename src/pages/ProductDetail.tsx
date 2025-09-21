@@ -3,11 +3,12 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ShoppingCart, ArrowLeft, Zap } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { products } from '../data/products';
-import { getMinMaxPrice, getVariationPrice, getNormalizedVariations, getProductImages } from '../utils/pricing';
+import { getMinMaxPrice, getVariationPrice, getNormalizedVariations, getProductImages, getUniqueColors, getUniqueSizes } from '../utils/pricing';
 import { getBulkUnitCost, pickActiveBulkRate } from '../utils/pricing';
 import { trackViewContent, trackAddToCart, trackCustomizeProduct } from '../analytics/metaPixel';
 import { useI18n } from '../i18n';
 import { useModal } from '../contexts/ModalContext';
+import { VariationSelector } from '../components/VariationSelector';
 
 export function ProductDetail() {
   const { id } = useParams<{ id: string }>();
@@ -291,35 +292,20 @@ export function ProductDetail() {
               </div>
             ) : (
               product.variations && (
-                <div className="mb-6">
-                  <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">
-                    {product.category === 'clothing' ? t('product.sizeLabel') : t('product.optionsLabel')}
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {variations.map((v) => (
-                      <button
-                        key={v.label}
-                        onClick={() => {
-                          setSelectedVariation(v.label);
-                          const priceForV = getVariationPrice(product.price, product.variations, v.label);
-                          trackCustomizeProduct(
-                            { id: product.id, name: product.name, category: product.category },
-                            v.label,
-                            priceForV
-                          );
-                        }}
-                        className={`px-4 py-2 border rounded-md transition-colors ${
-                          selectedVariation === v.label
-                            ? 'border-blue-500 bg-blue-50 dark:bg-blue-900 text-blue-700 dark:text-blue-200'
-                            : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 text-gray-900 dark:text-white'
-                        }`}
-                        title={typeof v.price === 'number' ? `৳${v.price}` : `৳${product.price}`}
-                      >
-                        {v.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
+                <VariationSelector
+                  variations={product.variations}
+                  selectedVariation={selectedVariation}
+                  onVariationChange={(variation) => {
+                    setSelectedVariation(variation);
+                    const priceForV = getVariationPrice(product.price, product.variations, variation);
+                    trackCustomizeProduct(
+                      { id: product.id, name: product.name, category: product.category },
+                      variation,
+                      priceForV
+                    );
+                  }}
+                  className="mb-6"
+                />
               )
             )}
 

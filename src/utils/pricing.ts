@@ -3,6 +3,71 @@ export type VariationInput =
   | { label: string; price?: number; image?: string | string[] };
 type NormalizedVariation = { label: string; price?: number; image?: string | string[] };
 
+// Multi-tier variation support
+export interface VariationTier {
+  color?: string;
+  size?: string;
+  [key: string]: string | undefined;
+}
+
+export function parseVariationTiers(label: string): VariationTier {
+  // Parse variations like "White-L", "Black-M", etc.
+  const parts = label.split('-');
+  if (parts.length === 2) {
+    return { color: parts[0], size: parts[1] };
+  }
+  // For single tier variations, treat as size if it's a size, otherwise as color
+  const sizePattern = /^(XS|S|M|L|XL|XXL|XXXL|\d+)$/i;
+  if (sizePattern.test(label)) {
+    return { size: label };
+  }
+  return { color: label };
+}
+
+export function formatVariationLabel(tiers: VariationTier): string {
+  const parts = [];
+  if (tiers.color) parts.push(tiers.color);
+  if (tiers.size) parts.push(tiers.size);
+  return parts.join('-');
+}
+
+export function getUniqueColors(variations?: VariationInput[]): string[] {
+  if (!variations) return [];
+  const colors = new Set<string>();
+  variations.forEach(v => {
+    const label = typeof v === 'string' ? v : v.label;
+    const tiers = parseVariationTiers(label);
+    if (tiers.color) colors.add(tiers.color);
+  });
+  return Array.from(colors).sort();
+}
+
+export function getUniqueSizes(variations?: VariationInput[]): string[] {
+  if (!variations) return [];
+  const sizes = new Set<string>();
+  variations.forEach(v => {
+    const label = typeof v === 'string' ? v : v.label;
+    const tiers = parseVariationTiers(label);
+    if (tiers.size) sizes.add(tiers.size);
+  });
+  // Sort sizes in logical order
+  const sizeOrder = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
+  return Array.from(sizes).sort((a, b) => {
+    const aIndex = sizeOrder.indexOf(a);
+    const bIndex = sizeOrder.indexOf(b);
+    if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
+    if (aIndex !== -1) return -1;
+    if (bIndex !== -1) return 1;
+    return a.localeCompare(b);
+  });
+}
+
+export function getVariationByTiers(variations?: VariationInput[], color?: string, size?: string): NormalizedVariation | undefined {
+  if (!variations) return undefined;
+  const targetLabel = formatVariationLabel({ color, size });
+  return normalize(variations).find(v => v.label === targetLabel);
+}
+
 function normalize(variations?: VariationInput[]): NormalizedVariation[] {
   if (!variations) return [];
   return variations.map((v) =>

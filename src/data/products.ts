@@ -12,11 +12,18 @@ export const products: Product[] = [
     description: 'Premium cotton t-shirt with Chayannito 26 batch design. Perfect for representing your batch pride.',
     category: 'clothing',
     variations: [
-      { label: 'S', price: 300 },
-      { label: 'M', price: 300 },
-      { label: 'L', price: 300 },
-      { label: 'XL', price: 300 },
-      { label: 'XXL', price: 300 }
+      // White variations
+      { label: 'White-S', price: 300, image: ['https://shop.chayannito26.com/images/tshirt-white.jpg', 'https://shop.chayannito26.com/images/tshirt-white-back.jpg'] },
+      { label: 'White-M', price: 300, image: ['https://shop.chayannito26.com/images/tshirt-white.jpg', 'https://shop.chayannito26.com/images/tshirt-white-back.jpg'] },
+      { label: 'White-L', price: 300, image: ['https://shop.chayannito26.com/images/tshirt-white.jpg', 'https://shop.chayannito26.com/images/tshirt-white-back.jpg'] },
+      { label: 'White-XL', price: 300, image: ['https://shop.chayannito26.com/images/tshirt-white.jpg', 'https://shop.chayannito26.com/images/tshirt-white-back.jpg'] },
+      { label: 'White-XXL', price: 300, image: ['https://shop.chayannito26.com/images/tshirt-white.jpg', 'https://shop.chayannito26.com/images/tshirt-white-back.jpg'] },
+      // Black variations
+      { label: 'Black-S', price: 300, image: ['https://shop.chayannito26.com/images/tshirt-black.jpg', 'https://shop.chayannito26.com/images/tshirt-black-back.jpg'] },
+      { label: 'Black-M', price: 300, image: ['https://shop.chayannito26.com/images/tshirt-black.jpg', 'https://shop.chayannito26.com/images/tshirt-black-back.jpg'] },
+      { label: 'Black-L', price: 300, image: ['https://shop.chayannito26.com/images/tshirt-black.jpg', 'https://shop.chayannito26.com/images/tshirt-black-back.jpg'] },
+      { label: 'Black-XL', price: 300, image: ['https://shop.chayannito26.com/images/tshirt-black.jpg', 'https://shop.chayannito26.com/images/tshirt-black-back.jpg'] },
+      { label: 'Black-XXL', price: 300, image: ['https://shop.chayannito26.com/images/tshirt-black.jpg', 'https://shop.chayannito26.com/images/tshirt-black-back.jpg'] }
     ]
   },
   {
@@ -31,11 +38,18 @@ export const products: Product[] = [
     description: 'Cozy hoodie with embroidered Chayannito 26 logo. Stay warm while showing your batch spirit.',
     category: 'clothing',
     variations: [
-      { label: 'S', price: 700 },
-      { label: 'M', price: 700 },
-      { label: 'L', price: 700 },
-      { label: 'XL', price: 700 },
-      { label: 'XXL', price: 700 }
+      // White variations
+      { label: 'White-S', price: 700, image: ['https://shop.chayannito26.com/images/hoodie-white.jpg', 'https://shop.chayannito26.com/images/hoodie-white-zip.jpg', 'https://shop.chayannito26.com/images/hoodie-white-back.jpg'] },
+      { label: 'White-M', price: 700, image: ['https://shop.chayannito26.com/images/hoodie-white.jpg', 'https://shop.chayannito26.com/images/hoodie-white-zip.jpg', 'https://shop.chayannito26.com/images/hoodie-white-back.jpg'] },
+      { label: 'White-L', price: 700, image: ['https://shop.chayannito26.com/images/hoodie-white.jpg', 'https://shop.chayannito26.com/images/hoodie-white-zip.jpg', 'https://shop.chayannito26.com/images/hoodie-white-back.jpg'] },
+      { label: 'White-XL', price: 700, image: ['https://shop.chayannito26.com/images/hoodie-white.jpg', 'https://shop.chayannito26.com/images/hoodie-white-zip.jpg', 'https://shop.chayannito26.com/images/hoodie-white-back.jpg'] },
+      { label: 'White-XXL', price: 700, image: ['https://shop.chayannito26.com/images/hoodie-white.jpg', 'https://shop.chayannito26.com/images/hoodie-white-zip.jpg', 'https://shop.chayannito26.com/images/hoodie-white-back.jpg'] },
+      // Black variations
+      { label: 'Black-S', price: 700, image: ['https://shop.chayannito26.com/images/hoodie-black.jpg', 'https://shop.chayannito26.com/images/hoodie-black-zip.jpg', 'https://shop.chayannito26.com/images/hoodie-black-back.jpg'] },
+      { label: 'Black-M', price: 700, image: ['https://shop.chayannito26.com/images/hoodie-black.jpg', 'https://shop.chayannito26.com/images/hoodie-black-zip.jpg', 'https://shop.chayannito26.com/images/hoodie-black-back.jpg'] },
+      { label: 'Black-L', price: 700, image: ['https://shop.chayannito26.com/images/hoodie-black.jpg', 'https://shop.chayannito26.com/images/hoodie-black-zip.jpg', 'https://shop.chayannito26.com/images/hoodie-black-back.jpg'] },
+      { label: 'Black-XL', price: 700, image: ['https://shop.chayannito26.com/images/hoodie-black.jpg', 'https://shop.chayannito26.com/images/hoodie-black-zip.jpg', 'https://shop.chayannito26.com/images/hoodie-black-back.jpg'] },
+      { label: 'Black-XXL', price: 700, image: ['https://shop.chayannito26.com/images/hoodie-black.jpg', 'https://shop.chayannito26.com/images/hoodie-black-zip.jpg', 'https://shop.chayannito26.com/images/hoodie-black-back.jpg'] }
     ]
   },
   {
