@@ -1,4 +1,3 @@
-import React from 'react';
 import { getVariationTierKeys, getVariationTierValues, parseVariationTiers, formatVariationLabel } from '../utils/pricing';
 import type { VariationInput } from '../utils/pricing';
 import type { VariationSchema } from '../utils/pricing';
@@ -9,14 +8,16 @@ interface VariationSelectorProps {
   onVariationChange: (variation: string) => void;
   className?: string;
   schema?: VariationSchema;
+  productId?: string; // Add productId to enable special product-specific logic
 }
 
 export function VariationSelector({ 
   variations, 
   selectedVariation, 
   onVariationChange, 
-  className = "" 
-  , schema
+  className = "",
+  schema,
+  productId
 }: VariationSelectorProps) {
   if (!variations || variations.length === 0) return null;
 
@@ -87,6 +88,13 @@ export function VariationSelector({
 
                         // Tentative tiers with this choice
                         const tentative = { ...selectedTiers, [tierKey]: value };
+
+                        // Special logic for notebook: if A4+Lined is being selected, auto-switch to A5+Lined
+                        // because A4 only supports Blank finish, not Lined
+                        if (productId === 'notebook' && tentative.size === 'A4' && tentative.finish === 'Lined') {
+                          tentative.size = 'A5';
+                          // Keep the Lined finish and let the page selection proceed normally
+                        }
 
                         // For other tiers, determine compatible values given the tentative selection.
                         // If a tier has no compatible values, remove it. If it has exactly one,

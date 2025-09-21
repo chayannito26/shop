@@ -89,12 +89,14 @@ export const products: Product[] = [
     image: 'https://shop.chayannito26.com/images/notebook.jpg',
     description: 'Premium quality notebook with Chayannito 26 cover design. Perfect for notes and journaling.',
     category: 'stationery',
-    variationSchema: { keys: ['sheetSize', 'finish'], titles: { sheetSize: 'Sheet Size', finish: 'Finish' } },
+    variationSchema: { keys: ['size', 'finish', 'pages'], titles: { size: 'Size', finish: 'Finish', pages: 'Pages' } },
     variations: [
-      { label: 'A5-Lined', price: 250, image: ['https://shop.chayannito26.com/images/notebook.jpg'] },
-      { label: 'A5-Blank', price: 250, image: ['https://shop.chayannito26.com/images/notebook.jpg'] },
-      { label: 'A4-Lined', price: 300, image: ['https://shop.chayannito26.com/images/notebook.jpg'] },
-      { label: 'A4-Blank', price: 300, image: ['https://shop.chayannito26.com/images/notebook.jpg'] },
+      // A4 variations
+      { label: 'A4-Blank-150', price: 300, image: ['https://shop.chayannito26.com/images/notebook.jpg'] },
+      { label: 'A4-Blank-300', price: 320, image: ['https://shop.chayannito26.com/images/notebook.jpg'] },
+      // A5 variations (note: A4-Lined is not available, only A5 has lined options)
+      { label: 'A5-Lined-160', price: 250, image: ['https://shop.chayannito26.com/images/notebook.jpg'] },
+      { label: 'A5-Blank-160', price: 250, image: ['https://shop.chayannito26.com/images/notebook.jpg'] },
     ]
   },
   {

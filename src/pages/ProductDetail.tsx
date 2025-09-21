@@ -40,32 +40,7 @@ export function ProductDetail() {
     setActiveImageIndex(0);
   }, [serializedImages]);
 
-  // Special-case: for notebooks, if no selection yet, prefer sensible default.
-  // Requirement: A4 does not have 'lined' option in some catalogs and should default to 'A4-Blank'
-  useEffect(() => {
-    if (!product) return;
-    if (product.id !== 'notebook') return;
-
-    // If there's already a selection, do nothing
-    if (selectedVariation) return;
-
-  const vars = product.variations || [];
-    // Find all tiers for A4 and A5
-  const hasA4Lined = vars.some(v => (typeof v === 'string' ? v : v.label) === 'A4-Lined');
-  const hasA4Blank = vars.some(v => (typeof v === 'string' ? v : v.label) === 'A4-Blank');
-  const hasA5Lined = vars.some(v => (typeof v === 'string' ? v : v.label) === 'A5-Lined');
-  const hasA5Blank = vars.some(v => (typeof v === 'string' ? v : v.label) === 'A5-Blank');
-
-    // If A4 only has blank (or lined missing), auto-select A4-Blank
-    if (hasA4Blank && !hasA4Lined) {
-      setSelectedVariation('A4-Blank');
-    } else if (!hasA4Blank && hasA4Lined) {
-      // If only lined exists, select lined
-      setSelectedVariation('A4-Lined');
-    } else if (hasA5Blank && hasA5Lined && !hasA4Blank && !hasA4Lined) {
-      // Fallback: if A4 doesn't exist but A5 has options, leave blank so user can pick
-    }
-  }, [product, selectedVariation]);
+  // Note: No default selection for notebook - user should choose all variation tiers
 
   // Developer-only visibility for the internal “bought-at” panel:
   const showBoughtRates = useMemo(() => {
@@ -317,6 +292,7 @@ export function ProductDetail() {
                     );
                   }}
                   schema={product.variationSchema}
+                  productId={product.id}
                   className="mb-6"
                 />
               )
