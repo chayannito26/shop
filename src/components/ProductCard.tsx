@@ -1,6 +1,5 @@
 // React namespace not required with JSX transform; keep imports minimal
 import { Link } from 'react-router-dom';
-import { ShoppingCart, Heart } from 'lucide-react';
 import { Product } from '../contexts/CartContext';
 import { getMinMaxPrice } from '../utils/pricing';
 import { useI18n } from '../i18n';
@@ -14,22 +13,15 @@ export function ProductCard({ product }: ProductCardProps) {
   const { min, max } = getMinMaxPrice(product.price, product.variations);
   const priceLabel = min === max ? `৳${min}` : `৳${min} - ৳${max}`;
   const { categoryLabel } = useI18n();
-  const [isWishlisted, setIsWishlisted] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
 
   // product.image can be string or string[]; prefer first element
   const primaryImage = Array.isArray(product.image) ? product.image[0] ?? '' : product.image ?? '';
 
-  const handleWishlistToggle = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsWishlisted(!isWishlisted);
-  };
-
   return (
-    <div className="group relative">
+    <div className="group relative h-full">
       <Link to={`/product/${product.id}`}>
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg dark:shadow-gray-900/40 overflow-hidden transition-all duration-300 group-hover:scale-[1.02] group-hover:shadow-2xl group-hover:shadow-red-500/10 border border-gray-100 dark:border-gray-700">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg dark:shadow-gray-900/40 overflow-hidden transition-all duration-300 group-hover:scale-[1.02] group-hover:shadow-2xl group-hover:shadow-red-500/10 border border-gray-100 dark:border-gray-700 h-full flex flex-col">
           
           {/* Image Container with Loading State */}
           <div className="relative aspect-square w-full overflow-hidden bg-gray-100 dark:bg-gray-700">
@@ -39,7 +31,7 @@ export function ProductCard({ product }: ProductCardProps) {
             <img
               src={primaryImage}
               alt={product.name}
-              className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-110 ${
+              className={`w-full h-full object-cover transition-all duration-300 group-hover:scale-105 ${
                 imageLoaded ? 'opacity-100' : 'opacity-0'
               }`}
               onLoad={() => setImageLoaded(true)}
@@ -49,60 +41,28 @@ export function ProductCard({ product }: ProductCardProps) {
                 setImageLoaded(true);
               }}
             />
-            
-            {/* Overlay with Quick Actions */}
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300">
-              <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-                <button
-                  onClick={handleWishlistToggle}
-                  className={`p-2 rounded-full backdrop-blur-sm transition-all duration-200 ${
-                    isWishlisted
-                      ? 'bg-red-500 text-white'
-                      : 'bg-white/80 text-gray-600 hover:bg-red-500 hover:text-white'
-                  }`}
-                >
-                  <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-current' : ''}`} />
-                </button>
-              </div>
-            </div>
 
             {/* Sale Badge (if applicable) */}
             {min !== max && (
-              <div className="absolute top-3 left-3 bg-gradient-to-r from-red-500 to-red-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
+              <div className="absolute top-3 left-3 bg-gradient-to-r from-red-500 to-red-600 text-white px-3 py-1 rounded-full text-xs font-semibold transition-opacity duration-300">
                 From ৳{min}
               </div>
             )}
           </div>
           
           {/* Product Info */}
-          <div className="p-6">
-            <div className="mb-3">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
+          <div className="p-6 flex-1 flex flex-col">
+            <div className="mb-3 flex-1">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors duration-300">
                 {product.name}
               </h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400 uppercase tracking-wide font-medium">
+              <p className="text-sm text-gray-500 dark:text-gray-400 uppercase tracking-wide font-medium transition-colors duration-300">
                 {categoryLabel(product.category)}
               </p>
             </div>
             
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xl font-bold text-red-600 dark:text-red-400">{priceLabel}</p>
-              </div>
-              
-              {/* Quick Add to Cart (appears on hover) */}
-              <div className="opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    // Quick add to cart logic could go here
-                  }}
-                  className="p-2 rounded-full bg-red-500 text-white hover:bg-red-600 transition-colors shadow-lg hover:shadow-xl"
-                >
-                  <ShoppingCart className="w-4 h-4" />
-                </button>
-              </div>
+            <div className="mt-auto">
+              <p className="text-xl font-bold text-red-600 dark:text-red-400 transition-colors duration-300">{priceLabel}</p>
             </div>
           </div>
         </div>

@@ -26,6 +26,12 @@ export function ImageZoom({ images, activeIndex, onImageChange, alt }: ImageZoom
     setIsZoomed(!isZoomed);
   };
 
+  const handleZoomClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleZoom();
+  };
+
   const currentImage = images[activeIndex];
 
   return (
@@ -60,13 +66,16 @@ export function ImageZoom({ images, activeIndex, onImageChange, alt }: ImageZoom
         </div>
 
         {/* Zoom Indicator */}
-        <div className="absolute top-4 right-4 bg-black/50 text-white p-2 rounded-lg">
+        <button
+          onClick={handleZoomClick}
+          className="absolute top-4 right-4 bg-black/50 hover:bg-black/70 text-white p-2 rounded-lg transition-all duration-200 hover:scale-110 cursor-pointer"
+        >
           {isZoomed ? (
             <ZoomOut className="w-4 h-4" />
           ) : (
             <ZoomIn className="w-4 h-4" />
           )}
-        </div>
+        </button>
 
         {/* Image Navigation Arrows (for multiple images) */}
         {images.length > 1 && (
@@ -77,9 +86,9 @@ export function ImageZoom({ images, activeIndex, onImageChange, alt }: ImageZoom
                 const prevIndex = activeIndex === 0 ? images.length - 1 : activeIndex - 1;
                 onImageChange(prevIndex);
               }}
-              className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-all duration-200 hover:scale-110"
+              className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-all duration-300 hover:scale-110 transform hover:-translate-x-1"
             >
-              ←
+              <span className="text-lg">←</span>
             </button>
             <button
               onClick={(e) => {
@@ -87,9 +96,9 @@ export function ImageZoom({ images, activeIndex, onImageChange, alt }: ImageZoom
                 const nextIndex = activeIndex === images.length - 1 ? 0 : activeIndex + 1;
                 onImageChange(nextIndex);
               }}
-              className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-all duration-200 hover:scale-110"
+              className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-all duration-300 hover:scale-110 transform hover:translate-x-1"
             >
-              →
+              <span className="text-lg">→</span>
             </button>
           </>
         )}

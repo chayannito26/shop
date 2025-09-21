@@ -5,67 +5,119 @@ type NormalizedVariation = { label: string; price?: number; image?: string | str
 
 // Multi-tier variation support
 export interface VariationTier {
-  color?: string;
-  size?: string;
   [key: string]: string | undefined;
 }
 
 export function parseVariationTiers(label: string): VariationTier {
-  // Parse variations like "White-L", "Black-M", etc.
+  // Parse variations like "White-L", "Black-M", "A5-Lined", "Large-Blue", etc.
   const parts = label.split('-');
-  if (parts.length === 2) {
-    return { color: parts[0], size: parts[1] };
+  if (parts.length === 1) {
+    // Single tier - try to infer the type
+    const sizePattern = /^(XS|S|M|L|XL|XXL|XXXL|\d+)$/i;
+    const colorPattern = /^(white|black|red|blue|green|yellow|purple|pink|orange|gray|grey|brown)$/i;
+    
+    if (sizePattern.test(label)) {
+      return { size: label };
+    } else if (colorPattern.test(label)) {
+      return { color: label };
+    } else {
+      return { option: label };
+    }
+  } else if (parts.length === 2) {
+    // Two tiers - use heuristics to determine what they are
+    const [first, second] = parts;
+    const firstIsSize = /^(XS|S|M|L|XL|XXL|XXXL|\d+)$/i.test(first);
+    const secondIsSize = /^(XS|S|M|L|XL|XXL|XXXL|\d+)$/i.test(second);
+    const firstIsColor = /^(white|black|red|blue|green|yellow|purple|pink|orange|gray|grey|brown)$/i.test(first);
+    const secondIsColor = /^(white|black|red|blue|green|yellow|purple|pink|orange|gray|grey|brown)$/i.test(second);
+    
+    if (firstIsColor && secondIsSize) {
+      return { color: first, size: second };
+    } else if (firstIsSize && secondIsColor) {
+      return { size: first, color: second };
+    } else {
+      // Generic approach - treat as primary-secondary
+      return { primary: first, secondary: second };
+    }
+  } else {
+    // Multiple tiers - create numbered tiers
+    const result: VariationTier = {};
+    parts.forEach((part, index) => {
+      result[`tier${index + 1}`] = part;
+    });
+    return result;
   }
-  // For single tier variations, treat as size if it's a size, otherwise as color
-  const sizePattern = /^(XS|S|M|L|XL|XXL|XXXL|\d+)$/i;
-  if (sizePattern.test(label)) {
-    return { size: label };
-  }
-  return { color: label };
 }
 
 export function formatVariationLabel(tiers: VariationTier): string {
-  const parts = [];
-  if (tiers.color) parts.push(tiers.color);
-  if (tiers.size) parts.push(tiers.size);
+  const parts = Object.values(tiers).filter(Boolean);
   return parts.join('-');
 }
 
-export function getUniqueColors(variations?: VariationInput[]): string[] {
+export function getVariationTierKeys(variations?: VariationInput[]): string[] {
   if (!variations) return [];
-  const colors = new Set<string>();
+  
+  const tierKeys = new Set<string>();
   variations.forEach(v => {
     const label = typeof v === 'string' ? v : v.label;
     const tiers = parseVariationTiers(label);
-    if (tiers.color) colors.add(tiers.color);
+    Object.keys(tiers).forEach(key => tierKeys.add(key));
   });
-  return Array.from(colors).sort();
+  
+  return Array.from(tierKeys).sort();
+}
+
+export function getVariationTierValues(variations?: VariationInput[], tierKey?: string): string[] {
+  if (!variations || !tierKey) return [];
+  
+  const values = new Set<string>();
+  variations.forEach(v => {
+    const label = typeof v === 'string' ? v : v.label;
+    const tiers = parseVariationTiers(label);
+    if (tiers[tierKey]) values.add(tiers[tierKey]!);
+  });
+  
+  // Sort values intelligently
+  const sorted = Array.from(values).sort((a, b) => {
+    // For sizes, use specific order
+    if (tierKey === 'size') {
+      const sizeOrder = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
+      const aIndex = sizeOrder.indexOf(a);
+      const bIndex = sizeOrder.indexOf(b);
+      if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
+      if (aIndex !== -1) return -1;
+      if (bIndex !== -1) return 1;
+    }
+    
+    // For colors, use common color order
+    if (tierKey === 'color') {
+      const colorOrder = ['white', 'black', 'red', 'blue', 'green', 'yellow', 'purple', 'pink', 'orange', 'gray', 'grey', 'brown'];
+      const aIndex = colorOrder.indexOf(a.toLowerCase());
+      const bIndex = colorOrder.indexOf(b.toLowerCase());
+      if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
+      if (aIndex !== -1) return -1;
+      if (bIndex !== -1) return 1;
+    }
+    
+    return a.localeCompare(b);
+  });
+  
+  return sorted;
+}
+
+export function getVariationByTiers(variations?: VariationInput[], selectedTiers?: VariationTier): NormalizedVariation | undefined {
+  if (!variations || !selectedTiers) return undefined;
+  const targetLabel = formatVariationLabel(selectedTiers);
+  return normalize(variations).find(v => v.label === targetLabel);
+}
+
+// Legacy functions for backward compatibility
+export function getUniqueColors(variations?: VariationInput[]): string[] {
+  return getVariationTierValues(variations, 'color');
 }
 
 export function getUniqueSizes(variations?: VariationInput[]): string[] {
-  if (!variations) return [];
-  const sizes = new Set<string>();
-  variations.forEach(v => {
-    const label = typeof v === 'string' ? v : v.label;
-    const tiers = parseVariationTiers(label);
-    if (tiers.size) sizes.add(tiers.size);
-  });
-  // Sort sizes in logical order
-  const sizeOrder = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
-  return Array.from(sizes).sort((a, b) => {
-    const aIndex = sizeOrder.indexOf(a);
-    const bIndex = sizeOrder.indexOf(b);
-    if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
-    if (aIndex !== -1) return -1;
-    if (bIndex !== -1) return 1;
-    return a.localeCompare(b);
-  });
-}
-
-export function getVariationByTiers(variations?: VariationInput[], color?: string, size?: string): NormalizedVariation | undefined {
-  if (!variations) return undefined;
-  const targetLabel = formatVariationLabel({ color, size });
-  return normalize(variations).find(v => v.label === targetLabel);
+  return getVariationTierValues(variations, 'size');
 }
 
 function normalize(variations?: VariationInput[]): NormalizedVariation[] {

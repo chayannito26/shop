@@ -88,9 +88,10 @@ export const products: Product[] = [
     description: 'Premium quality notebook with Chayannito 26 cover design. Perfect for notes and journaling.',
     category: 'stationery',
     variations: [
-      { label: 'A5 Lined', price: 250, image: ['https://shop.chayannito26.com/images/notebook.jpg'] },
-      { label: 'A5 Blank', price: 250, image: ['https://shop.chayannito26.com/images/notebook.jpg'] },
-      { label: 'A4 Blank', price: 300, image: ['https://shop.chayannito26.com/images/notebook.jpg'] },
+      { label: 'A5-Lined', price: 250, image: ['https://shop.chayannito26.com/images/notebook.jpg'] },
+      { label: 'A5-Blank', price: 250, image: ['https://shop.chayannito26.com/images/notebook.jpg'] },
+      { label: 'A4-Lined', price: 300, image: ['https://shop.chayannito26.com/images/notebook.jpg'] },
+      { label: 'A4-Blank', price: 300, image: ['https://shop.chayannito26.com/images/notebook.jpg'] },
     ]
   },
   {
