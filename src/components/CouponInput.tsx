@@ -78,13 +78,13 @@ export function CouponInput() {
             onKeyDown={handleKeyDown}
             placeholder={t('coupon.placeholder')}
             disabled={!!appliedCoupon || isLoading}
-            className="w-full pl-10 pr-24 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white disabled:bg-gray-100 dark:disabled:bg-gray-800"
+            className="w-full pl-10 pr-24 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white disabled:bg-gray-100 dark:disabled:bg-gray-800"
           />
           {!appliedCoupon && (
             <button
               onClick={handleApply}
               disabled={isLoading}
-              className="absolute right-1 top-1/2 -translate-y-1/2 bg-blue-600 text-white px-4 py-1 rounded-md text-sm font-medium hover:bg-blue-700 disabled:opacity-50"
+              className="absolute right-1 top-1/2 -translate-y-1/2 bg-red-600 text-white px-4 py-1 rounded-md text-sm font-medium hover:bg-red-700 disabled:opacity-50"
             >
               {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : t('coupon.apply')}
             </button>

@@ -27,10 +27,10 @@ export function VariationSelector({
       <div className={`space-y-6 ${className}`}>
         {/* Color Selection */}
         <div>
-          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
             Color
           </h3>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-3">
             {colors.map((color) => {
               const isSelected = selectedTiers.color === color;
               const isAvailable = sizes.some(size => 
@@ -51,15 +51,18 @@ export function VariationSelector({
                     }
                   }}
                   disabled={!isAvailable}
-                  className={`px-4 py-2 border rounded-lg transition-all duration-200 font-medium ${
+                  className={`relative px-6 py-3 border rounded-xl transition-all duration-300 font-medium transform hover:scale-105 ${
                     isSelected
-                      ? 'border-red-500 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-200 ring-2 ring-red-500/20'
+                      ? 'border-red-500 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-200 ring-2 ring-red-500/20 shadow-lg shadow-red-500/20'
                       : isAvailable
-                        ? 'border-gray-300 dark:border-gray-600 hover:border-red-400 dark:hover:border-red-500 text-gray-900 dark:text-white hover:bg-red-50 dark:hover:bg-red-900/10'
+                        ? 'border-gray-300 dark:border-gray-600 hover:border-red-400 dark:hover:border-red-500 text-gray-900 dark:text-white hover:bg-red-50 dark:hover:bg-red-900/10 hover:shadow-md'
                         : 'border-gray-200 dark:border-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed opacity-50'
                   }`}
                 >
-                  {color}
+                  {isSelected && (
+                    <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-red-500/10 to-red-600/10 animate-pulse"></div>
+                  )}
+                  <span className="relative">{color}</span>
                 </button>
               );
             })}
@@ -68,10 +71,10 @@ export function VariationSelector({
 
         {/* Size Selection */}
         <div>
-          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
             Size
           </h3>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-3">
             {sizes.map((size) => {
               const isSelected = selectedTiers.size === size;
               const isAvailable = colors.some(color => 
@@ -92,56 +95,65 @@ export function VariationSelector({
                     }
                   }}
                   disabled={!isAvailable}
-                  className={`px-4 py-2 border rounded-lg transition-all duration-200 font-medium min-w-[3rem] ${
+                  className={`relative px-6 py-3 border rounded-xl transition-all duration-300 font-medium min-w-[4rem] transform hover:scale-105 ${
                     isSelected
-                      ? 'border-red-500 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-200 ring-2 ring-red-500/20'
+                      ? 'border-red-500 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-200 ring-2 ring-red-500/20 shadow-lg shadow-red-500/20'
                       : isAvailable
-                        ? 'border-gray-300 dark:border-gray-600 hover:border-red-400 dark:hover:border-red-500 text-gray-900 dark:text-white hover:bg-red-50 dark:hover:bg-red-900/10'
+                        ? 'border-gray-300 dark:border-gray-600 hover:border-red-400 dark:hover:border-red-500 text-gray-900 dark:text-white hover:bg-red-50 dark:hover:bg-red-900/10 hover:shadow-md'
                         : 'border-gray-200 dark:border-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed opacity-50'
                   }`}
                 >
-                  {size}
+                  {isSelected && (
+                    <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-red-500/10 to-red-600/10 animate-pulse"></div>
+                  )}
+                  <span className="relative">{size}</span>
                 </button>
               );
             })}
           </div>
         </div>
 
-        {/* Show selected combination if both are selected */}
+        {/* Show selected combination with animation */}
         {selectedTiers.color && selectedTiers.size && (
-          <div className="p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
-            <p className="text-sm text-green-800 dark:text-green-200">
-              Selected: <span className="font-semibold">{selectedTiers.color} - {selectedTiers.size}</span>
-            </p>
+          <div className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border border-green-200 dark:border-green-800 rounded-xl shadow-sm animate-fade-in">
+            <div className="flex items-center space-x-2">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-ping"></div>
+              <p className="text-sm text-green-800 dark:text-green-200">
+                Selected: <span className="font-bold">{selectedTiers.color} - {selectedTiers.size}</span>
+              </p>
+            </div>
           </div>
         )}
       </div>
     );
   }
 
-  // Single-tier variations (original behavior)
+  // Single-tier variations (original behavior) with improved styling
   const normalizedVariations = variations.map(v => 
     typeof v === 'string' ? { label: v } : { label: v.label, price: v.price, image: v.image }
   );
 
   return (
     <div className={className}>
-      <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">
+      <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
         Options
       </h3>
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-3">
         {normalizedVariations.map((v) => (
           <button
             key={v.label}
             onClick={() => onVariationChange(v.label)}
-            className={`px-4 py-2 border rounded-lg transition-all duration-200 font-medium ${
+            className={`relative px-6 py-3 border rounded-xl transition-all duration-300 font-medium transform hover:scale-105 ${
               selectedVariation === v.label
-                ? 'border-red-500 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-200 ring-2 ring-red-500/20'
-                : 'border-gray-300 dark:border-gray-600 hover:border-red-400 dark:hover:border-red-500 text-gray-900 dark:text-white hover:bg-red-50 dark:hover:bg-red-900/10'
+                ? 'border-red-500 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-200 ring-2 ring-red-500/20 shadow-lg shadow-red-500/20'
+                : 'border-gray-300 dark:border-gray-600 hover:border-red-400 dark:hover:border-red-500 text-gray-900 dark:text-white hover:bg-red-50 dark:hover:bg-red-900/10 hover:shadow-md'
             }`}
             title={typeof v.price === 'number' ? `৳${v.price}` : undefined}
           >
-            {v.label}
+            {selectedVariation === v.label && (
+              <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-red-500/10 to-red-600/10 animate-pulse"></div>
+            )}
+            <span className="relative">{v.label}</span>
           </button>
         ))}
       </div>

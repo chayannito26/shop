@@ -45,7 +45,7 @@ export function Cart() {
           <p className="text-gray-600 dark:text-gray-300 mb-8">{t('cart.empty.subtitle')}</p>
           <Link
             to="/"
-            className="bg-blue-600 dark:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 dark:hover:bg-blue-700 transition-colors"
+            className="bg-red-600 dark:bg-red-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-red-700 dark:hover:bg-red-700 transition-colors"
           >
             {t('cart.empty.continue')}
           </Link>
@@ -78,7 +78,7 @@ export function Cart() {
                     {item.selectedVariation && (
                       <p className="text-sm text-gray-600 dark:text-gray-400">{variationLabel(item)}: {item.selectedVariation}</p>
                     )}
-                    <p className="text-lg font-bold text-blue-600 dark:text-blue-400">৳{item.price}</p>
+                    <p className="text-lg font-bold text-red-600 dark:text-red-400">৳{item.price}</p>
                   </div>
 
                   <div className="flex items-center space-x-3">
@@ -131,7 +131,7 @@ export function Cart() {
               <div className="border-t dark:border-gray-700 pt-4">
                 <div className="flex justify-between text-xl font-bold">
                   <span className="text-gray-900 dark:text-white">{t('cart.summary.total')}</span>
-                  <span className="text-blue-600 dark:text-blue-400">৳{cartState.total - discount}</span>
+                  <span className="text-red-600 dark:text-red-400">৳{cartState.total - discount}</span>
                 </div>
               </div>
 
@@ -141,7 +141,7 @@ export function Cart() {
 
               <Link
                 to="/checkout"
-                className="w-full bg-blue-600 dark:bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 dark:hover:bg-blue-700 transition-colors mt-6 block text-center"
+                className="w-full bg-red-600 dark:bg-red-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-red-700 dark:hover:bg-red-700 transition-colors mt-6 block text-center"
               >
                 {t('cart.summary.checkout')}
               </Link>

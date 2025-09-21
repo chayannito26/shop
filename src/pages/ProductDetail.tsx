@@ -9,6 +9,7 @@ import { trackViewContent, trackAddToCart, trackCustomizeProduct } from '../anal
 import { useI18n } from '../i18n';
 import { useModal } from '../contexts/ModalContext';
 import { VariationSelector } from '../components/VariationSelector';
+import { ImageZoom } from '../components/ImageZoom';
 
 export function ProductDetail() {
   const { id } = useParams<{ id: string }>();
@@ -81,7 +82,7 @@ export function ProductDetail() {
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">{t('product.notFound')}</h2>
           <button
             onClick={() => navigate('/')}
-            className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
+            className="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300"
           >
             {t('product.returnHome')}
           </button>
@@ -155,32 +156,18 @@ export function ProductDetail() {
         </button>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Product Image + Thumbnails */}
+          {/* Product Image with Zoom */}
           <div>
-            <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-200 dark:bg-gray-700">
-              {displayImage ? (
-                <img
-                  src={images[activeImageIndex]}
-                  alt={`${product.name} - ${activeImageIndex + 1}`}
-                  className="w-full h-full object-cover object-center"
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center text-gray-500">No image available</div>
-              )}
-            </div>
-
-            {images.length > 1 && (
-              <div className="mt-3 flex gap-2 overflow-x-auto">
-                {images.map((src, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setActiveImageIndex(i)}
-                    className={`border rounded-lg p-0.5 ${i === activeImageIndex ? 'ring-2 ring-blue-500' : ''}`}
-                    aria-label={`View image ${i + 1}`}
-                  >
-                    <img src={src} alt={`${product.name} thumb ${i + 1}`} className="w-20 h-20 object-cover rounded-md" />
-                  </button>
-                ))}
+            {displayImage ? (
+              <ImageZoom
+                images={images}
+                activeIndex={activeImageIndex}
+                onImageChange={setActiveImageIndex}
+                alt={product.name}
+              />
+            ) : (
+              <div className="aspect-square w-full rounded-2xl bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                <p className="text-gray-500 dark:text-gray-400">No image available</p>
               </div>
             )}
           </div>
@@ -190,12 +177,12 @@ export function ProductDetail() {
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
               {productName(product.id, product.name)}
             </h1>
-            <p className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-6">
+            <p className="text-2xl font-bold text-red-600 dark:text-red-400 mb-6">
               ৳{selectedVariation ? unitPrice : (min === max ? min : `${min} - ${max}`)}
             </p>
 
             <div className="mb-6">
-              <span className="inline-block px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm font-medium capitalize">
+              <span className="inline-block px-3 py-1 bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full text-sm font-medium capitalize">
                 {categoryLabel(product.category)}
               </span>
             </div>
@@ -286,7 +273,7 @@ export function ProductDetail() {
                       );
                     }
                   }}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
                 <p className="text-xs text-gray-500 mt-1">{t('product.phoneModel.help')}</p>
               </div>
@@ -309,43 +296,46 @@ export function ProductDetail() {
               )
             )}
 
-            {/* Quantity Selector */}
-            <div className="mb-6">
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">{t('product.quantity')}</h3>
-              <div className="flex items-center space-x-3">
+            {/* Enhanced Quantity Selector */}
+            <div className="mb-8">
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">{t('product.quantity')}</h3>
+              <div className="flex items-center space-x-4">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="w-10 h-10 rounded-full border border-gray-300 dark:border-gray-600 flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-gray-900 dark:text-white"
+                  disabled={quantity <= 1}
+                  className="w-12 h-12 rounded-xl border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center hover:bg-red-50 dark:hover:bg-red-900/10 hover:border-red-400 dark:hover:border-red-500 transition-all duration-200 text-xl font-bold text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 active:scale-95"
                 >
-                  -
+                  −
                 </button>
-                <span className="text-xl font-medium px-4 text-gray-900 dark:text-white">{quantity}</span>
+                <div className="px-6 py-3 bg-gray-50 dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 min-w-[80px] text-center">
+                  <span className="text-2xl font-bold text-gray-900 dark:text-white">{quantity}</span>
+                </div>
                 <button
                   onClick={() => setQuantity(quantity + 1)}
-                  className="w-10 h-10 rounded-full border border-gray-300 dark:border-gray-600 flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-gray-900 dark:text-white"
+                  className="w-12 h-12 rounded-xl border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center hover:bg-red-50 dark:hover:bg-red-900/10 hover:border-red-400 dark:hover:border-red-500 transition-all duration-200 text-xl font-bold text-gray-900 dark:text-white transform hover:scale-105 active:scale-95"
                 >
                   +
                 </button>
               </div>
             </div>
 
-            {/* Action Buttons */}
-            <div className="space-y-3">
+            {/* Enhanced Action Buttons */}
+            <div className="space-y-4">
               {/* Buy Now Button */}
               <button
                 onClick={handleBuyNow}
-                className="w-full bg-green-600 dark:bg-green-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-green-700 dark:hover:bg-green-700 transition-colors flex items-center justify-center space-x-2"
+                className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white py-4 px-6 rounded-2xl font-semibold transition-all duration-300 flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] group"
               >
-                <Zap className="h-5 w-5" />
+                <Zap className="h-5 w-5 group-hover:animate-pulse" />
                 <span>{t('product.buyNow')} - ৳{unitPrice * quantity}</span>
               </button>
 
               {/* Add to Cart Button */}
               <button
                 onClick={handleAddToCart}
-                className="w-full bg-blue-600 dark:bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 dark:hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2"
+                className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white py-4 px-6 rounded-2xl font-semibold transition-all duration-300 flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] group"
               >
-                <ShoppingCart className="h-5 w-5" />
+                <ShoppingCart className="h-5 w-5 group-hover:animate-bounce" />
                 <span>{t('product.addToCart')}</span>
               </button>
             </div>

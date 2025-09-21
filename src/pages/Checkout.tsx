@@ -377,7 +377,7 @@ export function Checkout() {
           <div className="space-y-3">
             <button
               onClick={() => navigate('/')}
-              className="w-full bg-blue-600 dark:bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 dark:hover:bg-blue-700 transition-colors"
+              className="w-full bg-red-600 dark:bg-red-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-red-700 dark:hover:bg-red-700 transition-colors"
             >
               {t('checkout.placed.continue')}
             </button>
@@ -405,7 +405,7 @@ export function Checkout() {
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="group">
-                <label htmlFor="name" className="block text-sm font-medium mb-1 transition-colors text-gray-700 dark:text-gray-300 group-focus-within:text-blue-600 dark:group-focus-within:text-blue-400">
+                <label htmlFor="name" className="block text-sm font-medium mb-1 transition-colors text-gray-700 dark:text-gray-300 group-focus-within:text-red-600 dark:group-focus-within:text-red-400">
                   {t('checkout.form.name')}
                 </label>
                 <input
@@ -421,13 +421,13 @@ export function Checkout() {
                     (e.currentTarget as HTMLInputElement).setCustomValidity(t('checkout.validation.required'));
                   }}
                   onInput={(e) => {(e.currentTarget as HTMLInputElement).setCustomValidity('');}}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="group">
-                  <label htmlFor="roll" className="block text-sm font-medium mb-1 transition-colors text-gray-700 dark:text-gray-300 group-focus-within:text-blue-600 dark:group-focus-within:text-blue-400">
+                  <label htmlFor="roll" className="block text-sm font-medium mb-1 transition-colors text-gray-700 dark:text-gray-300 group-focus-within:text-red-600 dark:group-focus-within:text-red-400">
                     {t('checkout.form.roll')}
                   </label>
                   <input
@@ -440,12 +440,12 @@ export function Checkout() {
                     autoComplete="off"
                     onInvalid={(e) => {(e.currentTarget as HTMLInputElement).setCustomValidity(t('checkout.validation.required'))}}
                     onInput={(e) => {(e.currentTarget as HTMLInputElement).setCustomValidity('')}}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   />
                 </div>
 
                 <div className="group">
-                  <label htmlFor="department" className="block text-sm font-medium mb-1 transition-colors text-gray-700 dark:text-gray-300 group-focus-within:text-blue-600 dark:group-focus-within:text-blue-400">
+                  <label htmlFor="department" className="block text-sm font-medium mb-1 transition-colors text-gray-700 dark:text-gray-300 group-focus-within:text-red-600 dark:group-focus-within:text-red-400">
                     {t('checkout.form.department')}
                   </label>
                   <select
@@ -456,7 +456,7 @@ export function Checkout() {
                     required
                     onInvalid={(e) => {(e.currentTarget as HTMLSelectElement).setCustomValidity(t('checkout.validation.required'))}}
                     onInput={(e) => {(e.currentTarget as HTMLSelectElement).setCustomValidity('')}}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   >
                     <option value="">{t('checkout.form.selectDepartment')}</option>
                     <option value="Science">{t('checkout.form.dept.science')}</option>
@@ -472,7 +472,7 @@ export function Checkout() {
                   className={`block text-sm font-medium mb-1 transition-colors ${
                     errors.phone
                       ? 'text-red-600 dark:text-red-400'
-                      : 'text-gray-700 dark:text-gray-300 group-focus-within:text-blue-600 dark:group-focus-within:text-blue-400'
+                      : 'text-gray-700 dark:text-gray-300 group-focus-within:text-red-600 dark:group-focus-within:text-red-400'
                   }`}
                 >
                   {t('checkout.form.phone')}
@@ -489,13 +489,13 @@ export function Checkout() {
                   aria-describedby={errors.phone ? 'err-phone' : undefined}
                   onInvalid={(e) => {(e.currentTarget as HTMLInputElement).setCustomValidity(t('checkout.validation.required'))}}
                   onInput={(e) => {(e.currentTarget as HTMLInputElement).setCustomValidity('')}}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
                 {errors.phone && <p id="err-phone" className="text-xs text-red-500 mt-1">{errors.phone}</p>}
               </div>
 
               <div className="group">
-                <label htmlFor="email" className="block text-sm font-medium mb-1 transition-colors text-gray-700 dark:text-gray-300 group-focus-within:text-blue-600 dark:group-focus-within:text-blue-400">
+                <label htmlFor="email" className="block text-sm font-medium mb-1 transition-colors text-gray-700 dark:text-gray-300 group-focus-within:text-red-600 dark:group-focus-within:text-red-400">
                   {t('checkout.form.email')}
                 </label>
                 <input
@@ -517,7 +517,7 @@ export function Checkout() {
                   onInput={(e) => {
                     (e.currentTarget as HTMLInputElement).setCustomValidity('');
                   }}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
               </div>
 
@@ -541,7 +541,7 @@ export function Checkout() {
                   className={`block text-sm font-medium mb-1 transition-colors ${
                     errors.bkashTransactionId
                       ? 'text-red-600 dark:text-red-400'
-                      : 'text-gray-700 dark:text-gray-300 group-focus-within:text-blue-600 dark:group-focus-within:text-blue-400'
+                      : 'text-gray-700 dark:text-gray-300 group-focus-within:text-red-600 dark:group-focus-within:text-red-400'
                   }`}
                 >
                   {t('checkout.bkash.label')}
@@ -565,7 +565,7 @@ export function Checkout() {
                     }
                   }}
                   onInput={(e) => {(e.currentTarget as HTMLInputElement).setCustomValidity('')}}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
                 {errors.bkashTransactionId && <p id="err-bkash" className="text-xs text-red-500 mt-1">{errors.bkashTransactionId}</p>}
                 <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{t('checkout.bkash.help')}</p>
@@ -605,7 +605,7 @@ export function Checkout() {
               <button
                 type="submit"
                 disabled={isSubmitting || !!errors.phone || !!errors.bkashTransactionId}
-                className="w-full bg-blue-600 dark:bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 dark:hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-6"
+                className="w-full bg-red-600 dark:bg-red-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-red-700 dark:hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-6"
               >
                 {isSubmitting ? t('checkout.placingOrder') : t('checkout.placeOrder')}
               </button>
@@ -633,7 +633,7 @@ export function Checkout() {
                     )}
                     <p className="text-sm text-gray-600 dark:text-gray-400">Qty: {item.quantity}</p>
                   </div>
-                  <p className="font-bold text-blue-600 dark:text-blue-400">৳{item.price * item.quantity}</p>
+                  <p className="font-bold text-red-600 dark:text-red-400">৳{item.price * item.quantity}</p>
                 </div>
               ))}
             </div>
@@ -641,7 +641,7 @@ export function Checkout() {
             <div className="border-t dark:border-gray-700 pt-4">
               <div className="flex justify-between text-xl font-bold">
                 <span className="text-gray-900 dark:text-white">{t('cart.summary.total')}</span>
-                <span className="text-blue-600 dark:text-blue-400">৳{cartState.total - discount}</span>
+                <span className="text-red-600 dark:text-red-400">৳{cartState.total - discount}</span>
               </div>
               {appliedCoupon && (
                 <div className="flex justify-between text-sm mt-2">
