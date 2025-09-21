@@ -36,7 +36,7 @@ export default function Modal({ open, title, message, primaryLabel, onClose }: P
           <div className="text-gray-700 dark:text-gray-300 leading-relaxed">{message}</div>
         </div>
         <div className="p-3 border-t dark:border-gray-700 flex justify-end gap-2">
-          <button onClick={onClose} className="px-4 py-2 rounded-md bg-blue-600 dark:bg-blue-600 text-white hover:bg-blue-700">{primaryLabel ?? 'OK'}</button>
+          <button onClick={onClose} className="px-4 py-2 rounded-md bg-red-600 dark:bg-red-600 text-white hover:bg-red-700">{primaryLabel ?? 'OK'}</button>
         </div>
       </div>
     </div>

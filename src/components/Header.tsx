@@ -22,10 +22,10 @@ export function Header() {
           </Link>
 
           <nav className="hidden md:flex items-center space-x-8">
-            <Link to="/" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+            <Link to="/" className="text-gray-700 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-colors">
               {t('header.nav.home')}
             </Link>
-            <Link to="/cart" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+            <Link to="/cart" className="text-gray-700 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-colors">
               {t('header.nav.cart')}
             </Link>
           </nav>
@@ -43,7 +43,7 @@ export function Header() {
 
             <Link
               to="/cart"
-              className="relative p-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              className="relative p-2 text-gray-700 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-colors"
             >
               <ShoppingCart className="h-6 w-6" />
               {itemCount > 0 && (

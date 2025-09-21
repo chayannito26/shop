@@ -165,7 +165,7 @@ export function LanguagePrompt() {
           </button>
           <button
             onClick={() => setLang('bn')}
-            className="w-full px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700"
+            className="w-full px-4 py-2 rounded-md bg-red-600 text-white hover:bg-red-700"
             aria-label="বাংলা ভাষা নির্বাচন করুন"
           >
             <span role="img" aria-label="Bangladesh flag" className="mr-1">🇧🇩</span>

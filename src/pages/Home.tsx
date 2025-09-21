@@ -67,7 +67,7 @@ export function Home() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-700 dark:to-blue-900 text-white py-16">
+      <div className="bg-gradient-to-r from-red-600 to-red-800 dark:from-red-700 dark:to-red-900 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-4">{t('home.hero.title')}</h1>
           <p className="text-xl md:text-2xl mb-8">{t('home.hero.subtitle')}</p>
@@ -94,8 +94,8 @@ export function Home() {
             aria-pressed={selectedCategory === null}
             className={`px-4 py-2 rounded-full text-sm font-medium capitalize transition-colors ${
               selectedCategory === null
-                ? 'bg-blue-600 text-white'
-                : 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 hover:bg-blue-200 dark:hover:bg-blue-800'
+                ? 'bg-red-600 text-white'
+                : 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 hover:bg-red-200 dark:hover:bg-red-800'
             }`}
           >
             {t('home.filter.all')} ({products.length})
@@ -108,8 +108,8 @@ export function Home() {
               aria-pressed={selectedCategory === category}
               className={`px-4 py-2 rounded-full text-sm font-medium capitalize transition-colors ${
                 selectedCategory === category
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 hover:bg-blue-200 dark:hover:bg-blue-800'
+                  ? 'bg-red-600 text-white'
+                  : 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 hover:bg-red-200 dark:hover:bg-red-800'
               }`}
             >
               {categoryLabel(category)} ({counts[category] ?? 0})
@@ -124,7 +124,7 @@ export function Home() {
             <button
               type="button"
               onClick={() => toggleCategory(null)}
-              className="px-4 py-2 bg-blue-600 dark:bg-blue-600 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-700 transition-colors"
+              className="px-4 py-2 bg-red-600 dark:bg-red-600 text-white rounded-lg hover:bg-red-700 dark:hover:bg-red-700 transition-colors"
             >
               {t('home.filter.clear')}
             </button>
