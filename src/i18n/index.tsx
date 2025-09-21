@@ -141,13 +141,13 @@ export function LanguagePrompt() {
 
   return (
     <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/40 p-4">
-      <div className="w-full max-w-sm rounded-lg bg-white dark:bg-gray-800 shadow-lg p-6">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+      <div className="w-full max-w-sm rounded-lg bg-white dark:bg-zinc-800 shadow-lg p-6">
+        <h2 className="text-xl font-semibold text-zinc-900 dark:text-white mb-2">
           <span lang="en">{RESOURCES.en.prompt.title}</span>
           <span aria-hidden="true" className="mx-1">|</span>
           <span lang="bn">{RESOURCES.bn.prompt.title}</span>
         </h2>
-        <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
+        <p className="text-sm text-zinc-600 dark:text-zinc-300 mb-4">
           <span lang="en">{RESOURCES.en.prompt.description}</span>
           <span aria-hidden="true" className="mx-1">|</span>
           <span lang="bn">{RESOURCES.bn.prompt.description}</span>
@@ -155,7 +155,7 @@ export function LanguagePrompt() {
         <div className="grid grid-cols-2 gap-3">
           <button
             onClick={() => setLang('en')}
-            className="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-900 dark:text-white"
+            className="w-full px-4 py-2 rounded-md border border-zinc-300 dark:border-zinc-600 hover:bg-gray-50 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white"
             aria-label="Select English language"
           >
             <span role="img" aria-label="UK flag" className="mr-1">🇬🇧</span>

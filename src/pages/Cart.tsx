@@ -38,11 +38,11 @@ export function Cart() {
 
   if (cartState.items.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-zinc-900 flex items-center justify-center">
         <div className="text-center">
-          <ShoppingBag className="h-16 w-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">{t('cart.empty.title')}</h2>
-          <p className="text-gray-600 dark:text-gray-300 mb-8">{t('cart.empty.subtitle')}</p>
+          <ShoppingBag className="h-16 w-16 text-zinc-400 dark:text-zinc-500 mx-auto mb-4" />
+          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-4">{t('cart.empty.title')}</h2>
+          <p className="text-zinc-600 dark:text-zinc-300 mb-8">{t('cart.empty.subtitle')}</p>
           <Link
             to="/"
             className="bg-red-600 dark:bg-red-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-red-700 dark:hover:bg-red-700 transition-colors"
@@ -55,14 +55,14 @@ export function Cart() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-50 dark:bg-zinc-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">{t('cart.title')}</h1>
+        <h1 className="text-3xl font-bold text-zinc-900 dark:text-white mb-8">{t('cart.title')}</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Cart Items */}
           <div className="lg:col-span-2">
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-gray-900/20 p-6">
+            <div className="bg-white dark:bg-zinc-800 rounded-lg shadow-md dark:shadow-zinc-900/20 p-6">
               {cartState.items.map((item) => (
                 <div key={item.cartItemId} className="flex items-center py-6 border-b last:border-b-0">
                   <img
@@ -72,11 +72,11 @@ export function Cart() {
                   />
 
                   <div className="flex-1 ml-6">
-                    <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+                    <h3 className="text-lg font-medium text-zinc-900 dark:text-white">
                       {productName(item.id, item.name)}
                     </h3>
                     {item.selectedVariation && (
-                      <p className="text-sm text-gray-600 dark:text-gray-400">{variationLabel(item)}: {item.selectedVariation}</p>
+                      <p className="text-sm text-zinc-600 dark:text-zinc-400">{variationLabel(item)}: {item.selectedVariation}</p>
                     )}
                     <p className="text-lg font-bold text-red-600 dark:text-red-400">৳{item.price}</p>
                   </div>
@@ -84,16 +84,16 @@ export function Cart() {
                   <div className="flex items-center space-x-3">
                     <button
                       onClick={() => updateQuantity(item.cartItemId, item.quantity - 1)}
-                      className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-400"
+                      className="p-1 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors text-zinc-600 dark:text-zinc-400"
                     >
                       <Minus className="h-4 w-4" />
                     </button>
 
-                    <span className="text-lg font-medium px-3 text-gray-900 dark:text-white">{item.quantity}</span>
+                    <span className="text-lg font-medium px-3 text-zinc-900 dark:text-white">{item.quantity}</span>
 
                     <button
                       onClick={() => updateQuantity(item.cartItemId, item.quantity + 1)}
-                      className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-400"
+                      className="p-1 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors text-zinc-600 dark:text-zinc-400"
                     >
                       <Plus className="h-4 w-4" />
                     </button>
@@ -112,11 +112,11 @@ export function Cart() {
 
           {/* Order Summary */}
           <div className="lg:col-span-1">
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-gray-900/20 p-6 sticky top-24">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">{t('cart.summary.title')}</h2>
+            <div className="bg-white dark:bg-zinc-800 rounded-lg shadow-md dark:shadow-zinc-900/20 p-6 sticky top-24">
+              <h2 className="text-xl font-bold text-zinc-900 dark:text-white mb-4">{t('cart.summary.title')}</h2>
 
               <div className="space-y-2 mb-4">
-                <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+                <div className="flex justify-between text-sm text-zinc-600 dark:text-zinc-400">
                   <span>{t('cart.summary.subtotal')}</span>
                   <span>৳{cartState.total}</span>
                 </div>
@@ -128,9 +128,9 @@ export function Cart() {
                 )}
               </div>
 
-              <div className="border-t dark:border-gray-700 pt-4">
+              <div className="border-t dark:border-zinc-700 pt-4">
                 <div className="flex justify-between text-xl font-bold">
-                  <span className="text-gray-900 dark:text-white">{t('cart.summary.total')}</span>
+                  <span className="text-zinc-900 dark:text-white">{t('cart.summary.total')}</span>
                   <span className="text-red-600 dark:text-red-400">৳{cartState.total - discount}</span>
                 </div>
               </div>
@@ -148,7 +148,7 @@ export function Cart() {
 
               <Link
                 to="/"
-                className="w-full border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 py-3 px-6 rounded-lg font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors mt-3 block text-center"
+                className="w-full border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 py-3 px-6 rounded-lg font-medium hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors mt-3 block text-center"
               >
                 {t('cart.summary.continue')}
               </Link>

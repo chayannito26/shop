@@ -11,10 +11,10 @@ interface VariationSelectorProps {
   productId?: string; // Add productId to enable special product-specific logic
 }
 
-export function VariationSelector({ 
-  variations, 
-  selectedVariation, 
-  onVariationChange, 
+export function VariationSelector({
+  variations,
+  selectedVariation,
+  onVariationChange,
   className = "",
   schema,
   productId
@@ -28,7 +28,7 @@ export function VariationSelector({
   // If we have multiple tiers, show multi-tier selector
   if (tierKeys.length > 1) {
     const isComplete = tierKeys.every(key => Boolean(selectedTiers[key]));
-    
+
     return (
       <div className={`space-y-6 ${className}`}>
         {tierKeys.map((tierKey) => {
@@ -36,16 +36,16 @@ export function VariationSelector({
           const displayName = (schema && schema.titles && schema.titles[tierKey])
             ? schema.titles[tierKey]
             : tierKey.charAt(0).toUpperCase() + tierKey.slice(1);
-          
+
           return (
             <div key={tierKey}>
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+              <h3 className="text-lg font-medium text-zinc-900 dark:text-white mb-4">
                 {displayName}
               </h3>
               <div className="flex flex-wrap gap-3">
                 {tierValues.map((value) => {
                   const isSelected = selectedTiers[tierKey] === value;
-                  
+
                   // Check if this combination is available
                   // tentative tiers when testing availability
 
@@ -68,7 +68,7 @@ export function VariationSelector({
                     }
                     return true;
                   });
-                  
+
                   return (
                     <button
                       key={value}
@@ -150,8 +150,8 @@ export function VariationSelector({
                         isSelected
                           ? 'border-red-500 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-200 ring-2 ring-red-500/20 shadow-lg shadow-red-500/20'
                           : isAvailable
-                            ? 'border-gray-300 dark:border-gray-600 hover:border-red-400 dark:hover:border-red-500 text-gray-900 dark:text-white hover:bg-red-50 dark:hover:bg-red-900/10 hover:shadow-md'
-                            : 'border-gray-200 dark:border-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed opacity-50'
+                            ? 'border-zinc-300 dark:border-zinc-600 hover:border-red-400 dark:hover:border-red-500 text-zinc-900 dark:text-white hover:bg-red-50 dark:hover:bg-red-900/10 hover:shadow-md'
+                            : 'border-zinc-200 dark:border-zinc-700 text-zinc-400 dark:text-zinc-500 cursor-not-allowed opacity-50'
                       }`}
                     >
                       {isSelected && (
@@ -182,13 +182,13 @@ export function VariationSelector({
   }
 
   // Single-tier variations (original behavior) with improved styling
-  const normalizedVariations = variations.map(v => 
+  const normalizedVariations = variations.map(v =>
     typeof v === 'string' ? { label: v } : { label: v.label, price: v.price, image: v.image }
   );
 
   return (
     <div className={className}>
-      <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+      <h3 className="text-lg font-medium text-zinc-900 dark:text-white mb-4">
         Options
       </h3>
       <div className="flex flex-wrap gap-3">
@@ -199,7 +199,7 @@ export function VariationSelector({
             className={`relative px-6 py-3 border rounded-xl transition-all duration-300 font-medium transform hover:scale-105 ${
               selectedVariation === v.label
                 ? 'border-red-500 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-200 ring-2 ring-red-500/20 shadow-lg shadow-red-500/20'
-                : 'border-gray-300 dark:border-gray-600 hover:border-red-400 dark:hover:border-red-500 text-gray-900 dark:text-white hover:bg-red-50 dark:hover:bg-red-900/10 hover:shadow-md'
+                : 'border-zinc-300 dark:border-zinc-600 hover:border-red-400 dark:hover:border-red-500 text-zinc-900 dark:text-white hover:bg-red-50 dark:hover:bg-red-900/10 hover:shadow-md'
             }`}
             title={typeof v.price === 'number' ? `৳${v.price}` : undefined}
           >

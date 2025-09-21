@@ -14,11 +14,11 @@ export function ImageZoom({ images, activeIndex, onImageChange, alt }: ImageZoom
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!isZoomed) return;
-    
+
     const rect = e.currentTarget.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * 100;
     const y = ((e.clientY - rect.top) / rect.height) * 100;
-    
+
     setZoomPosition({ x, y });
   };
 
@@ -37,8 +37,8 @@ export function ImageZoom({ images, activeIndex, onImageChange, alt }: ImageZoom
   return (
     <div className="relative">
       {/* Main Image Display */}
-      <div 
-        className="relative overflow-hidden rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-xl"
+      <div
+        className="relative overflow-hidden rounded-2xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 shadow-xl"
         onMouseMove={handleMouseMove}
         onMouseLeave={() => setIsZoomed(false)}
       >
@@ -112,9 +112,9 @@ export function ImageZoom({ images, activeIndex, onImageChange, alt }: ImageZoom
               key={index}
               onClick={() => onImageChange(index)}
               className={`border rounded-xl p-1 transition-all duration-300 hover:shadow-lg ${
-                index === activeIndex 
-                  ? 'ring-2 ring-red-500 border-red-500 shadow-lg shadow-red-500/20' 
-                  : 'border-gray-300 dark:border-gray-600 hover:border-red-400'
+                index === activeIndex
+                  ? 'ring-2 ring-red-500 border-red-500 shadow-lg shadow-red-500/20'
+                  : 'border-zinc-300 dark:border-zinc-600 hover:border-red-400'
               }`}
             >
               <img

@@ -363,16 +363,16 @@ export function Checkout() {
 
   if (orderPlaced) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
-        <div className="max-w-md mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-gray-900/20 p-8 text-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-zinc-900 flex items-center justify-center">
+        <div className="max-w-md mx-auto bg-white dark:bg-zinc-800 rounded-lg shadow-md dark:shadow-zinc-900/20 p-8 text-center">
           <CheckCircle className="h-16 w-16 text-green-500 dark:text-green-400 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">{t('checkout.placed.title')}</h2>
-          <p className="text-gray-600 dark:text-gray-300 mb-4">
+          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-4">{t('checkout.placed.title')}</h2>
+          <p className="text-zinc-600 dark:text-zinc-300 mb-4">
             {t('checkout.placed.instruction')}
           </p>
-          <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 mb-6">
-            <p className="text-sm text-gray-600 dark:text-gray-400">{t('checkout.placed.orderId')}</p>
-            <p className="font-mono text-lg text-gray-900 dark:text-white">{orderId}</p>
+          <div className="bg-gray-50 dark:bg-zinc-700 rounded-lg p-4 mb-6">
+            <p className="text-sm text-zinc-600 dark:text-zinc-400">{t('checkout.placed.orderId')}</p>
+            <p className="font-mono text-lg text-zinc-900 dark:text-white">{orderId}</p>
           </div>
           <div className="space-y-3">
             <button
@@ -383,7 +383,7 @@ export function Checkout() {
             </button>
             <button
               onClick={() => navigate('/cart')}
-              className="w-full border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 py-3 px-6 rounded-lg font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+              className="w-full border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 py-3 px-6 rounded-lg font-medium hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors"
             >
               {t('checkout.placed.viewCart')}
             </button>
@@ -394,18 +394,18 @@ export function Checkout() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-50 dark:bg-zinc-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">{t('checkout.title')}</h1>
+        <h1 className="text-3xl font-bold text-zinc-900 dark:text-white mb-8">{t('checkout.title')}</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Checkout Form */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-gray-900/20 p-6">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">{t('checkout.form.title')}</h2>
+          <div className="bg-white dark:bg-zinc-800 rounded-lg shadow-md dark:shadow-zinc-900/20 p-6">
+            <h2 className="text-xl font-bold text-zinc-900 dark:text-white mb-6">{t('checkout.form.title')}</h2>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="group">
-                <label htmlFor="name" className="block text-sm font-medium mb-1 transition-colors text-gray-700 dark:text-gray-300 group-focus-within:text-red-600 dark:group-focus-within:text-red-400">
+                <label htmlFor="name" className="block text-sm font-medium mb-1 transition-colors text-zinc-700 dark:text-zinc-300 group-focus-within:text-red-600 dark:group-focus-within:text-red-400">
                   {t('checkout.form.name')}
                 </label>
                 <input
@@ -421,13 +421,13 @@ export function Checkout() {
                     (e.currentTarget as HTMLInputElement).setCustomValidity(t('checkout.validation.required'));
                   }}
                   onInput={(e) => {(e.currentTarget as HTMLInputElement).setCustomValidity('');}}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="w-full px-3 py-2 border border-zinc-300 dark:border-zinc-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white"
                 />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="group">
-                  <label htmlFor="roll" className="block text-sm font-medium mb-1 transition-colors text-gray-700 dark:text-gray-300 group-focus-within:text-red-600 dark:group-focus-within:text-red-400">
+                  <label htmlFor="roll" className="block text-sm font-medium mb-1 transition-colors text-zinc-700 dark:text-zinc-300 group-focus-within:text-red-600 dark:group-focus-within:text-red-400">
                     {t('checkout.form.roll')}
                   </label>
                   <input
@@ -440,12 +440,12 @@ export function Checkout() {
                     autoComplete="off"
                     onInvalid={(e) => {(e.currentTarget as HTMLInputElement).setCustomValidity(t('checkout.validation.required'))}}
                     onInput={(e) => {(e.currentTarget as HTMLInputElement).setCustomValidity('')}}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    className="w-full px-3 py-2 border border-zinc-300 dark:border-zinc-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white"
                   />
                 </div>
 
                 <div className="group">
-                  <label htmlFor="department" className="block text-sm font-medium mb-1 transition-colors text-gray-700 dark:text-gray-300 group-focus-within:text-red-600 dark:group-focus-within:text-red-400">
+                  <label htmlFor="department" className="block text-sm font-medium mb-1 transition-colors text-zinc-700 dark:text-zinc-300 group-focus-within:text-red-600 dark:group-focus-within:text-red-400">
                     {t('checkout.form.department')}
                   </label>
                   <select
@@ -456,7 +456,7 @@ export function Checkout() {
                     required
                     onInvalid={(e) => {(e.currentTarget as HTMLSelectElement).setCustomValidity(t('checkout.validation.required'))}}
                     onInput={(e) => {(e.currentTarget as HTMLSelectElement).setCustomValidity('')}}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    className="w-full px-3 py-2 border border-zinc-300 dark:border-zinc-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white"
                   >
                     <option value="">{t('checkout.form.selectDepartment')}</option>
                     <option value="Science">{t('checkout.form.dept.science')}</option>
@@ -472,7 +472,7 @@ export function Checkout() {
                   className={`block text-sm font-medium mb-1 transition-colors ${
                     errors.phone
                       ? 'text-red-600 dark:text-red-400'
-                      : 'text-gray-700 dark:text-gray-300 group-focus-within:text-red-600 dark:group-focus-within:text-red-400'
+                      : 'text-zinc-700 dark:text-zinc-300 group-focus-within:text-red-600 dark:group-focus-within:text-red-400'
                   }`}
                 >
                   {t('checkout.form.phone')}
@@ -489,13 +489,13 @@ export function Checkout() {
                   aria-describedby={errors.phone ? 'err-phone' : undefined}
                   onInvalid={(e) => {(e.currentTarget as HTMLInputElement).setCustomValidity(t('checkout.validation.required'))}}
                   onInput={(e) => {(e.currentTarget as HTMLInputElement).setCustomValidity('')}}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="w-full px-3 py-2 border border-zinc-300 dark:border-zinc-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white"
                 />
                 {errors.phone && <p id="err-phone" className="text-xs text-red-500 mt-1">{errors.phone}</p>}
               </div>
 
               <div className="group">
-                <label htmlFor="email" className="block text-sm font-medium mb-1 transition-colors text-gray-700 dark:text-gray-300 group-focus-within:text-red-600 dark:group-focus-within:text-red-400">
+                <label htmlFor="email" className="block text-sm font-medium mb-1 transition-colors text-zinc-700 dark:text-zinc-300 group-focus-within:text-red-600 dark:group-focus-within:text-red-400">
                   {t('checkout.form.email')}
                 </label>
                 <input
@@ -517,7 +517,7 @@ export function Checkout() {
                   onInput={(e) => {
                     (e.currentTarget as HTMLInputElement).setCustomValidity('');
                   }}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="w-full px-3 py-2 border border-zinc-300 dark:border-zinc-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white"
                 />
               </div>
 
@@ -541,7 +541,7 @@ export function Checkout() {
                   className={`block text-sm font-medium mb-1 transition-colors ${
                     errors.bkashTransactionId
                       ? 'text-red-600 dark:text-red-400'
-                      : 'text-gray-700 dark:text-gray-300 group-focus-within:text-red-600 dark:group-focus-within:text-red-400'
+                      : 'text-zinc-700 dark:text-zinc-300 group-focus-within:text-red-600 dark:group-focus-within:text-red-400'
                   }`}
                 >
                   {t('checkout.bkash.label')}
@@ -565,14 +565,14 @@ export function Checkout() {
                     }
                   }}
                   onInput={(e) => {(e.currentTarget as HTMLInputElement).setCustomValidity('')}}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="w-full px-3 py-2 border border-zinc-300 dark:border-zinc-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white"
                 />
                 {errors.bkashTransactionId && <p id="err-bkash" className="text-xs text-red-500 mt-1">{errors.bkashTransactionId}</p>}
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{t('checkout.bkash.help')}</p>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">{t('checkout.bkash.help')}</p>
 
                 {/* OCR Upload Helper */}
-                <div className="mt-3 p-3 border border-dashed border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700/40">
-                  <p className="text-xs text-gray-600 dark:text-gray-300 mb-2">{t('checkout.bkash.ocr.orUpload')}</p>
+                <div className="mt-3 p-3 border border-dashed border-zinc-300 dark:border-zinc-600 rounded-lg bg-gray-50 dark:bg-zinc-700/40">
+                  <p className="text-xs text-zinc-600 dark:text-zinc-300 mb-2">{t('checkout.bkash.ocr.orUpload')}</p>
                   <div className="flex items-center gap-3">
                     <label className="inline-flex items-center px-3 py-2 text-sm font-medium rounded-md text-white bg-pink-600 hover:bg-pink-700 cursor-pointer">
                       <input type="file" accept="image/*" className="hidden" onChange={handleOcrFileChange} />
@@ -580,21 +580,21 @@ export function Checkout() {
                     </label>
                     {ocrInProgress && (
                       <div className="flex-1">
-                        <div className="w-full h-2 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
+                        <div className="w-full h-2 bg-zinc-200 dark:bg-zinc-600 rounded-full overflow-hidden">
                           <div className="h-2 bg-pink-600 dark:bg-pink-500" style={{ width: `${ocrProgress}%` }} />
                         </div>
-                        <p className="text-xs text-gray-600 dark:text-gray-300 mt-1">{ocrMessage}</p>
+                        <p className="text-xs text-zinc-600 dark:text-zinc-300 mt-1">{ocrMessage}</p>
                       </div>
                     )}
                   </div>
 
                   {ocrImageUrl && (
                     <div className="mt-3 flex items-center gap-3">
-                      <img src={ocrImageUrl} alt="Uploaded screenshot" className="h-16 w-28 object-cover rounded border border-gray-200 dark:border-gray-600" />
+                      <img src={ocrImageUrl} alt="Uploaded screenshot" className="h-16 w-28 object-cover rounded border border-zinc-200 dark:border-zinc-600" />
                       {!ocrInProgress && ocrMessage && (
                         <div>
-                          <p className="text-xs text-gray-700 dark:text-gray-200">{ocrMessage}</p>
-                          <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-1">{t('checkout.bkash.ocr.tip')}</p>
+                          <p className="text-xs text-zinc-700 dark:text-zinc-200">{ocrMessage}</p>
+                          <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1">{t('checkout.bkash.ocr.tip')}</p>
                         </div>
                       )}
                     </div>
@@ -613,8 +613,8 @@ export function Checkout() {
           </div>
 
           {/* Order Summary */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-gray-900/20 p-6">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">{t('cart.summary.title')}</h2>
+          <div className="bg-white dark:bg-zinc-800 rounded-lg shadow-md dark:shadow-zinc-900/20 p-6">
+            <h2 className="text-xl font-bold text-zinc-900 dark:text-white mb-6">{t('cart.summary.title')}</h2>
 
             <div className="space-y-4 mb-6">
               {cartState.items.map((item) => (
@@ -625,28 +625,28 @@ export function Checkout() {
                     className="h-16 w-16 object-cover rounded-lg"
                   />
                   <div className="flex-1 ml-4">
-                    <h3 className="font-medium text-gray-900 dark:text-white">
+                    <h3 className="font-medium text-zinc-900 dark:text-white">
                       {productName(item.id, item.name)}
                     </h3>
                     {item.selectedVariation && (
-                      <p className="text-sm text-gray-600 dark:text-gray-400">{variationLabel(item)}: {item.selectedVariation}</p>
+                      <p className="text-sm text-zinc-600 dark:text-zinc-400">{variationLabel(item)}: {item.selectedVariation}</p>
                     )}
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Qty: {item.quantity}</p>
+                    <p className="text-sm text-zinc-600 dark:text-zinc-400">Qty: {item.quantity}</p>
                   </div>
                   <p className="font-bold text-red-600 dark:text-red-400">৳{item.price * item.quantity}</p>
                 </div>
               ))}
             </div>
 
-            <div className="border-t dark:border-gray-700 pt-4">
+            <div className="border-t dark:border-zinc-700 pt-4">
               <div className="flex justify-between text-xl font-bold">
-                <span className="text-gray-900 dark:text-white">{t('cart.summary.total')}</span>
+                <span className="text-zinc-900 dark:text-white">{t('cart.summary.total')}</span>
                 <span className="text-red-600 dark:text-red-400">৳{cartState.total - discount}</span>
               </div>
               {appliedCoupon && (
                 <div className="flex justify-between text-sm mt-2">
-                  <span className="text-gray-600 dark:text-gray-400">Original Price</span>
-                  <span className="text-gray-600 dark:text-gray-400 line-through">৳{cartState.total}</span>
+                  <span className="text-zinc-600 dark:text-zinc-400">Original Price</span>
+                  <span className="text-zinc-600 dark:text-zinc-400 line-through">৳{cartState.total}</span>
                 </div>
               )}
             </div>

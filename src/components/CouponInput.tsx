@@ -68,7 +68,7 @@ export function CouponInput() {
     <div>
       <div className="flex items-center">
         <div className="relative flex-grow">
-          <Tag className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+          <Tag className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-zinc-400" />
           <input
             type="text"
             value={couponCode}
@@ -78,7 +78,7 @@ export function CouponInput() {
             onKeyDown={handleKeyDown}
             placeholder={t('coupon.placeholder')}
             disabled={!!appliedCoupon || isLoading}
-            className="w-full pl-10 pr-24 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white disabled:bg-gray-100 dark:disabled:bg-gray-800"
+            className="w-full pl-10 pr-24 py-2 border border-zinc-300 dark:border-zinc-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white disabled:bg-zinc-100 dark:disabled:bg-zinc-800"
           />
           {!appliedCoupon && (
             <button
@@ -113,7 +113,7 @@ export function CouponInput() {
         </div>
       )}
       {appliedCoupon?.expiryDate && expiresIn && expiresIn !== 'expired' && (
-        <div className="flex items-center mt-1 text-xs text-gray-600 dark:text-gray-400">
+        <div className="flex items-center mt-1 text-xs text-zinc-600 dark:text-zinc-400">
           <Clock className="h-3.5 w-3.5 mr-1.5 flex-shrink-0" />
           <span>{t('coupon.expiresIn', { time: expiresIn })}</span>
         </div>
