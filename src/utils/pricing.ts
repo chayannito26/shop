@@ -8,73 +8,98 @@ export interface VariationTier {
   [key: string]: string | undefined;
 }
 
-export function parseVariationTiers(label: string): VariationTier {
-  // Parse variations like "White-L", "Black-M", "A5-Lined", "Large-Blue", etc.
-  const parts = label.split('-');
-  if (parts.length === 1) {
-    // Single tier - try to infer the type
-    const sizePattern = /^(XS|S|M|L|XL|XXL|XXXL|\d+)$/i;
-    const colorPattern = /^(white|black|red|blue|green|yellow|purple|pink|orange|gray|grey|brown)$/i;
-    
-    if (sizePattern.test(label)) {
-      return { size: label };
-    } else if (colorPattern.test(label)) {
-      return { color: label };
-    } else {
-      return { option: label };
-    }
-  } else if (parts.length === 2) {
-    // Two tiers - use heuristics to determine what they are
-    const [first, second] = parts;
-    const firstIsSize = /^(XS|S|M|L|XL|XXL|XXXL|\d+)$/i.test(first);
-    const secondIsSize = /^(XS|S|M|L|XL|XXL|XXXL|\d+)$/i.test(second);
-    const firstIsColor = /^(white|black|red|blue|green|yellow|purple|pink|orange|gray|grey|brown)$/i.test(first);
-    const secondIsColor = /^(white|black|red|blue|green|yellow|purple|pink|orange|gray|grey|brown)$/i.test(second);
-    
-    if (firstIsColor && secondIsSize) {
-      return { color: first, size: second };
-    } else if (firstIsSize && secondIsColor) {
-      return { size: first, color: second };
-    } else {
-      // Generic approach - treat as primary-secondary
-      return { primary: first, secondary: second };
-    }
-  } else {
-    // Multiple tiers - create numbered tiers
+export type VariationSchema = {
+  // Keys define the ordered tier keys (first entry corresponds to first token in label)
+  keys: string[];
+  // Optional human-friendly titles for each tier key
+  titles?: Record<string, string>;
+};
+
+/**
+ * Parse a variation label into a key->value map. When a schema is provided the
+ * schema.keys are used as the tier names (by position). When no schema is
+ * provided we fall back to the previous heuristics for backwards compatibility.
+ */
+export function parseVariationTiers(label: string, schema?: VariationSchema): VariationTier {
+  const parts = label.split('-').map(p => p.trim()).filter(Boolean);
+  if (schema && schema.keys && schema.keys.length > 0) {
     const result: VariationTier = {};
-    parts.forEach((part, index) => {
-      result[`tier${index + 1}`] = part;
+    parts.forEach((part, idx) => {
+      const key = schema.keys[idx] ?? `tier${idx + 1}`;
+      result[key] = part;
     });
     return result;
   }
+
+  // Backwards-compatible heuristics
+  if (parts.length === 1) {
+    const sizePattern = /^(XS|S|M|L|XL|XXL|XXXL|\d+|A\d+)$/i;
+    const colorPattern = /^(white|black|red|blue|green|yellow|purple|pink|orange|gray|grey|brown)$/i;
+
+    const single = parts[0];
+    if (sizePattern.test(single)) return { size: single };
+    if (colorPattern.test(single)) return { color: single };
+    return { option: single };
+  }
+
+  if (parts.length === 2) {
+    const [first, second] = parts;
+    const sizePattern = /^(XS|S|M|L|XL|XXL|XXXL|\d+|A\d+)$/i;
+    const colorPattern = /^(white|black|red|blue|green|yellow|purple|pink|orange|gray|grey|brown)$/i;
+    const firstIsSize = sizePattern.test(first);
+    const secondIsSize = sizePattern.test(second);
+    const firstIsColor = colorPattern.test(first);
+    const secondIsColor = colorPattern.test(second);
+    if (firstIsColor && secondIsSize) return { color: first, size: second };
+    if (firstIsSize && secondIsColor) return { size: first, color: second };
+    return { primary: first, secondary: second };
+  }
+
+  // Multiple parts -> numbered tiers
+  const result: VariationTier = {};
+  parts.forEach((part, index) => {
+    result[`tier${index + 1}`] = part;
+  });
+  return result;
 }
 
-export function formatVariationLabel(tiers: VariationTier): string {
+export function formatVariationLabel(tiers: VariationTier, order?: string[]): string {
+  if (!tiers) return '';
+  if (order && order.length > 0) {
+    const parts: string[] = [];
+    order.forEach((k) => {
+      const v = tiers[k];
+      if (v) parts.push(v);
+    });
+    return parts.join('-');
+  }
   const parts = Object.values(tiers).filter(Boolean);
   return parts.join('-');
 }
 
-export function getVariationTierKeys(variations?: VariationInput[]): string[] {
+export function getVariationTierKeys(variations?: VariationInput[], schema?: VariationSchema): string[] {
   if (!variations) return [];
-  
+  if (schema && schema.keys && schema.keys.length > 0) return [...schema.keys];
+
   const tierKeys = new Set<string>();
   variations.forEach(v => {
     const label = typeof v === 'string' ? v : v.label;
     const tiers = parseVariationTiers(label);
     Object.keys(tiers).forEach(key => tierKeys.add(key));
   });
-  
-  return Array.from(tierKeys).sort();
+
+  // Preserve insertion order and return as array
+  return Array.from(tierKeys);
 }
 
-export function getVariationTierValues(variations?: VariationInput[], tierKey?: string): string[] {
+export function getVariationTierValues(variations?: VariationInput[], tierKey?: string, schema?: VariationSchema): string[] {
   if (!variations || !tierKey) return [];
-  
+
   const values = new Set<string>();
   variations.forEach(v => {
     const label = typeof v === 'string' ? v : v.label;
-    const tiers = parseVariationTiers(label);
-    if (tiers[tierKey]) values.add(tiers[tierKey]!);
+    const tiers = parseVariationTiers(label, schema);
+    if (tiers[tierKey]) values.add(tiers[tierKey] as string);
   });
   
   // Sort values intelligently
@@ -107,7 +132,10 @@ export function getVariationTierValues(variations?: VariationInput[], tierKey?: 
 
 export function getVariationByTiers(variations?: VariationInput[], selectedTiers?: VariationTier): NormalizedVariation | undefined {
   if (!variations || !selectedTiers) return undefined;
-  const targetLabel = formatVariationLabel(selectedTiers);
+  // Determine an ordered view of keys from the variations themselves so that
+  // the formatted label matches the stored labels. Use derived keys order.
+  const tierKeys = getVariationTierKeys(variations);
+  const targetLabel = formatVariationLabel(selectedTiers, tierKeys);
   return normalize(variations).find(v => v.label === targetLabel);
 }
 

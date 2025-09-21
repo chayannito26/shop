@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ShoppingCart, ArrowLeft, Zap } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { products } from '../data/products';
-import { getMinMaxPrice, getVariationPrice, getNormalizedVariations, getProductImages, getUniqueColors, getUniqueSizes } from '../utils/pricing';
+import { getMinMaxPrice, getVariationPrice, getProductImages } from '../utils/pricing';
 import { getBulkUnitCost, pickActiveBulkRate } from '../utils/pricing';
 import { trackViewContent, trackAddToCart, trackCustomizeProduct } from '../analytics/metaPixel';
 import { useI18n } from '../i18n';
@@ -22,9 +22,7 @@ export function ProductDetail() {
   const { showAlert } = useModal();
 
   const product = products.find(p => p.id === id);
-
   // Derived values and memoized helpers must be declared unconditionally
-  const variations = useMemo(() => getNormalizedVariations(product?.variations), [product]);
   const unitPrice = product ? getVariationPrice(product.price, product.variations, selectedVariation) : 0;
   const { min, max } = product ? getMinMaxPrice(product.price, product.variations) : { min: 0, max: 0 };
   const images = useMemo(() => {
@@ -41,6 +39,33 @@ export function ProductDetail() {
   useEffect(() => {
     setActiveImageIndex(0);
   }, [serializedImages]);
+
+  // Special-case: for notebooks, if no selection yet, prefer sensible default.
+  // Requirement: A4 does not have 'lined' option in some catalogs and should default to 'A4-Blank'
+  useEffect(() => {
+    if (!product) return;
+    if (product.id !== 'notebook') return;
+
+    // If there's already a selection, do nothing
+    if (selectedVariation) return;
+
+  const vars = product.variations || [];
+    // Find all tiers for A4 and A5
+  const hasA4Lined = vars.some(v => (typeof v === 'string' ? v : v.label) === 'A4-Lined');
+  const hasA4Blank = vars.some(v => (typeof v === 'string' ? v : v.label) === 'A4-Blank');
+  const hasA5Lined = vars.some(v => (typeof v === 'string' ? v : v.label) === 'A5-Lined');
+  const hasA5Blank = vars.some(v => (typeof v === 'string' ? v : v.label) === 'A5-Blank');
+
+    // If A4 only has blank (or lined missing), auto-select A4-Blank
+    if (hasA4Blank && !hasA4Lined) {
+      setSelectedVariation('A4-Blank');
+    } else if (!hasA4Blank && hasA4Lined) {
+      // If only lined exists, select lined
+      setSelectedVariation('A4-Lined');
+    } else if (hasA5Blank && hasA5Lined && !hasA4Blank && !hasA4Lined) {
+      // Fallback: if A4 doesn't exist but A5 has options, leave blank so user can pick
+    }
+  }, [product, selectedVariation]);
 
   // Developer-only visibility for the internal “bought-at” panel:
   const showBoughtRates = useMemo(() => {
@@ -291,6 +316,7 @@ export function ProductDetail() {
                       priceForV
                     );
                   }}
+                  schema={product.variationSchema}
                   className="mb-6"
                 />
               )

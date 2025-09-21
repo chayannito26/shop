@@ -14,6 +14,8 @@ export interface Product {
   description: string;
   category: string;
   variations?: (string | { label: string; price?: number; image?: string | string[] })[]; // support per-variation price and image(s)
+  // Optional schema that defines ordered variation tiers and human titles
+  variationSchema?: { keys: string[]; titles?: Record<string, string> };
   // New: internal procurement tiers (optional)
   unitsSold?: number;                // manually edited in products.ts
   bulkRates?: BulkRate[];            // supports total-price or per-unit-price tiers

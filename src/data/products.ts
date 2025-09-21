@@ -11,6 +11,7 @@ export const products: Product[] = [
     ],
     description: 'Premium cotton t-shirt with Chayannito 26 batch design. Perfect for representing your batch pride.',
     category: 'clothing',
+  variationSchema: { keys: ['color', 'size'], titles: { color: 'Color', size: 'Size' } },
     variations: [
       // White variations
       { label: 'White-S', price: 300, image: ['https://shop.chayannito26.com/images/tshirt-white.jpg', 'https://shop.chayannito26.com/images/tshirt-white-back.jpg'] },
@@ -37,6 +38,7 @@ export const products: Product[] = [
     ],
     description: 'Cozy hoodie with embroidered Chayannito 26 logo. Stay warm while showing your batch spirit.',
     category: 'clothing',
+  variationSchema: { keys: ['color', 'size'], titles: { color: 'Color', size: 'Size' } },
     variations: [
       // White variations
       { label: 'White-S', price: 700, image: ['https://shop.chayannito26.com/images/hoodie-white.jpg', 'https://shop.chayannito26.com/images/hoodie-white-zip.jpg', 'https://shop.chayannito26.com/images/hoodie-white-back.jpg'] },
@@ -87,6 +89,7 @@ export const products: Product[] = [
     image: 'https://shop.chayannito26.com/images/notebook.jpg',
     description: 'Premium quality notebook with Chayannito 26 cover design. Perfect for notes and journaling.',
     category: 'stationery',
+    variationSchema: { keys: ['sheetSize', 'finish'], titles: { sheetSize: 'Sheet Size', finish: 'Finish' } },
     variations: [
       { label: 'A5-Lined', price: 250, image: ['https://shop.chayannito26.com/images/notebook.jpg'] },
       { label: 'A5-Blank', price: 250, image: ['https://shop.chayannito26.com/images/notebook.jpg'] },

@@ -1,12 +1,14 @@
 import React from 'react';
-import { getVariationTierKeys, getVariationTierValues, parseVariationTiers, formatVariationLabel, getVariationByTiers } from '../utils/pricing';
-import type { VariationInput, VariationTier } from '../utils/pricing';
+import { getVariationTierKeys, getVariationTierValues, parseVariationTiers, formatVariationLabel } from '../utils/pricing';
+import type { VariationInput } from '../utils/pricing';
+import type { VariationSchema } from '../utils/pricing';
 
 interface VariationSelectorProps {
   variations?: VariationInput[];
   selectedVariation?: string;
   onVariationChange: (variation: string) => void;
   className?: string;
+  schema?: VariationSchema;
 }
 
 export function VariationSelector({ 
@@ -14,21 +16,25 @@ export function VariationSelector({
   selectedVariation, 
   onVariationChange, 
   className = "" 
+  , schema
 }: VariationSelectorProps) {
   if (!variations || variations.length === 0) return null;
 
-  const tierKeys = getVariationTierKeys(variations);
-  const selectedTiers = selectedVariation ? parseVariationTiers(selectedVariation) : {};
+  // Determine tier ordering based on the variations themselves.
+  const tierKeys = getVariationTierKeys(variations, schema);
+  const selectedTiers = selectedVariation ? parseVariationTiers(selectedVariation, schema) : {};
 
   // If we have multiple tiers, show multi-tier selector
   if (tierKeys.length > 1) {
-    const isComplete = tierKeys.every(key => selectedTiers[key]);
+    const isComplete = tierKeys.every(key => Boolean(selectedTiers[key]));
     
     return (
       <div className={`space-y-6 ${className}`}>
         {tierKeys.map((tierKey) => {
-          const tierValues = getVariationTierValues(variations, tierKey);
-          const displayName = tierKey.charAt(0).toUpperCase() + tierKey.slice(1);
+          const tierValues = getVariationTierValues(variations, tierKey, schema);
+          const displayName = (schema && schema.titles && schema.titles[tierKey])
+            ? schema.titles[tierKey]
+            : tierKey.charAt(0).toUpperCase() + tierKey.slice(1);
           
           return (
             <div key={tierKey}>
@@ -40,34 +46,98 @@ export function VariationSelector({
                   const isSelected = selectedTiers[tierKey] === value;
                   
                   // Check if this combination is available
-                  const testTiers = { ...selectedTiers, [tierKey]: value };
-                  
-                  // For testing availability, check if any variation is compatible
+                  // tentative tiers when testing availability
+
+                  // For testing availability, check if any variation is compatible with the
+                  // tentative selection for this tier while allowing other tiers to be cleared
+                  // when they would otherwise make the combination impossible.
+                  // A value is available if any variation label matches this value
+                  // for this tier and is compatible with currently selected other tiers.
                   const isAvailable = variations.some(v => {
                     const label = typeof v === 'string' ? v : v.label;
-                    const varTiers = parseVariationTiers(label);
-                    
-                    // Check if this variation has the value we're testing for this tier
+                    const varTiers = parseVariationTiers(label, schema);
+
                     if (varTiers[tierKey] !== value) return false;
-                    
-                    // Check if this variation is compatible with already selected tiers
-                    return Object.keys(selectedTiers).every(selectedKey => {
-                      const selectedValue = selectedTiers[selectedKey];
-                      return !selectedValue || varTiers[selectedKey] === selectedValue;
-                    });
+
+                    // Check compatibility with other currently selected tiers
+                    for (const otherKey of Object.keys(selectedTiers)) {
+                      if (otherKey === tierKey) continue;
+                      const sel = selectedTiers[otherKey];
+                      if (sel && varTiers[otherKey] && varTiers[otherKey] !== sel) return false;
+                    }
+                    return true;
                   });
                   
                   return (
                     <button
                       key={value}
                       onClick={() => {
-                        if (isAvailable) {
-                          const newTiers = { ...selectedTiers, [tierKey]: value };
-                          const newVariation = formatVariationLabel(newTiers);
+                        // Allow clicks regardless of 'isAvailable' so users can switch to
+                        // combinations that require clearing other tiers. The 'isAvailable'
+                        // flag is only used for styling (disabled appearance).
+
+                        // Toggle off if clicking the selected value
+                        if (isSelected) {
+                          const newTiers = { ...selectedTiers };
+                          delete newTiers[tierKey];
+                          const newVariation = formatVariationLabel(newTiers, tierKeys);
                           onVariationChange(newVariation);
+                          return;
                         }
+
+                        // Tentative tiers with this choice
+                        const tentative = { ...selectedTiers, [tierKey]: value };
+
+                        // For other tiers, determine compatible values given the tentative selection.
+                        // If a tier has no compatible values, remove it. If it has exactly one,
+                        // auto-select it (useful for notebook A4-Blank-only cases).
+                        const cleaned: Record<string, string | undefined> = { ...tentative };
+                        tierKeys.forEach((otherKey) => {
+                          if (otherKey === tierKey) return;
+
+                          // Gather compatible values for otherKey given current tentative selection
+                          const vals = new Set<string>();
+                          variations.forEach((v) => {
+                            const label = typeof v === 'string' ? v : v.label;
+                            const varTiers = parseVariationTiers(label, schema);
+
+                            // Must match all keys present in tentative
+                            let matches = true;
+                            for (const k of Object.keys(tentative)) {
+                              const tv = tentative[k as keyof typeof tentative];
+                              if (!tv) continue;
+                              if (varTiers[k] && varTiers[k] !== tv) {
+                                matches = false;
+                                break;
+                              }
+                              if (!varTiers[k]) {
+                                matches = false;
+                                break;
+                              }
+                            }
+                            if (!matches) return;
+                            if (varTiers[otherKey]) vals.add(varTiers[otherKey] as string);
+                          });
+
+                          if (vals.size === 0) {
+                            // No compatible options for this otherKey -> remove it so user can reselect
+                            delete cleaned[otherKey];
+                          } else if (vals.size === 1) {
+                            // Auto select the only compatible option
+                            const only = Array.from(vals)[0];
+                            cleaned[otherKey] = only;
+                          } else {
+                            // Multiple possibilities: if the current selection is one of them, keep it,
+                            // otherwise clear to let user choose.
+                            if (!cleaned[otherKey] || !vals.has(cleaned[otherKey]!)) {
+                              delete cleaned[otherKey];
+                            }
+                          }
+                        });
+
+                        const newVariation = formatVariationLabel(cleaned as Record<string, string | undefined>, tierKeys);
+                        onVariationChange(newVariation);
                       }}
-                      disabled={!isAvailable}
                       className={`relative px-6 py-3 border rounded-xl transition-all duration-300 font-medium transform hover:scale-105 ${
                         isSelected
                           ? 'border-red-500 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-200 ring-2 ring-red-500/20 shadow-lg shadow-red-500/20'
