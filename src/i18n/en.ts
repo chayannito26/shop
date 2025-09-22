@@ -171,6 +171,10 @@ const en = {
           'Premium notebooks in A4 and A5. A4: 150 or 300 blank pages on 70 gsm paper; A5: 160 pages (blank or lined) on 100 gsm paper. Cover: 300 gsm Ambush card. Note: Page count is double-sided.',
         variationTitles: { size: 'Size', finish: 'Page type', pages: 'Pages' },
       },
+      wristband: {
+        name: 'Chayannito 26 Wrist Band',
+        description: 'Silicone wrist band with Chayannito 26 branding. Comfortable and durable for everyday wear.',
+      },
       phonecover: {
         name: 'Custom Phone Cover',
         description: 'Custom-printed back cover. Provide your exact phone model.',

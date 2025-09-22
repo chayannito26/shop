@@ -28,6 +28,18 @@ export const products: Product[] = [
     ]
   },
   {
+    id: 'wristband',
+    name: 'Chayannito 26 Wrist Band',
+    price: 60,
+    image: 'https://shop.chayannito26.com/images/wristband.jpg',
+    description: 'Silicone wrist band with Chayannito 26 branding. Comfortable, durable, and everyday wearable.',
+    category: 'accessories',
+    variations: [
+      { label: 'Black', price: 60, image: ['https://shop.chayannito26.com/images/wristband.jpg'] },
+      { label: 'White', price: 60, image: ['https://shop.chayannito26.com/images/wristband.jpg'] }
+    ]
+  },
+  {
     id: 'hoodie',
     name: 'Chayannito 26 Hoodie',
     price: 700,
@@ -74,14 +86,14 @@ export const products: Product[] = [
       { label: 'White', price: 300, image: ['https://shop.chayannito26.com/images/totebag.jpg'] },
     ]
   },
-  {
-    id: 'keychain',
-    name: 'Chayannito 26 Keychain',
-    price: 100,
-    image: 'https://shop.chayannito26.com/images/keychain.jpg',
-    description: 'Metal keychain with engraved Chayannito 26 logo. A perfect small memento.',
-    category: 'accessories'
-  },
+  // {
+  //   id: 'keychain',
+  //   name: 'Chayannito 26 Keychain',
+  //   price: 100,
+  //   image: 'https://shop.chayannito26.com/images/keychain.jpg',
+  //   description: 'Metal keychain with engraved Chayannito 26 logo. A perfect small memento.',
+  //   category: 'accessories'
+  // },
   {
     id: 'notebook',
     name: 'Chayannito 26 Notebook',
@@ -111,23 +123,23 @@ export const products: Product[] = [
       { label: 'White', price: 300, image: ['https://shop.chayannito26.com/images/cap.jpg'] },
     ]
   },
-  {
-    id: 'badge',
-    name: 'Chayannito 26 Badge',
-    price: 80,
-    image: 'https://shop.chayannito26.com/images/badge.jpg',
-    description: 'Collectible metal badge with Chayannito 26 emblem. Perfect for bags, jackets, or display.',
-    category: 'accessories',
-    // Demo: per-unit pricing tiers
-    unitsSold: 120,
-    bulkRates: [
-      { units: 100, unitPrice: 2.8 },
-      { units: 200, unitPrice: 2.25 },
-      { units: 300, unitPrice: 1.83 },
-      { units: 500, unitPrice: 1.5 },
-      { units: 1000, unitPrice: 1.29 }
-    ]
-  },
+  // {
+  //   id: 'badge',
+  //   name: 'Chayannito 26 Badge',
+  //   price: 80,
+  //   image: 'https://shop.chayannito26.com/images/badge.jpg',
+  //   description: 'Collectible metal badge with Chayannito 26 emblem. Perfect for bags, jackets, or display.',
+  //   category: 'accessories',
+  //   // Demo: per-unit pricing tiers
+  //   unitsSold: 120,
+  //   bulkRates: [
+  //     { units: 100, unitPrice: 2.8 },
+  //     { units: 200, unitPrice: 2.25 },
+  //     { units: 300, unitPrice: 1.83 },
+  //     { units: 500, unitPrice: 1.5 },
+  //     { units: 1000, unitPrice: 1.29 }
+  //   ]
+  // },
   {
     id: 'bottle',
     name: 'Chayannito 26 Water Bottle',
@@ -136,14 +148,14 @@ export const products: Product[] = [
     description: 'Collectible metal bottle with Chayannito 26 emblem.',
     category: 'accessories'
   },
-  {
-    id: 'lanyard',
-    name: 'Chayannito 26 ID Card Lanyard',
-    price: 100,
-    image: 'https://shop.chayannito26.com/images/lanyard.jpg',
-    description: 'Durable lanyard with Chayannito 26 branding. Perfect for holding your ID card or keys.',
-    category: 'accessories'
-  },
+  // {
+  //   id: 'lanyard',
+  //   name: 'Chayannito 26 ID Card Lanyard',
+  //   price: 100,
+  //   image: 'https://shop.chayannito26.com/images/lanyard.jpg',
+  //   description: 'Durable lanyard with Chayannito 26 branding. Perfect for holding your ID card or keys.',
+  //   category: 'accessories'
+  // },
   {
     id: 'phonecover',
     name: 'Chayannito 26 Phone Cover',
