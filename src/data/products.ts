@@ -28,18 +28,6 @@ export const products: Product[] = [
     ]
   },
   {
-    id: 'wristband',
-    name: 'Chayannito 26 Wrist Band',
-    price: 60,
-    image: 'https://shop.chayannito26.com/images/wristband.jpg',
-    description: 'Silicone wrist band with Chayannito 26 branding. Comfortable, durable, and everyday wearable.',
-    category: 'accessories',
-    variations: [
-      { label: 'Black', price: 60, image: ['https://shop.chayannito26.com/images/wristband.jpg'] },
-      { label: 'White', price: 60, image: ['https://shop.chayannito26.com/images/wristband.jpg'] }
-    ]
-  },
-  {
     id: 'hoodie',
     name: 'Chayannito 26 Hoodie',
     price: 700,
@@ -179,6 +167,18 @@ export const products: Product[] = [
       { units: 300, totalPrice: 550 },
       { units: 500, totalPrice: 750 },
       { units: 1000, totalPrice: 1290 }
+    ]
+  },
+  {
+    id: 'wristband',
+    name: 'Chayannito 26 Wrist Band',
+    price: 60,
+    image: 'https://shop.chayannito26.com/images/wristband.jpg',
+    description: 'Silicone wrist band with Chayannito 26 branding. Comfortable, durable, and everyday wearable.',
+    category: 'accessories',
+    variations: [
+      { label: 'Black', price: 60, image: ['https://shop.chayannito26.com/images/wristband.jpg'] },
+      { label: 'White', price: 60, image: ['https://shop.chayannito26.com/images/wristband.jpg'] }
     ]
   }
 ];
