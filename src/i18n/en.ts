@@ -54,7 +54,7 @@ const en = {
       title: 'Need a discount?',
       button: 'No money',
       message:
-        "No money?।\n\nIf you're short on budget, we can help — contact us to request a price-reduction coupon or tips to save money on your order. Some items include discountable markup (for example bulk/pack pricing or optional add-ons). Please reach out and we'll check if we can offer a coupon for {name}. Send us a message with the product name and what you need.",
+        "No money?।\n\nIf you're short on budget, we can help — contact us to request a price-reduction coupon or tips to save money on your order. Some items include discountable markup. Please reach out and we'll check if we can offer a coupon for {name}. Send us a message with the product name and what you need.",
     },
   },
   cart: {
