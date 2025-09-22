@@ -215,6 +215,39 @@ const bn = {
       },
     },
   },
+  variation: {
+    titles: {
+      color: 'রং',
+      size: 'সাইজ',
+      finish: 'ধরন',
+      pages: 'কত পৃষ্ঠা',
+      option: 'অপশন'
+    },
+    selected: 'নির্বাচিত:',
+    values: {
+      common: {
+        color: {
+          White: 'সাদা',
+          Black: 'কালো'
+        },
+        size: {
+          S: 'S',
+          M: 'M',
+          L: 'L',
+          XL: 'XL',
+          XS: 'XS',
+          XXL: 'XXL'
+        },
+        finish: {
+          Blank: 'ফাকা',
+          Lined: 'লাইন করা'
+        }
+      },
+      products: {
+        // product-specific overrides can be added here
+      }
+    }
+  },
 };
 
 export default bn;

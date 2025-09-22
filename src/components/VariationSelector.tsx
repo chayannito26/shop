@@ -1,6 +1,7 @@
 import { getVariationTierKeys, getVariationTierValues, parseVariationTiers, formatVariationLabel } from '../utils/pricing';
 import type { VariationInput } from '../utils/pricing';
 import type { VariationSchema } from '../utils/pricing';
+import { useI18n } from '../i18n';
 
 interface VariationSelectorProps {
   variations?: VariationInput[];
@@ -19,6 +20,8 @@ export function VariationSelector({
   schema,
   productId
 }: VariationSelectorProps) {
+  const { t, variationTitle, variationValue, localizeVariationLabel } = useI18n();
+
   if (!variations || variations.length === 0) return null;
 
   // Determine tier ordering based on the variations themselves.
@@ -33,9 +36,12 @@ export function VariationSelector({
       <div className={`space-y-6 ${className}`}>
         {tierKeys.map((tierKey) => {
           const tierValues = getVariationTierValues(variations, tierKey, schema);
-          const displayName = (schema && schema.titles && schema.titles[tierKey])
-            ? schema.titles[tierKey]
-            : tierKey.charAt(0).toUpperCase() + tierKey.slice(1);
+          // Prefer localized title from resources; fall back to product schema title or generated fallback
+          const displayName = variationTitle(
+            tierKey,
+            (schema && schema.titles && schema.titles[tierKey]) ?? (tierKey.charAt(0).toUpperCase() + tierKey.slice(1)),
+            productId
+          );
 
           return (
             <div key={tierKey}>
@@ -157,7 +163,7 @@ export function VariationSelector({
                       {isSelected && (
                         <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-red-500/10 to-red-600/10 animate-pulse"></div>
                       )}
-                      <span className="relative">{value}</span>
+                      <span className="relative">{variationValue(productId, tierKey, value, value)}</span>
                     </button>
                   );
                 })}
@@ -172,7 +178,7 @@ export function VariationSelector({
             <div className="flex items-center space-x-2">
               <div className="w-2 h-2 bg-green-500 rounded-full animate-ping"></div>
               <p className="text-sm text-green-800 dark:text-green-200">
-                Selected: <span className="font-bold">{Object.values(selectedTiers).join(' - ')}</span>
+                {t('variation.selected')} <span className="font-bold">{localizeVariationLabel(productId, formatVariationLabel(selectedTiers, tierKeys), schema)}</span>
               </p>
             </div>
           </div>
@@ -189,7 +195,7 @@ export function VariationSelector({
   return (
     <div className={className}>
       <h3 className="text-lg font-medium text-zinc-900 dark:text-white mb-4">
-        Options
+        {t('product.optionsLabel')}
       </h3>
       <div className="flex flex-wrap gap-3">
         {normalizedVariations.map((v) => (
@@ -206,7 +212,7 @@ export function VariationSelector({
             {selectedVariation === v.label && (
               <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-red-500/10 to-red-600/10 animate-pulse"></div>
             )}
-            <span className="relative">{v.label}</span>
+            <span className="relative">{localizeVariationLabel(productId, v.label, schema)}</span>
           </button>
         ))}
       </div>

@@ -171,6 +171,39 @@ const en = {
       },
     },
   },
+  variation: {
+    titles: {
+      color: 'Color',
+      size: 'Size',
+      finish: 'Finish',
+      pages: 'Pages',
+      option: 'Option'
+    },
+    selected: 'Selected:',
+    values: {
+      common: {
+        color: {
+          White: 'White',
+          Black: 'Black'
+        },
+        size: {
+          S: 'S',
+          M: 'M',
+          L: 'L',
+          XL: 'XL',
+          XS: 'XS',
+          XXL: 'XXL'
+        },
+        finish: {
+          Blank: 'Blank',
+          Lined: 'Lined'
+        }
+      },
+      products: {
+        // product-specific overrides can be added here
+      }
+    }
+  },
 };
 
 export default en;

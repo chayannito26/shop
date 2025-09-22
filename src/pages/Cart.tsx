@@ -5,11 +5,12 @@ import { useCart } from '../contexts/CartContext';
 import { useCoupon } from '../contexts/CouponContext';
 import { CouponInput } from '../components/CouponInput';
 import { useI18n } from '../i18n';
+import { products } from '../data/products';
 
 export function Cart() {
   const { state: cartState, dispatch: cartDispatch } = useCart();
   const { appliedCoupon, discount } = useCoupon();
-  const { t, productName } = useI18n();
+  const { t, productName, localizeVariationLabel } = useI18n();
 
   // One-time normalization to squash any historical duplicates
   React.useEffect(() => {
@@ -34,6 +35,12 @@ export function Cart() {
     if (item.id === 'phonecover') return t('cart.variation.model');
     if (item.category === 'clothing') return t('cart.variation.size');
     return t('cart.variation.option');
+  };
+
+  const variationValue = (item: any) => {
+    const prod = products.find(p => p.id === item.id);
+    const schema = prod?.variationSchema;
+    return localizeVariationLabel(item.id, item.selectedVariation, schema);
   };
 
   if (cartState.items.length === 0) {
@@ -66,7 +73,7 @@ export function Cart() {
               {cartState.items.map((item) => (
                 <div key={item.cartItemId} className="flex items-center py-6 border-b last:border-b-0">
                   <img
-                    src={item.image}
+                    src={Array.isArray(item.image) ? item.image[0] : (item.image || '')}
                     alt={item.name}
                     className="h-20 w-20 object-cover rounded-lg"
                   />
@@ -76,7 +83,7 @@ export function Cart() {
                       {productName(item.id, item.name)}
                     </h3>
                     {item.selectedVariation && (
-                      <p className="text-sm text-zinc-600 dark:text-zinc-400">{variationLabel(item)}: {item.selectedVariation}</p>
+                      <p className="text-sm text-zinc-600 dark:text-zinc-400">{variationLabel(item)}: {variationValue(item)}</p>
                     )}
                     <p className="text-lg font-bold text-red-600 dark:text-red-400">৳{item.price}</p>
                   </div>

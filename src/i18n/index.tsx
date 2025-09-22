@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useMemo, useState, useEffect } from 'react';
 import en from './en';
 import bn from './bn';
+import { parseVariationTiers, type VariationSchema } from '../utils/pricing';
 
 type Lang = 'en' | 'bn';
 type Dict = typeof en;
@@ -8,8 +9,8 @@ type Dict = typeof en;
 const RESOURCES: Record<Lang, Dict> = { en, bn };
 const LS_KEY = 'LANG';
 
-function getPath(obj: any, path: string) {
-  return path.split('.').reduce((acc, k) => (acc && typeof acc === 'object' ? acc[k] : undefined), obj);
+function getPath(obj: unknown, path: string) {
+  return path.split('.').reduce((acc, k) => (acc && typeof acc === 'object' ? (acc as any)[k] : undefined), obj as any);
 }
 
 function interpolate(template: string, vars?: Record<string, string | number>) {
@@ -29,6 +30,10 @@ type I18nCtx = {
   productDescription: (id: string, fallback?: string) => string;
   categoryLabel: (slug: string, fallback?: string) => string;
   localizeProduct: <T extends { id: string; name?: string; description?: string }>(p: T) => T;
+  // Variation helpers
+  variationTitle: (tierKey: string, fallback?: string, productId?: string) => string;
+  variationValue: (productId: string | undefined, tierKey: string, value: string, fallback?: string) => string;
+  localizeVariationLabel: (productId: string | undefined, label?: string, schema?: { keys: string[] }) => string;
 };
 
 const Ctx = createContext<I18nCtx | null>(null);
@@ -38,14 +43,15 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
     try {
       const v = localStorage.getItem(LS_KEY);
       return v === 'bn' ? 'bn' : 'en';
-    } catch {
+    } catch (e) {
+      // ignore localStorage read errors and default to English
       return 'en';
     }
   });
   const [needsPrompt, setNeedsPrompt] = useState<boolean>(() => {
     try {
       return !localStorage.getItem(LS_KEY);
-    } catch {
+    } catch (e) {
       return false;
     }
   });
@@ -73,7 +79,7 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
   const productName = useMemo(() => {
     return (id: string, fallback?: string) => {
       const dict = RESOURCES[lang] || RESOURCES.en;
-      const val = getPath(dict as any, `catalog.products.${id}.name`);
+  const val = getPath(dict, `catalog.products.${id}.name`);
       return typeof val === 'string' ? val : (fallback ?? id);
     };
   }, [lang]);
@@ -81,7 +87,7 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
   const productDescription = useMemo(() => {
     return (id: string, fallback?: string) => {
       const dict = RESOURCES[lang] || RESOURCES.en;
-      const val = getPath(dict as any, `catalog.products.${id}.description`);
+  const val = getPath(dict, `catalog.products.${id}.description`);
       return typeof val === 'string' ? val : (fallback ?? '');
     };
   }, [lang]);
@@ -89,7 +95,7 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
   const categoryLabel = useMemo(() => {
     return (slug: string, fallback?: string) => {
       const dict = RESOURCES[lang] || RESOURCES.en;
-      const val = getPath(dict as any, `catalog.categories.${slug}`);
+  const val = getPath(dict, `catalog.categories.${slug}`);
       return typeof val === 'string' ? val : (fallback ?? slug);
     };
   }, [lang]);
@@ -104,11 +110,59 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
     };
   }, [productName, productDescription]);
 
+  // Variation helpers
+  const variationTitle = useMemo(() => {
+    return (tierKey: string, fallback?: string, productId?: string) => {
+      const dict = RESOURCES[lang] || RESOURCES.en;
+      // product-specific override
+      const prodVal = productId ? getPath(dict, `catalog.products.${productId}.variationTitles.${tierKey}`) : undefined;
+      const commonVal = getPath(dict, `variation.titles.${tierKey}`);
+      const val = prodVal ?? commonVal ?? fallback ?? tierKey;
+      if (typeof val === 'string') return val;
+      return tierKey;
+    };
+  }, [lang]);
+
+  const variationValue = useMemo(() => {
+    return (productId: string | undefined, tierKey: string, value: string, fallback?: string) => {
+      if (!value) return '';
+      const dict = RESOURCES[lang] || RESOURCES.en;
+      // product-specific values
+      const prodPath = productId ? `catalog.products.${productId}.variations.${tierKey}.${value}` : undefined;
+      const prodVal = prodPath ? getPath(dict, prodPath) : undefined;
+      const commonVal = getPath(dict, `variation.values.common.${tierKey}.${value}`);
+      const prodValues = productId ? getPath(dict, `variation.values.products.${productId}.${tierKey}.${value}`) : undefined;
+      const val = prodVal ?? prodValues ?? commonVal ?? fallback ?? value;
+      return typeof val === 'string' ? val : String(value);
+    };
+  }, [lang]);
+
+  const localizeVariationLabel = useMemo(() => {
+    return (productId: string | undefined, label?: string, schema?: VariationSchema) => {
+      if (!label) return '';
+      // Parse tiers using pricing helper to respect schema heuristics
+      const tiers = parseVariationTiers(label, schema);
+      const keys = schema && schema.keys && schema.keys.length > 0 ? schema.keys : Object.keys(tiers);
+      const parts: string[] = [];
+      keys.forEach((k) => {
+        const v = tiers[k];
+        if (!v) return;
+        const localized = variationValue(productId, k, v);
+        parts.push(localized);
+      });
+      if (parts.length > 0) return parts.join(' - ');
+      // Fallback: return raw label
+      return label;
+    };
+  }, [variationValue]);
+
   // If first visit in this tab and no stored choice, ensure prompt shows
   useEffect(() => {
     try {
       if (!localStorage.getItem(LS_KEY)) setNeedsPrompt(true);
-    } catch {}
+    } catch (e) {
+      // ignore
+    }
   }, []);
 
   const value: I18nCtx = {
@@ -122,6 +176,9 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
     productDescription,
     categoryLabel,
     localizeProduct,
+    variationTitle,
+    variationValue,
+    localizeVariationLabel,
   };
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
