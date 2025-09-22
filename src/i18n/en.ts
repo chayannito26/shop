@@ -165,6 +165,12 @@ const en = {
       stationery: 'Stationery',
     },
     products: {
+      notebook: {
+        name: 'Chayannito 26 Notebook',
+        description:
+          'Premium notebooks in A4 and A5. A4: 150 or 300 blank pages on 70 gsm paper; A5: 160 pages (blank or lined) on 100 gsm paper. Cover: 300 gsm Ambush card. Note: Page count is double-sided.',
+        variationTitles: { size: 'Size', finish: 'Page type', pages: 'Pages' },
+      },
       phonecover: {
         name: 'Custom Phone Cover',
         description: 'Custom-printed back cover. Provide your exact phone model.',
@@ -201,6 +207,11 @@ const en = {
       },
       products: {
         // product-specific overrides can be added here
+        notebook: {
+          size: { A4: 'A4', A5: 'A5' },
+          finish: { Blank: 'Blank', Lined: 'Lined' },
+          pages: { '150': '150 pages', '160': '160 pages', '300': '300 pages' },
+        }
       }
     }
   },

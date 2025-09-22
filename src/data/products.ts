@@ -85,15 +85,15 @@ export const products: Product[] = [
   {
     id: 'notebook',
     name: 'Chayannito 26 Notebook',
-    price: 250,
+    price: 190,
     image: 'https://shop.chayannito26.com/images/notebook.jpg',
-    description: 'Premium quality notebook with Chayannito 26 cover design. Perfect for notes and journaling.',
+    description: 'Premium notebooks in A4 and A5 sizes with durable 300 gsm Ambush card cover. A4 comes with 150 or 300 blank pages (70 gsm). A5 comes with 160 pages (blank or lined, 100 gsm). Note: Page count is calculated double-sided.',
     category: 'stationery',
     variationSchema: { keys: ['size', 'finish', 'pages'], titles: { size: 'Size', finish: 'Finish', pages: 'Pages' } },
     variations: [
       // A4 variations
-      { label: 'A4-Blank-150', price: 300, image: ['https://shop.chayannito26.com/images/notebook.jpg'] },
-      { label: 'A4-Blank-300', price: 320, image: ['https://shop.chayannito26.com/images/notebook.jpg'] },
+      { label: 'A4-Blank-150', price: 250, image: ['https://shop.chayannito26.com/images/notebook.jpg'] },
+      { label: 'A4-Blank-300', price: 400, image: ['https://shop.chayannito26.com/images/notebook.jpg'] },
       // A5 variations (note: A4-Lined is not available, only A5 has lined options)
       { label: 'A5-Lined-160', price: 250, image: ['https://shop.chayannito26.com/images/notebook.jpg'] },
       { label: 'A5-Blank-160', price: 250, image: ['https://shop.chayannito26.com/images/notebook.jpg'] },
