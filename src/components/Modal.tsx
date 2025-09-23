@@ -23,20 +23,20 @@ export default function Modal({ open, title, message, primaryLabel, onClose }: P
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4">
       <div className="fixed inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative bg-white dark:bg-zinc-800 rounded-lg shadow-lg max-w-lg w-full mx-auto overflow-hidden">
-        <div className="p-4 border-b dark:border-zinc-700 flex items-start justify-between">
+      <div className="relative bg-theme-bg-secondary rounded-lg shadow-theme-lg max-w-lg w-full mx-auto overflow-hidden">
+        <div className="p-4 border-b border-theme-border flex items-start justify-between">
           <div>
-            <h3 className="text-lg font-semibold text-zinc-900 dark:text-white">{title ?? 'Notice'}</h3>
+            <h3 className="text-lg font-semibold text-theme-text-primary">{title ?? 'Notice'}</h3>
           </div>
-          <button onClick={onClose} className="text-zinc-600 dark:text-zinc-300 hover:text-zinc-900">
+          <button onClick={onClose} className="text-theme-text-secondary hover:text-theme-text-primary">
             <X className="h-5 w-5" />
           </button>
         </div>
         <div className="p-4">
-          <div className="text-zinc-700 dark:text-zinc-300 leading-relaxed">{message}</div>
+          <div className="text-theme-text-secondary leading-relaxed">{message}</div>
         </div>
-        <div className="p-3 border-t dark:border-zinc-700 flex justify-end gap-2">
-          <button onClick={onClose} className="px-4 py-2 rounded-md bg-red-600 dark:bg-red-600 text-white hover:bg-red-700">{primaryLabel ?? 'OK'}</button>
+        <div className="p-3 border-t border-theme-border flex justify-end gap-2">
+          <button onClick={onClose} className="px-4 py-2 rounded-md bg-theme-accent text-white hover:bg-theme-accent-hover">{primaryLabel ?? 'OK'}</button>
         </div>
       </div>
     </div>
