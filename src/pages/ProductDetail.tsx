@@ -355,7 +355,7 @@ export function ProductDetail() {
                 }
                 className="w-full border border-zinc-300 dark:border-zinc-600 text-zinc-800 dark:text-zinc-200 bg-white dark:bg-zinc-700 py-2 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-600 transition-colors"
               >
-                {t('product.noMoney.button')}
+                {t('product.noMoney.title')}
               </button>
             </div>
 
