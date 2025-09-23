@@ -284,12 +284,14 @@ export function ProductDetail() {
                   selectedVariation={selectedVariation}
                   onVariationChange={(variation) => {
                     setSelectedVariation(variation);
-                    const priceForV = getVariationPrice(product.price, product.variations, variation);
-                    trackCustomizeProduct(
-                      { id: product.id, name: product.name, category: product.category },
-                      variation,
-                      priceForV
-                    );
+                    if (variation) {
+                      const priceForV = getVariationPrice(product.price, product.variations, variation);
+                      trackCustomizeProduct(
+                        { id: product.id, name: product.name, category: product.category },
+                        variation,
+                        priceForV
+                      );
+                    }
                   }}
                   schema={product.variationSchema}
                   productId={product.id}
