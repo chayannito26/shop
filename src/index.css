@@ -4,15 +4,15 @@
 
 /* CSS Variables for theming */
 :root {
-  /* Light theme colors */
-  --color-bg-primary: 249 250 251; /* gray-50 */
-  --color-bg-secondary: 255 255 255; /* white */
-  --color-bg-tertiary: 243 244 246; /* zinc-100 */
-  --color-text-primary: 17 24 39; /* zinc-900 */
-  --color-text-secondary: 75 85 99; /* zinc-600 */
-  --color-text-tertiary: 156 163 175; /* zinc-400 */
-  --color-border: 229 231 235; /* zinc-200 */
-  --color-border-hover: 209 213 219; /* zinc-300 */
+  /* Light theme colors - Strong Crimson tinted grays */
+  --color-bg-primary: 248 240 242; /* noticeable crimson-tinted gray-50 */
+  --color-bg-secondary: 253 248 250; /* clear crimson-tinted white */
+  --color-bg-tertiary: 242 232 236; /* strong crimson-tinted gray-100 */
+  --color-text-primary: 40 20 25; /* deep crimson-black */
+  --color-text-secondary: 100 70 78; /* crimson-gray-600 */
+  --color-text-tertiary: 180 150 158; /* crimson-gray-400 */
+  --color-border: 230 215 220; /* crimson-gray-200 */
+  --color-border-hover: 210 190 198; /* crimson-gray-300 */
   --color-accent: 220 38 38; /* red-600 */
   --color-accent-hover: 185 28 28; /* red-700 */
   --color-accent-light: 254 226 226; /* red-100 */
@@ -28,22 +28,22 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    /* Gray/reddish dark theme colors */
-    --color-bg-primary: 23 23 23; /* neutral-900 with slight red tint */
-    --color-bg-secondary: 38 38 38; /* neutral-800 with slight red tint */
-    --color-bg-tertiary: 64 64 64; /* neutral-700 */
-    --color-text-primary: 250 250 250; /* neutral-50 */
-    --color-text-secondary: 212 212 212; /* neutral-300 */
-    --color-text-tertiary: 161 161 161; /* neutral-400 */
-    --color-border: 82 82 82; /* neutral-600 */
-    --color-border-hover: 115 115 115; /* neutral-500 */
+    /* Strong Crimson-black dark theme colors */
+    --color-bg-primary: 25 15 18; /* deep crimson-black */
+    --color-bg-secondary: 45 30 35; /* strong crimson-gray-800 */
+    --color-bg-tertiary: 65 45 52; /* crimson-gray-700 */
+    --color-text-primary: 252 248 250; /* warm white */
+    --color-text-secondary: 220 200 208; /* warm crimson-gray-300 */
+    --color-text-tertiary: 170 140 150; /* warm crimson-gray-400 */
+    --color-border: 85 60 68; /* crimson-gray-600 */
+    --color-border-hover: 115 85 95; /* crimson-gray-500 */
     --color-accent: 220 38 38; /* red-600 */
     --color-accent-hover: 185 28 28; /* red-700 */
-    --color-accent-light: 38 38 38; /* neutral-800 */
+    --color-accent-light: 45 30 35; /* strong crimson-gray-800 */
     --color-success: 34 197 94; /* green-500 */
     --color-warning: 245 158 11; /* amber-500 */
     --color-error: 248 113 113; /* red-400 */
-    --color-error-light: 64 64 64; /* neutral-700 */
+    --color-error-light: 65 45 52; /* crimson-gray-700 */
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.4);
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4);
     --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
