@@ -142,7 +142,7 @@ export function VariationSelector({
 
           return (
             <div key={tierKey}>
-              <h3 className="text-lg font-medium text-zinc-900 dark:text-white mb-4">
+              <h3 className="text-lg font-medium text-theme-text-primary mb-4">
                 {displayName}
               </h3>
               <div className="flex flex-wrap gap-3">
@@ -156,15 +156,15 @@ export function VariationSelector({
                       onClick={() => applyClick(tierKey, value)}
                       className={`relative px-6 py-3 border rounded-xl transition-all duration-300 font-medium transform hover:scale-105 ${
                         isSelected
-                          ? 'border-red-500 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-200 ring-2 ring-red-500/20 shadow-lg shadow-red-500/20'
+                          ? 'border-theme-accent bg-theme-accent-light text-theme-accent ring-2 ring-theme-accent/20 shadow-theme-lg'
                           : available
-                            ? 'border-zinc-300 dark:border-zinc-600 hover:border-red-400 dark:hover:border-red-500 text-zinc-900 dark:text-white hover:bg-red-50 dark:hover:bg-red-900/10 hover:shadow-md'
-                            : 'border-zinc-200 dark:border-zinc-700 text-zinc-400 dark:text-zinc-500 opacity-60'
+                            ? 'border-theme-border hover:border-theme-border-hover text-theme-text-primary hover:bg-theme-accent-light hover:shadow-theme-md'
+                            : 'border-theme-border text-theme-text-tertiary opacity-60'
                       }`}
                       title={available ? undefined : 'Adjusts other options to make this available'}
                     >
                       {isSelected && (
-                        <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-red-500/10 to-red-600/10 animate-pulse"></div>
+                        <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-theme-accent/10 to-theme-accent/10 animate-pulse"></div>
                       )}
                       <span className="relative">{variationValue(productId, tierKey, value, value)}</span>
                     </button>
@@ -198,7 +198,7 @@ export function VariationSelector({
 
   return (
     <div className={className}>
-      <h3 className="text-lg font-medium text-zinc-900 dark:text-white mb-4">
+      <h3 className="text-lg font-medium text-theme-text-primary mb-4">
         {t('product.optionsLabel')}
       </h3>
       <div className="flex flex-wrap gap-3">
@@ -210,13 +210,13 @@ export function VariationSelector({
               onClick={() => onVariationChange(v.label)}
               className={`relative px-6 py-3 border rounded-xl transition-all duration-300 font-medium transform hover:scale-105 ${
                 isSelected
-                  ? 'border-red-500 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-200 ring-2 ring-red-500/20 shadow-lg shadow-red-500/20'
-                  : 'border-zinc-300 dark:border-zinc-600 hover:border-red-400 dark:hover:border-red-500 text-zinc-900 dark:text-white hover:bg-red-50 dark:hover:bg-red-900/10 hover:shadow-md'
+                  ? 'border-theme-accent bg-theme-accent-light text-theme-accent ring-2 ring-theme-accent/20 shadow-theme-lg'
+                  : 'border-theme-border hover:border-theme-border-hover text-theme-text-primary hover:bg-theme-accent-light hover:shadow-theme-md'
               }`}
               title={typeof v.price === 'number' ? `৳${v.price}` : undefined}
             >
               {isSelected && (
-                <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-red-500/10 to-red-600/10 animate-pulse"></div>
+                <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-theme-accent/10 to-theme-accent/10 animate-pulse"></div>
               )}
               <span className="relative">{localizeVariationLabel(productId, v.label, schema)}</span>
             </button>
