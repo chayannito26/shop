@@ -45,10 +45,10 @@ export function Cart() {
 
   if (cartState.items.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-zinc-900 flex items-center justify-center">
+      <div className="min-h-screen bg-theme-bg-primary flex items-center justify-center">
         <div className="text-center">
           <ShoppingBag className="h-16 w-16 text-zinc-400 dark:text-zinc-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-4">{t('cart.empty.title')}</h2>
+          <h2 className="text-2xl font-bold text-theme-text-primary mb-4">{t('cart.empty.title')}</h2>
           <p className="text-zinc-600 dark:text-zinc-300 mb-8">{t('cart.empty.subtitle')}</p>
           <Link
             to="/"
@@ -62,14 +62,14 @@ export function Cart() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-zinc-900">
+    <div className="min-h-screen bg-theme-bg-primary">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 className="text-3xl font-bold text-zinc-900 dark:text-white mb-8">{t('cart.title')}</h1>
+        <h1 className="text-3xl font-bold text-theme-text-primary mb-8">{t('cart.title')}</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Cart Items */}
           <div className="lg:col-span-2">
-            <div className="bg-white dark:bg-zinc-800 rounded-lg shadow-md dark:shadow-zinc-900/20 p-6">
+            <div className="bg-theme-bg-secondary rounded-lg shadow-theme-md p-6">
               {cartState.items.map((item) => (
                 <div key={item.cartItemId} className="flex items-center py-6 border-b last:border-b-0">
                   <img
@@ -79,7 +79,7 @@ export function Cart() {
                   />
 
                   <div className="flex-1 ml-6">
-                    <h3 className="text-lg font-medium text-zinc-900 dark:text-white">
+                    <h3 className="text-lg font-medium text-theme-text-primary">
                       {productName(item.id, item.name)}
                     </h3>
                     {item.selectedVariation && (
@@ -96,7 +96,7 @@ export function Cart() {
                       <Minus className="h-4 w-4" />
                     </button>
 
-                    <span className="text-lg font-medium px-3 text-zinc-900 dark:text-white">{item.quantity}</span>
+                    <span className="text-lg font-medium px-3 text-theme-text-primary">{item.quantity}</span>
 
                     <button
                       onClick={() => updateQuantity(item.cartItemId, item.quantity + 1)}
@@ -119,8 +119,8 @@ export function Cart() {
 
           {/* Order Summary */}
           <div className="lg:col-span-1">
-            <div className="bg-white dark:bg-zinc-800 rounded-lg shadow-md dark:shadow-zinc-900/20 p-6 sticky top-24">
-              <h2 className="text-xl font-bold text-zinc-900 dark:text-white mb-4">{t('cart.summary.title')}</h2>
+            <div className="bg-theme-bg-secondary rounded-lg shadow-theme-md p-6 sticky top-24">
+              <h2 className="text-xl font-bold text-theme-text-primary mb-4">{t('cart.summary.title')}</h2>
 
               <div className="space-y-2 mb-4">
                 <div className="flex justify-between text-sm text-zinc-600 dark:text-zinc-400">
@@ -137,7 +137,7 @@ export function Cart() {
 
               <div className="border-t dark:border-zinc-700 pt-4">
                 <div className="flex justify-between text-xl font-bold">
-                  <span className="text-zinc-900 dark:text-white">{t('cart.summary.total')}</span>
+                  <span className="text-theme-text-primary">{t('cart.summary.total')}</span>
                   <span className="text-red-600 dark:text-red-400">৳{cartState.total - discount}</span>
                 </div>
               </div>

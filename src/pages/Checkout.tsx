@@ -613,8 +613,8 @@ export function Checkout() {
           </div>
 
           {/* Order Summary */}
-          <div className="bg-white dark:bg-zinc-800 rounded-lg shadow-md dark:shadow-zinc-900/20 p-6">
-            <h2 className="text-xl font-bold text-zinc-900 dark:text-white mb-6">{t('cart.summary.title')}</h2>
+          <div className="bg-theme-bg-secondary rounded-lg shadow-theme-md p-6">
+            <h2 className="text-xl font-bold text-theme-text-primary mb-6">{t('cart.summary.title')}</h2>
 
             <div className="space-y-4 mb-6">
               {cartState.items.map((item) => (

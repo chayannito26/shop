@@ -65,7 +65,7 @@ export function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-zinc-900 transition-colors">
+    <div className="min-h-screen bg-theme-bg-primary transition-colors">
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-red-600 to-red-800 dark:from-red-700 dark:to-red-900 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
