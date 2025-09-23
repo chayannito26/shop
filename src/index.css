@@ -29,7 +29,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     /* Strong Crimson-black dark theme colors */
-    --color-bg-primary: 25 15 18; /* deep crimson-black */
+    --color-bg-primary: 35 10 18; /* intensely deep crimson-black */
     --color-bg-secondary: 45 30 35; /* strong crimson-gray-800 */
     --color-bg-tertiary: 65 45 52; /* crimson-gray-700 */
     --color-text-primary: 252 248 250; /* warm white */
