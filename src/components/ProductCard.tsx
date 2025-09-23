@@ -21,12 +21,12 @@ export function ProductCard({ product }: ProductCardProps) {
   return (
     <div className="group relative h-full">
       <Link to={`/product/${product.id}`}>
-        <div className="bg-white dark:bg-zinc-800 rounded-2xl shadow-lg dark:shadow-zinc-900/40 overflow-hidden transition-all duration-300 group-hover:scale-[1.02] group-hover:shadow-2xl group-hover:shadow-red-500/10 border border-zinc-100 dark:border-zinc-700 h-full flex flex-col">
+        <div className="bg-theme-bg-secondary rounded-2xl shadow-theme-lg overflow-hidden transition-all duration-300 group-hover:scale-[1.02] group-hover:shadow-theme-lg border border-theme-border h-full flex flex-col">
 
           {/* Image Container with Loading State */}
-          <div className="relative aspect-square w-full overflow-hidden bg-zinc-100 dark:bg-zinc-700">
+          <div className="relative aspect-square w-full overflow-hidden bg-theme-bg-tertiary">
             {!imageLoaded && (
-              <div className="absolute inset-0 bg-zinc-200 dark:bg-zinc-700 animate-pulse"></div>
+              <div className="absolute inset-0 bg-theme-bg-tertiary animate-pulse"></div>
             )}
             <img
               src={primaryImage}
@@ -53,16 +53,16 @@ export function ProductCard({ product }: ProductCardProps) {
           {/* Product Info */}
           <div className="p-6 flex-1 flex flex-col">
             <div className="mb-3 flex-1">
-              <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-2 line-clamp-2 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors duration-300">
+              <h3 className="text-lg font-semibold text-theme-text-primary mb-2 line-clamp-2 group-hover:text-theme-accent transition-colors duration-300">
                 {product.name}
               </h3>
-              <p className="text-sm text-zinc-500 dark:text-zinc-400 uppercase tracking-wide font-medium transition-colors duration-300">
+              <p className="text-sm text-theme-text-tertiary uppercase tracking-wide font-medium transition-colors duration-300">
                 {categoryLabel(product.category)}
               </p>
             </div>
 
             <div className="mt-auto">
-              <p className="text-xl font-bold text-red-600 dark:text-red-400 transition-colors duration-300">{priceLabel}</p>
+              <p className="text-xl font-bold text-theme-accent transition-colors duration-300">{priceLabel}</p>
             </div>
           </div>
         </div>

@@ -38,7 +38,7 @@ export function ImageZoom({ images, activeIndex, onImageChange, alt }: ImageZoom
     <div className="relative">
       {/* Main Image Display */}
       <div
-        className="relative overflow-hidden rounded-2xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 shadow-xl"
+        className="relative overflow-hidden rounded-2xl bg-theme-bg-secondary border border-theme-border shadow-theme-xl"
         onMouseMove={handleMouseMove}
         onMouseLeave={() => setIsZoomed(false)}
       >
@@ -113,8 +113,8 @@ export function ImageZoom({ images, activeIndex, onImageChange, alt }: ImageZoom
               onClick={() => onImageChange(index)}
               className={`border rounded-xl p-1 transition-all duration-300 hover:shadow-lg ${
                 index === activeIndex
-                  ? 'ring-2 ring-red-500 border-red-500 shadow-lg shadow-red-500/20'
-                  : 'border-zinc-300 dark:border-zinc-600 hover:border-red-400'
+                  ? 'ring-2 ring-theme-accent border-theme-accent shadow-theme-lg'
+                  : 'border-theme-border hover:border-theme-border-hover'
               }`}
             >
               <img

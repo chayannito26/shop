@@ -77,9 +77,9 @@ export function ProductDetail() {
 
   if (!product) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-zinc-900 flex items-center justify-center">
+      <div className="min-h-screen bg-theme-bg-primary flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-4">{t('product.notFound')}</h2>
+          <h2 className="text-2xl font-bold text-theme-text-primary mb-4">{t('product.notFound')}</h2>
           <button
             onClick={() => navigate('/')}
             className="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300"
@@ -145,11 +145,11 @@ export function ProductDetail() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-zinc-900">
+    <div className="min-h-screen bg-theme-bg-primary">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <button
           onClick={() => navigate('/')}
-          className="flex items-center text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white mb-8 transition-colors"
+          className="flex items-center text-theme-text-secondary hover:text-theme-text-primary mb-8 transition-colors"
         >
           <ArrowLeft className="h-5 w-5 mr-2" />
           {t('product.back')}
