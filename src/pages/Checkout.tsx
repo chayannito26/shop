@@ -436,10 +436,7 @@ export function Checkout() {
                     name="roll"
                     value={formData.roll}
                     onChange={handleInputChange}
-                    required
                     autoComplete="off"
-                    onInvalid={(e) => {(e.currentTarget as HTMLInputElement).setCustomValidity(t('checkout.validation.required'))}}
-                    onInput={(e) => {(e.currentTarget as HTMLInputElement).setCustomValidity('')}}
                     className="w-full px-3 py-2 border border-theme-border rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-theme-bg-secondary text-theme-text-primary"
                   />
                 </div>
@@ -453,9 +450,6 @@ export function Checkout() {
                     name="department"
                     value={formData.department}
                     onChange={handleInputChange}
-                    required
-                    onInvalid={(e) => {(e.currentTarget as HTMLSelectElement).setCustomValidity(t('checkout.validation.required'))}}
-                    onInput={(e) => {(e.currentTarget as HTMLSelectElement).setCustomValidity('')}}
                     className="w-full px-3 py-2 border border-theme-border rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-theme-bg-secondary text-theme-text-primary"
                   >
                     <option value="">{t('checkout.form.selectDepartment')}</option>
