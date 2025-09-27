@@ -27,6 +27,32 @@ export const products: Product[] = [
       { label: 'Black-XXL', price: 300, image: ['https://shop.chayannito26.com/images/tshirt-black.jpg', 'https://shop.chayannito26.com/images/tshirt-black-back.jpg'] }
     ]
   },
+    {
+    id: 'drop_tshirt',
+    name: 'Chayannito 26 Drop Shoulder T-Shirt',
+    price: 450,
+    image: [
+      'https://shop.chayannito26.com/images/tshirt.jpg',
+      'https://shop.chayannito26.com/images/tshirt-back.jpg'
+    ],
+    description: 'Premium cotton drop shouldert-shirt with Chayannito 26 batch design. Perfect for representing your batch pride.',
+    category: 'clothing',
+  variationSchema: { keys: ['color', 'size'], titles: { color: 'Color', size: 'Size' } },
+    variations: [
+      // White variations
+      { label: 'White-S', price: 450, image: ['https://shop.chayannito26.com/images/tshirt-white.jpg', 'https://shop.chayannito26.com/images/tshirt-white-back.jpg'] },
+      { label: 'White-M', price: 450, image: ['https://shop.chayannito26.com/images/tshirt-white.jpg', 'https://shop.chayannito26.com/images/tshirt-white-back.jpg'] },
+      { label: 'White-L', price: 450, image: ['https://shop.chayannito26.com/images/tshirt-white.jpg', 'https://shop.chayannito26.com/images/tshirt-white-back.jpg'] },
+      { label: 'White-XL', price: 450, image: ['https://shop.chayannito26.com/images/tshirt-white.jpg', 'https://shop.chayannito26.com/images/tshirt-white-back.jpg'] },
+      { label: 'White-XXL', price: 450, image: ['https://shop.chayannito26.com/images/tshirt-white.jpg', 'https://shop.chayannito26.com/images/tshirt-white-back.jpg'] },
+      // Black variations
+      { label: 'Black-S', price: 450, image: ['https://shop.chayannito26.com/images/tshirt-black.jpg', 'https://shop.chayannito26.com/images/tshirt-black-back.jpg'] },
+      { label: 'Black-M', price: 450, image: ['https://shop.chayannito26.com/images/tshirt-black.jpg', 'https://shop.chayannito26.com/images/tshirt-black-back.jpg'] },
+      { label: 'Black-L', price: 450, image: ['https://shop.chayannito26.com/images/tshirt-black.jpg', 'https://shop.chayannito26.com/images/tshirt-black-back.jpg'] },
+      { label: 'Black-XL', price: 450, image: ['https://shop.chayannito26.com/images/tshirt-black.jpg', 'https://shop.chayannito26.com/images/tshirt-black-back.jpg'] },
+      { label: 'Black-XXL', price: 450, image: ['https://shop.chayannito26.com/images/tshirt-black.jpg', 'https://shop.chayannito26.com/images/tshirt-black-back.jpg'] }
+    ]
+  },
   {
     id: 'hoodie',
     name: 'Chayannito 26 Hoodie',
