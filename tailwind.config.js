@@ -3,6 +3,9 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["Baloo Da 2", "Baloo Da", "cursive", "system-ui"],
+      },
       colors: {
         // Custom theme colors using CSS variables
         theme: {

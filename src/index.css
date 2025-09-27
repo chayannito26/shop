@@ -64,6 +64,8 @@ html {
 body {
   overscroll-behavior: none;
   background-color: rgb(var(--color-bg-primary));
+  /* Use Baloo Da 2 as the site's default font. Fallbacks included. */
+  font-family: 'Baloo Da 2', 'Baloo Da', cursive, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
 /* Custom animations */
@@ -149,6 +151,19 @@ body {
 
 .font-bn {
   font-family: 'Baloo Da 2', cursive, sans-serif !important;
+}
+
+/* Ensure Tailwind utility classes (like font-mono, font-sans) and any element
+   that sets a font explicitly still use Baloo Da across the site. This forces
+   a consistent look per the owner's request. */
+.font-sans,
+.font-serif,
+.font-mono,
+.font-bn,
+html,
+body,
+* {
+  font-family: 'Baloo Da 2', 'Baloo Da', cursive, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !important;
 }
 
 * {
