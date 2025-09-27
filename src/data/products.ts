@@ -190,19 +190,12 @@ export const products: Product[] = [
     variationSchema: { keys: ['size'], titles: { size: 'Size' } },
     // Size-based variations: 1in, 1.5in, 2in, 2.5in, 3in with incremental prices
     variations: [
-      { label: '1in', price: 9, image: ['https://shop.chayannito26.com/images/sticker.jpg'] },
-      { label: '1.5in', price: 12, image: ['https://shop.chayannito26.com/images/sticker.jpg'] },
-      { label: '2in', price: 15, image: ['https://shop.chayannito26.com/images/sticker.jpg'] },
-      { label: '2.5in', price: 18, image: ['https://shop.chayannito26.com/images/sticker.jpg'] },
-      { label: '3in', price: 21, image: ['https://shop.chayannito26.com/images/sticker.jpg'] }
+      { label: '1in', price: 5, image: ['https://shop.chayannito26.com/images/sticker.jpg'] },
+      { label: '1.5in', price: 8, image: ['https://shop.chayannito26.com/images/sticker.jpg'] },
+      { label: '2in', price: 10, image: ['https://shop.chayannito26.com/images/sticker.jpg'] },
+      { label: '2.5in', price: 15, image: ['https://shop.chayannito26.com/images/sticker.jpg'] },
+      { label: '3in', price: 20, image: ['https://shop.chayannito26.com/images/sticker.jpg'] }
     ],
-    bulkRates: [
-      { units: 100, totalPrice: 280 },
-      { units: 200, totalPrice: 450 },
-      { units: 300, totalPrice: 550 },
-      { units: 500, totalPrice: 750 },
-      { units: 1000, totalPrice: 1290 }
-    ]
   },
   {
     id: 'wristband',
