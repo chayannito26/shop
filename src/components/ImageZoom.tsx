@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ZoomIn, ZoomOut, X } from 'lucide-react';
+import { ZoomIn, ZoomOut } from 'lucide-react';
 
 interface ImageZoomProps {
   images: string[];
@@ -34,6 +34,29 @@ export function ImageZoom({ images, activeIndex, onImageChange, alt }: ImageZoom
 
   const currentImage = images[activeIndex];
 
+  // Derive .avif and .webp variants from an existing image URL.
+  // If the URL is a data: URI or doesn't look like it has an extension, return the original for variants.
+  const makeVariants = (url: string) => {
+    try {
+      if (!url || url.startsWith('data:')) return { avif: url, webp: url, orig: url };
+
+      const qIdx = url.indexOf('?');
+      const base = qIdx === -1 ? url : url.slice(0, qIdx);
+      const query = qIdx === -1 ? '' : url.slice(qIdx);
+
+      const lastDot = base.lastIndexOf('.');
+      if (lastDot === -1) return { avif: url + '.avif', webp: url + '.webp', orig: url };
+
+      const prefix = base.slice(0, lastDot);
+      // Keep any query params intact when adding extensions
+      const avif = `${prefix}.avif${query}`;
+      const webp = `${prefix}.webp${query}`;
+      return { avif, webp, orig: url };
+    } catch {
+      return { avif: url, webp: url, orig: url };
+    }
+  };
+
   return (
     <div className="relative">
       {/* Main Image Display */}
@@ -43,26 +66,42 @@ export function ImageZoom({ images, activeIndex, onImageChange, alt }: ImageZoom
         onMouseLeave={() => setIsZoomed(false)}
       >
         <div className="aspect-square w-full">
-          <img
-            src={currentImage}
-            alt={`${alt} - ${activeIndex + 1}`}
-            className={`w-full h-full object-cover transition-transform duration-300 ${
-              isZoomed ? 'cursor-zoom-out scale-150' : 'cursor-zoom-in'
-            }`}
-            style={
-              isZoomed
-                ? {
-                    transformOrigin: `${zoomPosition.x}% ${zoomPosition.y}%`,
-                    transform: 'scale(2)',
-                  }
-                : {}
-            }
-            onClick={toggleZoom}
-            onError={(e) => {
-              // Fallback for broken images
-              e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgdmlld0JveD0iMCAwIDQwMCA0MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iNDAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0yMDAgMTAwQzE0NC43NzIgMTAwIDEwMCAxNDQuNzcyIDEwMCAyMDBTMTQ0Ljc3MiAzMDAgMjAwIDMwMFMyODUuMjI4IDI1NS4yMjggMjg1LjIyOCAyMDBTMjU1LjIyOCAxMDAgMjAwIDEwMFpNMjAwIDI1NUMxNzMuNDkgMjU1IDE1MiAyMzMuNTEgMTUyIDIwN1MxNzMuNDkgMTU1IDIwMCAxNTVTMjQ4IDE3My40OSAyNDggMjAwUzIyNi41MSAyNTUgMjAwIDI1NVoiIGZpbGw9IiM5Q0E0QUYiLz4KPC9zdmc+';
-            }}
-          />
+          {/* Prefer modern formats: AVIF -> WebP -> original. Thumbnails remain unchanged per requirements. */}
+          {currentImage ? (
+            (() => {
+              const v = makeVariants(currentImage);
+              return (
+                <picture>
+                  <source srcSet={v.avif} type="image/avif" />
+                  <source srcSet={v.webp} type="image/webp" />
+                  <img
+                    src={v.orig}
+                    alt={`${alt} - ${activeIndex + 1}`}
+                    className={`w-full h-full object-cover transition-transform duration-300 ${
+                      isZoomed ? 'cursor-zoom-out scale-150' : 'cursor-zoom-in'
+                    }`}
+                    style={
+                      isZoomed
+                        ? {
+                            transformOrigin: `${zoomPosition.x}% ${zoomPosition.y}%`,
+                            transform: 'scale(2)',
+                          }
+                        : {}
+                    }
+                    onClick={toggleZoom}
+                    onError={(e) => {
+                      // Fallback for broken images
+                      e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgdmlld0JveD0iMCAwIDQwMCA0MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iNDAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0yMDAgMTAwQzE0NC43NzIgMTAwIDEwMCAxNDQuNzcyIDEwMCAyMDBTMTQ0Ljc3MiAzMDAgMjAwIDMwMFMyODUuMjI4IDI1NS4yMjggMjg1LjIyOCAyMDBTMjU1LjIyOCAxMDAgMjAwIDEwMFpNMjAwIDI1NUMxNzMuNDkgMjU1IDE1MiAyMzMuNTEgMTUyIDIwN1MxNzMuNDkgMTU1IDIwMCAxNTVTMjQ4IDE3My40OSAyNDggMjAwUzIyNi41MSAyNTUgMjAwIDI1NVoiIGZpbGw9IiM5Q0E0QUYiLz4KPC9zdmc+';
+                    }}
+                  />
+                </picture>
+              );
+            })()
+          ) : (
+            <div className="aspect-square w-full rounded-2xl bg-zinc-200 dark:bg-zinc-700 flex items-center justify-center">
+              <p className="text-zinc-500 dark:text-zinc-400">No image</p>
+            </div>
+          )}
         </div>
 
         {/* Zoom Indicator */}
