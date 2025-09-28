@@ -14,6 +14,7 @@ export function ProductCard({ product }: ProductCardProps) {
   const priceLabel = min === max ? `৳${min}` : `৳${min} - ৳${max}`;
   const { categoryLabel } = useI18n();
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [isPortrait, setIsPortrait] = useState<boolean | null>(null);
 
   // product.image can be string or string[]; prefer first element
   // Prefer a dedicated thumbnail when available (string or array). Fall back to primary image.
@@ -29,18 +30,29 @@ export function ProductCard({ product }: ProductCardProps) {
       <Link to={`/product/${product.id}`}>
         <div className="bg-theme-bg-secondary rounded-2xl shadow-theme-lg overflow-hidden transition-all duration-300 group-hover:scale-[1.02] group-hover:shadow-theme-lg border border-theme-border h-full flex flex-col">
 
-          {/* Image Container with Loading State */}
-          <div className="relative aspect-square w-full overflow-hidden bg-theme-bg-tertiary">
+          {/* Image Container with adaptive aspect (supports portrait and landscape) */}
+          <div className="relative w-full overflow-hidden bg-theme-bg-tertiary flex items-center justify-center">
             {!imageLoaded && (
               <div className="absolute inset-0 bg-theme-bg-tertiary animate-pulse"></div>
             )}
             <img
               src={primaryImage}
               alt={product.name}
-              className={`w-full h-full object-cover transition-all duration-300 group-hover:scale-105 ${
+              // Use contain when portrait to avoid cropping tall images; otherwise cover for full-bleed look
+              className={`max-w-full transition-all duration-300 group-hover:scale-105 ${
                 imageLoaded ? 'opacity-100' : 'opacity-0'
-              }`}
-              onLoad={() => setImageLoaded(true)}
+              } ${isPortrait ? 'max-h-[260px] object-contain' : 'w-full h-56 object-cover'}`}
+              onLoad={(e) => {
+                setImageLoaded(true);
+                try {
+                  const imgEl = e.currentTarget as HTMLImageElement;
+                  if (imgEl.naturalWidth && imgEl.naturalHeight) {
+                    setIsPortrait(imgEl.naturalHeight > imgEl.naturalWidth);
+                  }
+                } catch {
+                  setIsPortrait(null);
+                }
+              }}
               onError={(e) => {
                 // Fallback for broken images
                 e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDMwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0xNTAgNzVDMTA4LjU3OSA3NSA3NSAxMDguNTc5IDc1IDE1MFMxMDguNTc5IDIyNSAxNTAgMjI1UzIyNSAxOTEuNDIxIDIyNSAxNTBTMTkxLjQyMSA3NSAxNTAgNzVaTTE1MCAyMDBDMTMwLjExOCAyMDAgMTE0IDE3My44ODIgMTE0IDE1NVMxMzAuMTE4IDExMCAxNTAgMTEwUzE4NiAxMzAuMTE4IDE4NiAxNTBTMTY5Ljg4MiAyMDAgMTUwIDIwMFoiIGZpbGw9IiM5Q0E0QUYiLz4KPC9zdmc+';

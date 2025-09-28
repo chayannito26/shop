@@ -166,7 +166,7 @@ export function ProductDetail() {
                 alt={product.name}
               />
             ) : (
-              <div className="aspect-square w-full rounded-2xl bg-zinc-200 dark:bg-zinc-700 flex items-center justify-center">
+              <div className="w-full rounded-2xl bg-zinc-200 dark:bg-zinc-700 flex items-center justify-center py-20">
                 <p className="text-zinc-500 dark:text-zinc-400">No image available</p>
               </div>
             )}

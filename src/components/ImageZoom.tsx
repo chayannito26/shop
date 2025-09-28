@@ -11,6 +11,7 @@ interface ImageZoomProps {
 export function ImageZoom({ images, activeIndex, onImageChange, alt }: ImageZoomProps) {
   const [isZoomed, setIsZoomed] = useState(false);
   const [zoomPosition, setZoomPosition] = useState({ x: 50, y: 50 });
+  const [isPortrait, setIsPortrait] = useState<boolean | null>(null);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!isZoomed) return;
@@ -59,13 +60,13 @@ export function ImageZoom({ images, activeIndex, onImageChange, alt }: ImageZoom
 
   return (
     <div className="relative">
-      {/* Main Image Display */}
+      {/* Main Image Display (adaptive aspect) */}
       <div
-        className="relative overflow-hidden rounded-2xl bg-theme-bg-secondary border border-theme-border shadow-theme-xl"
+        className="relative overflow-hidden rounded-2xl bg-theme-bg-secondary border border-theme-border shadow-theme-xl flex items-center justify-center"
         onMouseMove={handleMouseMove}
         onMouseLeave={() => setIsZoomed(false)}
       >
-        <div className="aspect-square w-full">
+        <div className="w-full">
           {/* Prefer modern formats: AVIF -> WebP -> original. Thumbnails remain unchanged per requirements. */}
           {currentImage ? (
             (() => {
@@ -77,18 +78,29 @@ export function ImageZoom({ images, activeIndex, onImageChange, alt }: ImageZoom
                   <img
                     src={v.orig}
                     alt={`${alt} - ${activeIndex + 1}`}
-                    className={`w-full h-full object-cover transition-transform duration-300 ${
-                      isZoomed ? 'cursor-zoom-out scale-150' : 'cursor-zoom-in'
+                    // For portrait images prefer contain and cap max-height; otherwise use cover for expansive look
+                    className={`transition-transform duration-300 ${isZoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'} ${
+                      isPortrait ? 'object-contain max-h-[640px]' : 'w-full object-cover max-h-[520px]'
                     }`}
                     style={
                       isZoomed
                         ? {
                             transformOrigin: `${zoomPosition.x}% ${zoomPosition.y}%`,
-                            transform: 'scale(2)',
+                            transform: isPortrait ? 'scale(1.8)' : 'scale(2)'
                           }
                         : {}
                     }
                     onClick={toggleZoom}
+                    onLoad={(e) => {
+                      try {
+                        const imgEl = e.currentTarget as HTMLImageElement;
+                        if (imgEl.naturalWidth && imgEl.naturalHeight) {
+                          setIsPortrait(imgEl.naturalHeight > imgEl.naturalWidth);
+                        }
+                      } catch {
+                        setIsPortrait(null);
+                      }
+                    }}
                     onError={(e) => {
                       // Fallback for broken images
                       e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgdmlld0JveD0iMCAwIDQwMCA0MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iNDAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0yMDAgMTAwQzE0NC43NzIgMTAwIDEwMCAxNDQuNzcyIDEwMCAyMDBTMTQ0Ljc3MiAzMDAgMjAwIDMwMFMyODUuMjI4IDI1NS4yMjggMjg1LjIyOCAyMDBTMjU1LjIyOCAxMDAgMjAwIDEwMFpNMjAwIDI1NUMxNzMuNDkgMjU1IDE1MiAyMzMuNTEgMTUyIDIwN1MxNzMuNDkgMTU1IDIwMCAxNTVTMjQ4IDE3My40OSAyNDggMjAwUzIyNi41MSAyNTUgMjAwIDI1NVoiIGZpbGw9IiM5Q0E0QUYiLz4KPC9zdmc+';
@@ -98,7 +110,7 @@ export function ImageZoom({ images, activeIndex, onImageChange, alt }: ImageZoom
               );
             })()
           ) : (
-            <div className="aspect-square w-full rounded-2xl bg-zinc-200 dark:bg-zinc-700 flex items-center justify-center">
+            <div className="w-full rounded-2xl bg-zinc-200 dark:bg-zinc-700 flex items-center justify-center py-16">
               <p className="text-zinc-500 dark:text-zinc-400">No image</p>
             </div>
           )}
@@ -159,7 +171,7 @@ export function ImageZoom({ images, activeIndex, onImageChange, alt }: ImageZoom
               <img
                 src={image}
                 alt={`${alt} thumb ${index + 1}`}
-                className="w-16 h-16 object-cover rounded-lg"
+                className="w-16 h-20 object-cover rounded-lg"
                 onError={(e) => {
                   // Fallback for broken thumbnails
                   e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0zMiAxNkMyMy4xNiAxNiAxNiAyMy4xNiAxNiAzMlMyMy4xNiA0OCAzMiA0OFM0OCA0MC44NCA0OCAzMlM0MC44NCAxNiAzMiAxNlpNMzIgNDBDMjcuNTggNDAgMjQgMzYuNDIgMjQgMzJTMjcuNTggMjQgMzIgMjRTNDAgMjcuNTggNDAgMzJTMzYuNDIgNDAgMzIgNDBaIiBmaWxsPSIjOUNBNEFGIi8+Cjwvc3ZnPg==';
