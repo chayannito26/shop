@@ -6,9 +6,9 @@ export const products: Product[] = [
     name: 'Chayannito 26 T-Shirt',
   price: 299,
     image: [
-      'https://shop.chayannito26.com/images/tshirt.jpg',
-      'https://shop.chayannito26.com/images/tshirt-back.jpg'
+      'https://shop.chayannito26.com/images/tshirt.jpg'
     ],
+    thumbnail: 'https://shop.chayannito26.com/images/tshirt_thumb.webp',
     description: 'Premium cotton t-shirt with Chayannito 26 batch design. Perfect for representing your batch pride.',
     category: 'clothing',
   variationSchema: { keys: ['color', 'size'], titles: { color: 'Color', size: 'Size' } },
@@ -31,26 +31,30 @@ export const products: Product[] = [
     id: 'drop_tshirt',
     name: 'Chayannito 26 Drop Shoulder T-Shirt',
   price: 449,
+    // replace images with provided drop images only
     image: [
-      'https://shop.chayannito26.com/images/tshirt.jpg',
-      'https://shop.chayannito26.com/images/tshirt-back.jpg'
+      'https://shop.chayannito26.com/images/drop_white_1.jpg',
+      'https://shop.chayannito26.com/images/drop_black_1.jpg',
+      'https://shop.chayannito26.com/images/drop_black_2.jpg',
+      'https://shop.chayannito26.com/images/drop_black_white.jpg'
     ],
+    thumbnail: 'https://shop.chayannito26.com/images/drop_white_1.avif',
     description: 'Premium cotton drop shouldert-shirt with Chayannito 26 batch design. Perfect for representing your batch pride.',
     category: 'clothing',
   variationSchema: { keys: ['color', 'size'], titles: { color: 'Color', size: 'Size' } },
     variations: [
-      // White variations
-  { label: 'White-S', price: 449, image: ['https://shop.chayannito26.com/images/tshirt-white.jpg', 'https://shop.chayannito26.com/images/tshirt-white-back.jpg'] },
-  { label: 'White-M', price: 449, image: ['https://shop.chayannito26.com/images/tshirt-white.jpg', 'https://shop.chayannito26.com/images/tshirt-white-back.jpg'] },
-  { label: 'White-L', price: 449, image: ['https://shop.chayannito26.com/images/tshirt-white.jpg', 'https://shop.chayannito26.com/images/tshirt-white-back.jpg'] },
-  { label: 'White-XL', price: 449, image: ['https://shop.chayannito26.com/images/tshirt-white.jpg', 'https://shop.chayannito26.com/images/tshirt-white-back.jpg'] },
-  { label: 'White-XXL', price: 449, image: ['https://shop.chayannito26.com/images/tshirt-white.jpg', 'https://shop.chayannito26.com/images/tshirt-white-back.jpg'] },
+      // variations should not contain any images because product-level images were specified by user and must be the only images
+  { label: 'White-S', price: 449 , 'image': ['https://shop.chayannito26.com/images/drop_white_1.jpg']},
+  { label: 'White-M', price: 449 , 'image': ['https://shop.chayannito26.com/images/drop_white_1.jpg']},
+  { label: 'White-L', price: 449 , 'image': ['https://shop.chayannito26.com/images/drop_white_1.jpg']},
+  { label: 'White-XL', price: 449 , 'image': ['https://shop.chayannito26.com/images/drop_white_1.jpg']},
+  { label: 'White-XXL', price: 449 , 'image': ['https://shop.chayannito26.com/images/drop_white_1.jpg']},
       // Black variations
-  { label: 'Black-S', price: 449, image: ['https://shop.chayannito26.com/images/tshirt-black.jpg', 'https://shop.chayannito26.com/images/tshirt-black-back.jpg'] },
-  { label: 'Black-M', price: 449, image: ['https://shop.chayannito26.com/images/tshirt-black.jpg', 'https://shop.chayannito26.com/images/tshirt-black-back.jpg'] },
-  { label: 'Black-L', price: 449, image: ['https://shop.chayannito26.com/images/tshirt-black.jpg', 'https://shop.chayannito26.com/images/tshirt-black-back.jpg'] },
-  { label: 'Black-XL', price: 449, image: ['https://shop.chayannito26.com/images/tshirt-black.jpg', 'https://shop.chayannito26.com/images/tshirt-black-back.jpg'] },
-  { label: 'Black-XXL', price: 449, image: ['https://shop.chayannito26.com/images/tshirt-black.jpg', 'https://shop.chayannito26.com/images/tshirt-black-back.jpg'] }
+  { label: 'Black-S', price: 449 , 'image': ['https://shop.chayannito26.com/images/drop_black_1.jpg']},
+  { label: 'Black-M', price: 449 , 'image': ['https://shop.chayannito26.com/images/drop_black_1.jpg']},
+  { label: 'Black-L', price: 449 , 'image': ['https://shop.chayannito26.com/images/drop_black_1.jpg']},
+  { label: 'Black-XL', price: 449 , 'image': ['https://shop.chayannito26.com/images/drop_black_1.jpg']},
+  { label: 'Black-XXL', price: 449 }
     ]
   },
   {
@@ -58,33 +62,33 @@ export const products: Product[] = [
     name: 'Chayannito 26 Hoodie',
   price: 699,
     image: [
-      'https://shop.chayannito26.com/images/hoodie.jpg',
-      'https://shop.chayannito26.com/images/hoodie-zip.jpg',
-      'https://shop.chayannito26.com/images/hoodie-back.jpg'
+      'https://shop.chayannito26.com/images/hoodie.jpg'
     ],
+    thumbnail: 'https://shop.chayannito26.com/images/hoodie_thumb.webp',
     description: 'Cozy hoodie with embroidered Chayannito 26 logo. Stay warm while showing your batch spirit.',
     category: 'clothing',
   variationSchema: { keys: ['color', 'size'], titles: { color: 'Color', size: 'Size' } },
     variations: [
-      // White variations
-  { label: 'White-S', price: 699, image: ['https://shop.chayannito26.com/images/hoodie-white.jpg', 'https://shop.chayannito26.com/images/hoodie-white-zip.jpg', 'https://shop.chayannito26.com/images/hoodie-white-back.jpg'] },
-  { label: 'White-M', price: 699, image: ['https://shop.chayannito26.com/images/hoodie-white.jpg', 'https://shop.chayannito26.com/images/hoodie-white-zip.jpg', 'https://shop.chayannito26.com/images/hoodie-white-back.jpg'] },
-  { label: 'White-L', price: 699, image: ['https://shop.chayannito26.com/images/hoodie-white.jpg', 'https://shop.chayannito26.com/images/hoodie-white-zip.jpg', 'https://shop.chayannito26.com/images/hoodie-white-back.jpg'] },
-  { label: 'White-XL', price: 699, image: ['https://shop.chayannito26.com/images/hoodie-white.jpg', 'https://shop.chayannito26.com/images/hoodie-white-zip.jpg', 'https://shop.chayannito26.com/images/hoodie-white-back.jpg'] },
-  { label: 'White-XXL', price: 699, image: ['https://shop.chayannito26.com/images/hoodie-white.jpg', 'https://shop.chayannito26.com/images/hoodie-white-zip.jpg', 'https://shop.chayannito26.com/images/hoodie-white-back.jpg'] },
+      // variations should not include images when product-level images are specified in user's list
+  { label: 'White-S', price: 699 },
+  { label: 'White-M', price: 699 },
+  { label: 'White-L', price: 699 },
+  { label: 'White-XL', price: 699 },
+  { label: 'White-XXL', price: 699 },
       // Black variations
-  { label: 'Black-S', price: 699, image: ['https://shop.chayannito26.com/images/hoodie-black.jpg', 'https://shop.chayannito26.com/images/hoodie-black-zip.jpg', 'https://shop.chayannito26.com/images/hoodie-black-back.jpg'] },
-  { label: 'Black-M', price: 699, image: ['https://shop.chayannito26.com/images/hoodie-black.jpg', 'https://shop.chayannito26.com/images/hoodie-black-zip.jpg', 'https://shop.chayannito26.com/images/hoodie-black-back.jpg'] },
-  { label: 'Black-L', price: 699, image: ['https://shop.chayannito26.com/images/hoodie-black.jpg', 'https://shop.chayannito26.com/images/hoodie-black-zip.jpg', 'https://shop.chayannito26.com/images/hoodie-black-back.jpg'] },
-  { label: 'Black-XL', price: 699, image: ['https://shop.chayannito26.com/images/hoodie-black.jpg', 'https://shop.chayannito26.com/images/hoodie-black-zip.jpg', 'https://shop.chayannito26.com/images/hoodie-black-back.jpg'] },
-  { label: 'Black-XXL', price: 699, image: ['https://shop.chayannito26.com/images/hoodie-black.jpg', 'https://shop.chayannito26.com/images/hoodie-black-zip.jpg', 'https://shop.chayannito26.com/images/hoodie-black-back.jpg'] }
+  { label: 'Black-S', price: 699 },
+  { label: 'Black-M', price: 699 },
+  { label: 'Black-L', price: 699 },
+  { label: 'Black-XL', price: 699 },
+  { label: 'Black-XXL', price: 699 }
     ]
   },
   {
     id: 'mug',
     name: 'Chayannito 26 Ceramic Mug',
   price: 299,
-  image: ['https://shop.chayannito26.com/images/mug.jpg', 'https://shop.chayannito26.com/images/mug-side.jpg'],
+  image: ['https://shop.chayannito26.com/images/mug_1.jpg','https://shop.chayannito26.com/images/mug_2.jpg'],
+    thumbnail: 'https://shop.chayannito26.com/images/mug_1.avif',
     description: 'High-quality ceramic mug with Chayannito 26 design. Perfect for your morning coffee or tea.',
     category: 'accessories'
   },
@@ -92,12 +96,13 @@ export const products: Product[] = [
     id: 'totebag',
     name: 'Chayannito 26 Tote Bag',
   price: 299,
-    image: 'https://shop.chayannito26.com/images/totebag.jpg',
+    image: ['https://shop.chayannito26.com/images/tote_1.jpg','https://shop.chayannito26.com/images/tote_2.jpg','https://shop.chayannito26.com/images/tote_3.jpg','https://shop.chayannito26.com/images/tote_4.jpg'],
+    thumbnail: 'https://shop.chayannito26.com/images/tote_1.avif',
     description: 'Durable canvas tote bag with stylish Chayannito 26 print. Eco-friendly and practical.',
     category: 'accessories',
     variations: [
-  { label: 'Black', price: 299, image: ['https://shop.chayannito26.com/images/totebag.jpg']},
-  { label: 'White', price: 299, image: ['https://shop.chayannito26.com/images/totebag.jpg'] },
+  { label: 'White', price: 299 , 'image': ['https://shop.chayannito26.com/images/tote_1.jpg']},
+  { label: 'Black', price: 299 },
     ]
   },
   // {
@@ -112,29 +117,31 @@ export const products: Product[] = [
     id: 'notebook',
     name: 'Chayannito 26 Notebook',
   price: 189,
-    image: 'https://shop.chayannito26.com/images/notebook.jpg',
+    image: ['https://shop.chayannito26.com/images/notebook_1.jpg','https://shop.chayannito26.com/images/notebook_2.jpg','https://shop.chayannito26.com/images/notebook_3.jpg','https://shop.chayannito26.com/images/notebook_a4.jpg','https://shop.chayannito26.com/images/notebook_a5.jpg','https://shop.chayannito26.com/images/notebook_lined.jpg','https://shop.chayannito26.com/images/notebok_blank.jpg'],
+    thumbnail: 'https://shop.chayannito26.com/images/notebook_1.avif',
     description: 'Premium notebooks in A4 and A5 sizes with durable 300 gsm Ambush card cover. A4 comes with 150 or 300 blank pages (70 gsm). A5 comes with 160 pages (blank or lined, 100 gsm). Note: Page count is calculated double-sided.',
     category: 'stationery',
     variationSchema: { keys: ['size', 'finish', 'pages'], titles: { size: 'Size', finish: 'Finish', pages: 'Pages' } },
     variations: [
       // A4 variations
-  { label: 'A4-Blank-150', price: 249, image: ['https://shop.chayannito26.com/images/notebook.jpg'] },
-  { label: 'A4-Blank-300', price: 399, image: ['https://shop.chayannito26.com/images/notebook.jpg'] },
+  { label: 'A4-Blank-150', price: 249, image: ['https://shop.chayannito26.com/images/notebook_a4.jpg'] },
+  { label: 'A4-Blank-300', price: 399, image: ['https://shop.chayannito26.com/images/notebook_a4.jpg'] },
       // A5 variations (note: A4-Lined is not available, only A5 has lined options)
-  { label: 'A5-Lined-160', price: 249, image: ['https://shop.chayannito26.com/images/notebook.jpg'] },
-  { label: 'A5-Blank-160', price: 249, image: ['https://shop.chayannito26.com/images/notebook.jpg'] },
+  { label: 'A5-Lined-160', price: 249, image: ['https://shop.chayannito26.com/images/notebook_a5.jpg', 'https://shop.chayannito26.com/images/notebook_a5_lined.jpg'] },
+  { label: 'A5-Blank-160', price: 249, image: ['https://shop.chayannito26.com/images/notebook_a5.jpg', 'https://shop.chayannito26.com/images/notebook_a5_blank.jpg'] },
     ]
   },
   {
-    id: 'pen',
+    id: 'cap',
     name: 'Chayannito 26 Cap',
   price: 149,
-    image: 'https://shop.chayannito26.com/images/cap.jpg',
+    image: ['https://shop.chayannito26.com/images/cap.jpg'],
+    thumbnail: 'https://shop.chayannito26.com/images/cap_thumb.webp',
     description: 'A high quality cap with Chayannito 26 branding on the front. ',
     category: 'clothing',
     variations: [
-  { label: 'Black', price: 299, image: ['https://shop.chayannito26.com/images/cap.jpg']},
-  { label: 'White', price: 299, image: ['https://shop.chayannito26.com/images/cap.jpg'] },
+  { label: 'Black', price: 299 },
+  { label: 'White', price: 299 },
     ]
   },
   // {
@@ -158,7 +165,8 @@ export const products: Product[] = [
     id: 'bottle',
     name: 'Chayannito 26 Water Bottle',
   price: 399,
-    image: 'https://shop.chayannito26.com/images/bottle.jpg',
+    image: ['https://shop.chayannito26.com/images/bottle_1.jpg','https://shop.chayannito26.com/images/bottle_2.jpg','https://shop.chayannito26.com/images/bottle_3.jpg','https://shop.chayannito26.com/images/bottle_4.jpg','https://shop.chayannito26.com/images/bottle_5.jpg'],
+    thumbnail: 'https://shop.chayannito26.com/images/bottle_1.avif',
     description: 'Collectible metal bottle with Chayannito 26 emblem.',
     category: 'accessories'
   },
@@ -174,7 +182,8 @@ export const products: Product[] = [
     id: 'phonecover',
     name: 'Chayannito 26 Phone Cover',
   price: 299,
-    image: 'https://shop.chayannito26.com/images/phone_cover.jpg',
+  thumbnail: 'https://shop.chayannito26.com/images/cover_1.avif',
+    image: ['https://shop.chayannito26.com/images/cover_1.jpg', 'https://shop.chayannito26.com/images/cover_2.jpg', 'https://shop.chayannito26.com/images/cover_3.jpg'],
     description: 'Durable phone cover with Chayannito 26 design. Protect your phone in style.',
     category: 'accessories'
   },
@@ -197,16 +206,16 @@ export const products: Product[] = [
       { label: '3in', price: 20, image: ['https://shop.chayannito26.com/images/sticker.jpg'] }
     ],
   },
-  {
-    id: 'wristband',
-    name: 'Chayannito 26 Wrist Band',
-  price: 59,
-    image: 'https://shop.chayannito26.com/images/wristband.jpg',
-    description: 'Silicone wrist band with Chayannito 26 branding. Comfortable, durable, and everyday wearable.',
-    category: 'accessories',
-    variations: [
-  { label: 'Black', price: 59, image: ['https://shop.chayannito26.com/images/wristband.jpg'] },
-  { label: 'White', price: 59, image: ['https://shop.chayannito26.com/images/wristband.jpg'] }
-    ]
-  }
+  // {
+  //   id: 'wristband',
+  //   name: 'Chayannito 26 Wrist Band',
+  // price: 59,
+  //   image: 'https://shop.chayannito26.com/images/wristband.jpg',
+  //   description: 'Silicone wrist band with Chayannito 26 branding. Comfortable, durable, and everyday wearable.',
+  //   category: 'accessories',
+  //   variations: [
+  // { label: 'Black', price: 59, image: ['https://shop.chayannito26.com/images/wristband.jpg'] },
+  // { label: 'White', price: 59, image: ['https://shop.chayannito26.com/images/wristband.jpg'] }
+  //   ]
+  // }
 ];
