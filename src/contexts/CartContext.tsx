@@ -11,6 +11,8 @@ export interface Product {
   price: number;
   // Support multiple images per product. UI will pick the first suitable image for thumbnails/line-items.
   image: string | string[];
+  // Optional dedicated thumbnail(s) used on listing pages. Prefer thumbnail for compact cards.
+  thumbnail?: string | string[];
   description: string;
   category: string;
   variations?: (string | { label: string; price?: number; image?: string | string[] })[]; // support per-variation price and image(s)
@@ -68,6 +70,10 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       const unitPrice = getVariationPrice(product.price, product.variations, selectedVariation);
       // Ensure line-item image is a single string (first image)
       const resolvedImage = getVariationImage(product.image, product.variations, selectedVariation);
+      // Prefer a dedicated thumbnail when available for compact views (cart line-items still expect a single image)
+      const resolvedThumbnail = Array.isArray(product.thumbnail)
+        ? product.thumbnail[0]
+        : product.thumbnail ?? resolvedImage;
 
       // Find existing line with same product + normalized variation
       const idx = state.items.findIndex(
@@ -85,6 +91,8 @@ function cartReducer(state: CartState, action: CartAction): CartState {
         const newItem: CartItem = {
           ...product,
             image: resolvedImage,
+            // when adding to cart we store a single image string for the line item; keep thumbnail if present
+            thumbnail: resolvedThumbnail,
           price: unitPrice,
           quantity: 1,
           selectedVariation,
@@ -135,10 +143,14 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       const key = makeKey(product.id, selectedVariation);
       const unitPrice = getVariationPrice(product.price, product.variations, selectedVariation);
       const resolvedImage = getVariationImage(product.image, product.variations, selectedVariation);
+      const resolvedThumbnail = Array.isArray(product.thumbnail)
+        ? product.thumbnail[0]
+        : product.thumbnail ?? resolvedImage;
 
       const directOrderItem: CartItem = {
         ...product,
         image: resolvedImage,
+        thumbnail: resolvedThumbnail,
         price: unitPrice,
         quantity,
         selectedVariation,

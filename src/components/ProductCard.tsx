@@ -16,7 +16,13 @@ export function ProductCard({ product }: ProductCardProps) {
   const [imageLoaded, setImageLoaded] = useState(false);
 
   // product.image can be string or string[]; prefer first element
-  const primaryImage = Array.isArray(product.image) ? product.image[0] ?? '' : product.image ?? '';
+  // Prefer a dedicated thumbnail when available (string or array). Fall back to primary image.
+  const primaryImage = (() => {
+    const thumb = product.thumbnail;
+    if (thumb) return Array.isArray(thumb) ? thumb[0] ?? '' : thumb;
+    const img = product.image;
+    return Array.isArray(img) ? img[0] ?? '' : img ?? '';
+  })();
 
   return (
     <div className="group relative h-full">
