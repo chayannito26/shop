@@ -88,7 +88,7 @@ export const products: Product[] = [
     name: 'Chayannito 26 Ceramic Mug',
   price: 299,
   image: ['https://shop.chayannito26.com/images/mug_1.jpg','https://shop.chayannito26.com/images/mug_2.jpg'],
-    thumbnail: 'https://shop.chayannito26.com/images/mug_1.avif',
+    thumbnail: 'https://shop.chayannito26.com/images/mug_thumb.webp',
     description: 'High-quality ceramic mug with Chayannito 26 design. Perfect for your morning coffee or tea.',
     category: 'accessories'
   },
@@ -97,7 +97,7 @@ export const products: Product[] = [
     name: 'Chayannito 26 Tote Bag',
   price: 299,
     image: ['https://shop.chayannito26.com/images/tote_1.jpg','https://shop.chayannito26.com/images/tote_2.jpg','https://shop.chayannito26.com/images/tote_3.jpg','https://shop.chayannito26.com/images/tote_4.jpg'],
-    thumbnail: 'https://shop.chayannito26.com/images/tote_1.avif',
+    thumbnail: 'https://shop.chayannito26.com/images/totebag_thumb.webp',
     description: 'Durable canvas tote bag with stylish Chayannito 26 print. Eco-friendly and practical.',
     category: 'accessories',
     variations: [
@@ -118,7 +118,7 @@ export const products: Product[] = [
     name: 'Chayannito 26 Notebook',
   price: 189,
     image: ['https://shop.chayannito26.com/images/notebook_1.jpg','https://shop.chayannito26.com/images/notebook_2.jpg','https://shop.chayannito26.com/images/notebook_3.jpg','https://shop.chayannito26.com/images/notebook_a4.jpg','https://shop.chayannito26.com/images/notebook_a5.jpg','https://shop.chayannito26.com/images/notebook_lined.jpg','https://shop.chayannito26.com/images/notebok_blank.jpg'],
-    thumbnail: 'https://shop.chayannito26.com/images/notebook_1.avif',
+    thumbnail: 'https://shop.chayannito26.com/images/notebook_thumb.webp',
     description: 'Premium notebooks in A4 and A5 sizes with durable 300 gsm Ambush card cover. A4 comes with 150 or 300 blank pages (70 gsm). A5 comes with 160 pages (blank or lined, 100 gsm). Note: Page count is calculated double-sided.',
     category: 'stationery',
     variationSchema: { keys: ['size', 'finish', 'pages'], titles: { size: 'Size', finish: 'Finish', pages: 'Pages' } },
@@ -132,11 +132,11 @@ export const products: Product[] = [
     ]
   },
   {
-    id: 'cap',
+    id: 'pen',
     name: 'Chayannito 26 Cap',
   price: 149,
     image: ['https://shop.chayannito26.com/images/cap.jpg'],
-    thumbnail: 'https://shop.chayannito26.com/images/cap_thumb.webp',
+    thumbnail: 'https://shop.chayannito26.com/images/pen_thumb.webp',
     description: 'A high quality cap with Chayannito 26 branding on the front. ',
     category: 'clothing',
     variations: [
@@ -182,7 +182,7 @@ export const products: Product[] = [
     id: 'phonecover',
     name: 'Chayannito 26 Phone Cover',
   price: 299,
-  thumbnail: 'https://shop.chayannito26.com/images/cover_1.avif',
+  thumbnail: 'https://shop.chayannito26.com/images/cover_thumb.webp',
     image: ['https://shop.chayannito26.com/images/cover_1.jpg', 'https://shop.chayannito26.com/images/cover_2.jpg', 'https://shop.chayannito26.com/images/cover_3.jpg'],
     description: 'Durable phone cover with Chayannito 26 design. Protect your phone in style.',
     category: 'accessories'
