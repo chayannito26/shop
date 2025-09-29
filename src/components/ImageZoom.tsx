@@ -168,15 +168,24 @@ export function ImageZoom({ images, activeIndex, onImageChange, alt }: ImageZoom
                   : 'border-theme-border hover:border-theme-border-hover'
               }`}
             >
-              <img
-                src={image}
-                alt={`${alt} thumb ${index + 1}`}
-                className="w-16 h-20 object-cover rounded-lg"
-                onError={(e) => {
-                  // Fallback for broken thumbnails
-                  e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0zMiAxNkMyMy4xNiAxNiAxNiAyMy4xNiAxNiAzMlMyMy4xNiA0OCAzMiA0OFM0OCA0MC44NCA0OCAzMlM0MC44NCAxNiAzMiAxNlpNMzIgNDBDMjcuNTggNDAgMjQgMzYuNDIgMjQgMzJTMjcuNTggMjQgMzIgMjRTNDAgMjcuNTggNDAgMzJTMzYuNDIgNDAgMzIgNDBaIiBmaWxsPSIjOUNBNEFGIi8+Cjwvc3ZnPg==';
-                }}
-              />
+              {(() => {
+                const v = makeVariants(image);
+                return (
+                  <picture>
+                    <source srcSet={v.avif} type="image/avif" />
+                    <source srcSet={v.webp} type="image/webp" />
+                    <img
+                      src={v.orig}
+                      alt={`${alt} thumb ${index + 1}`}
+                      className="w-16 h-20 object-cover rounded-lg"
+                      onError={(e) => {
+                        // Fallback for broken thumbnails
+                        e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0zMiAxNkMyMy4xNiAxNiAxNiAyMy4xNiAxNiAzMlMyMy4xNiA0OCAzMiA0OFM0OCA0MC44NCA0OCAzMlM0MC44NCAxNiAzMiAxNlpNMzIgNDBDMjcuNTggNDAgMjQgMzYuNDIgMjQgMzJTMjcuNTggMjQgMzIgMjRTNDAgMjcuNTggNDAgMzJTMzYuNDIgNDAgMzIgNDBaIiBmaWxsPSIjOUNBNEFGIi8+Cjwvc3ZnPg==';
+                      }}
+                    />
+                  </picture>
+                );
+              })()}
             </button>
           ))}
         </div>
