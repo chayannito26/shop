@@ -8,6 +8,7 @@ import { ProductDetail } from './pages/ProductDetail';
 import { Cart } from './pages/Cart';
 import { Checkout } from './pages/Checkout';
 import { MetaPixelRouteListener } from './analytics/MetaPixelRouteListener';
+import { ScrollToTop } from './components/ScrollToTop';
 import { I18nProvider, LanguagePrompt } from './i18n';
 import { ModalProvider } from './contexts/ModalContext';
 
@@ -20,6 +21,8 @@ function App() {
             <Router>
               {/* Track SPA route changes */}
               <MetaPixelRouteListener />
+              {/* Ensure navigation resets scroll position to top */}
+              <ScrollToTop />
               {/* First-visit language prompt */}
               <LanguagePrompt />
               <FontBnWrapper>
