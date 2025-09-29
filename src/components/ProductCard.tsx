@@ -14,7 +14,8 @@ export function ProductCard({ product }: ProductCardProps) {
   const priceLabel = min === max ? `৳${min}` : `৳${min} - ৳${max}`;
   const { categoryLabel } = useI18n();
   const [imageLoaded, setImageLoaded] = useState(false);
-  const [isPortrait, setIsPortrait] = useState<boolean | null>(null);
+  // simple loaded state for fade-in
+  
 
   // product.image can be string or string[]; prefer first element
   // Prefer a dedicated thumbnail when available (string or array). Fall back to primary image.
@@ -31,27 +32,17 @@ export function ProductCard({ product }: ProductCardProps) {
         <div className="bg-theme-bg-secondary rounded-2xl shadow-theme-lg overflow-hidden transition-all duration-300 group-hover:scale-[1.02] group-hover:shadow-theme-lg border border-theme-border h-full flex flex-col">
 
           {/* Image Container with adaptive aspect (supports portrait and landscape) */}
-          <div className="relative w-full overflow-hidden bg-theme-bg-tertiary flex items-center justify-center">
+          <div className="relative w-full overflow-hidden bg-white flex items-center justify-center aspect-[2/3]">
             {!imageLoaded && (
-              <div className="absolute inset-0 bg-theme-bg-tertiary animate-pulse"></div>
+              <div className="absolute inset-0 bg-white animate-pulse"></div>
             )}
             <img
               src={primaryImage}
               alt={product.name}
               // Use contain when portrait to avoid cropping tall images; otherwise cover for full-bleed look
-              className={`max-w-full transition-all duration-300 group-hover:scale-105 ${
-                imageLoaded ? 'opacity-100' : 'opacity-0'
-              } ${isPortrait ? 'max-h-[260px] object-contain' : 'w-full h-56 object-cover'}`}
-              onLoad={(e) => {
+              className={`transition-all duration-300 group-hover:scale-105 ${imageLoaded ? 'opacity-100' : 'opacity-0'} w-full h-full object-cover bg-white`}
+              onLoad={() => {
                 setImageLoaded(true);
-                try {
-                  const imgEl = e.currentTarget as HTMLImageElement;
-                  if (imgEl.naturalWidth && imgEl.naturalHeight) {
-                    setIsPortrait(imgEl.naturalHeight > imgEl.naturalWidth);
-                  }
-                } catch {
-                  setIsPortrait(null);
-                }
               }}
               onError={(e) => {
                 // Fallback for broken images

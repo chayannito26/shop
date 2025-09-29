@@ -1,5 +1,3 @@
-import React from 'react';
-
 interface LoadingSkeletonProps {
   className?: string;
 }
@@ -16,8 +14,8 @@ export function ProductCardSkeleton() {
   return (
     <div className="animate-pulse">
       <div className="bg-theme-bg-secondary rounded-2xl shadow-theme-lg p-6 space-y-4">
-        {/* Image skeleton */}
-        <div className="aspect-square bg-theme-bg-tertiary rounded-xl"></div>
+  {/* Image skeleton */}
+  <div className="aspect-[2/3] bg-theme-bg-tertiary rounded-xl"></div>
 
         {/* Title skeleton */}
         <div className="space-y-2">
@@ -45,7 +43,7 @@ export function ProductDetailSkeleton() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Image skeleton */}
           <div className="space-y-4">
-            <div className="aspect-square bg-theme-bg-tertiary rounded-2xl"></div>
+            <div className="aspect-[2/3] bg-theme-bg-tertiary rounded-2xl"></div>
             <div className="flex space-x-3">
               {[1, 2, 3].map((i) => (
                 <div key={i} className="w-16 h-16 bg-theme-bg-tertiary rounded-lg"></div>
