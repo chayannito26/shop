@@ -15,7 +15,7 @@ export function ProductCard({ product }: ProductCardProps) {
   const { categoryLabel } = useI18n();
   const [imageLoaded, setImageLoaded] = useState(false);
   // simple loaded state for fade-in
-
+  
 
   // product.image can be string or string[]; prefer first element
   // Prefer a dedicated thumbnail when available (string or array). Fall back to primary image.

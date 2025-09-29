@@ -216,32 +216,6 @@ export function getVariationImage(
   return imgs.length > 0 ? imgs[0] : '';
 }
 
-/**
- * Given an image URL, return derived modern-format variants while preserving query
- * params. If the url is a data: URI or doesn't have an extension, return the
- * original for both variants.
- */
-export function makeImageVariants(url: string) {
-  try {
-    if (!url || url.startsWith('data:')) return { avif: url, webp: url, orig: url };
-
-    const qIdx = url.indexOf('?');
-    const base = qIdx === -1 ? url : url.slice(0, qIdx);
-    const query = qIdx === -1 ? '' : url.slice(qIdx);
-
-    const lastDot = base.lastIndexOf('.');
-    if (lastDot === -1) return { avif: url + '.avif', webp: url + '.webp', orig: url };
-
-    const prefix = base.slice(0, lastDot);
-    // Keep any query params intact when adding extensions
-    const avif = `${prefix}.avif${query}`;
-    const webp = `${prefix}.webp${query}`;
-    return { avif, webp, orig: url };
-  } catch {
-    return { avif: url, webp: url, orig: url };
-  }
-}
-
 // Bulk tier support: either specify totalPrice for exactly 'units' pcs,
 // or specify unitPrice for 'units' pcs. Both systems are supported.
 export type BulkRate = {
