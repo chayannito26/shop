@@ -66,7 +66,7 @@ export function ImageZoom({ images, activeIndex, onImageChange, alt }: ImageZoom
         onMouseMove={handleMouseMove}
         onMouseLeave={() => setIsZoomed(false)}
       >
-        <div className="w-full">
+  <div className="w-full">
           {/* Prefer modern formats: AVIF -> WebP -> original. Thumbnails remain unchanged per requirements. */}
           {currentImage ? (
             (() => {
@@ -78,15 +78,14 @@ export function ImageZoom({ images, activeIndex, onImageChange, alt }: ImageZoom
                   <img
                     src={v.orig}
                     alt={`${alt} - ${activeIndex + 1}`}
-                    // For portrait images prefer contain and cap max-height; otherwise use cover for expansive look
-                    className={`transition-transform duration-300 ${isZoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'} ${
-                      isPortrait ? 'object-contain max-h-[640px]' : 'w-full object-cover max-h-[520px]'
-                    }`}
+                    // Always fill the available space to avoid gaps on the right.
+                    // Use object-cover so the image crops as needed but fully covers the container.
+                    className={`w-full h-full transition-transform duration-300 ${isZoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'} object-cover`}
                     style={
                       isZoomed
                         ? {
                             transformOrigin: `${zoomPosition.x}% ${zoomPosition.y}%`,
-                            transform: isPortrait ? 'scale(1.8)' : 'scale(2)'
+                            transform: 'scale(2)'
                           }
                         : {}
                     }
