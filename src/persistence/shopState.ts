@@ -1,4 +1,5 @@
 import { createPersistedState, withMaxLength } from '../utils/persist';
+import { products } from '../data/products';
 
 // Cart types are intentionally minimal to avoid coupling. Extend as needed.
 export type CartItem = {
@@ -220,6 +221,12 @@ export const Cart = {
 	subscribe: cartState.subscribe,
 	clear: () => cartState.clear(),
 	addItem: (item: CartItem) => {
+		// Prevent adding coming-soon products via persisted API
+		const prod = products.find((p) => p.id === item.id as string);
+		if (prod && prod.comingSoon) {
+			if (typeof console !== 'undefined') console.warn(`Attempted to persist add of coming-soon product: ${item.id}`);
+			return cartState.get();
+		}
 		return cartState.set((prev) => {
 			const now = Date.now();
 			const items = [...prev.items];

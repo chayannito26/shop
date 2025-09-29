@@ -50,6 +50,10 @@ const en = {
       selectVariation: 'Please select a size/variation',
       enterPhoneModel: 'Please enter your phone model (e.g., iPhone 12, Samsung A12)',
     },
+    comingSoon: {
+      badge: 'Coming soon',
+      message: 'This product is coming soon and cannot be ordered yet.',
+    },
     noMoney: {
       title: 'Need a discount?',
       button: 'No money',

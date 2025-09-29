@@ -11,6 +11,7 @@ export const products: Product[] = [
     thumbnail: 'https://shop.chayannito26.com/images/tshirt_thumb.webp',
     description: 'Premium cotton t-shirt with Chayannito 26 batch design. Perfect for representing your batch pride.',
     category: 'clothing',
+    comingSoon: true,
   variationSchema: { keys: ['color', 'size'], titles: { color: 'Color', size: 'Size' } },
     variations: [
       // White variations
@@ -60,6 +61,7 @@ export const products: Product[] = [
   {
     id: 'hoodie',
     name: 'Chayannito 26 Hoodie',
+  comingSoon: true,
   price: 699,
     image: [
       'https://shop.chayannito26.com/images/hoodie.jpg'
@@ -134,6 +136,7 @@ export const products: Product[] = [
   {
     id: 'pen',
     name: 'Chayannito 26 Cap',
+  comingSoon: true,
   price: 149,
     image: ['https://shop.chayannito26.com/images/cap.jpg'],
     thumbnail: 'https://shop.chayannito26.com/images/cap_thumb.webp',
@@ -196,6 +199,7 @@ export const products: Product[] = [
     category: 'accessories',
     // Demo: total-price tiers (exact amount totals)
     unitsSold: 240,
+    comingSoon: true,
     variationSchema: { keys: ['size'], titles: { size: 'Size' } },
     // Size-based variations: 1in, 1.5in, 2in, 2.5in, 3in with incremental prices
     variations: [

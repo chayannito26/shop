@@ -94,6 +94,10 @@ export function ProductDetail() {
   // (derived values are declared earlier to keep hooks stable)
 
   const handleAddToCart = () => {
+    if (product.comingSoon) {
+      showAlert(t('product.comingSoon.message'));
+      return;
+    }
     if (product?.variations && product.variations.length > 0 && product.id !== 'phonecover' && !selectedVariation) {
       showAlert(t('product.validation.selectVariation'));
       return;
@@ -123,6 +127,10 @@ export function ProductDetail() {
   };
 
   const handleBuyNow = () => {
+    if (product.comingSoon) {
+      showAlert(t('product.comingSoon.message'));
+      return;
+    }
     if (product?.variations && product.variations.length > 0 && product.id !== 'phonecover' && !selectedVariation) {
   showAlert(t('product.validation.selectVariation'));
       return;
@@ -190,6 +198,13 @@ export function ProductDetail() {
             <p className="text-zinc-700 dark:text-zinc-300 mb-8 leading-relaxed">
               {productDescription(product.id, product.description)}
             </p>
+
+            {product.comingSoon && (
+              <div className="mb-6 p-4 bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-700 rounded-lg">
+                <strong className="block text-sm font-semibold text-yellow-800 dark:text-yellow-200">{t('product.comingSoon.badge')}</strong>
+                <p className="text-sm text-yellow-700 dark:text-yellow-200 mt-1">{t('product.comingSoon.message')}</p>
+              </div>
+            )}
 
             {/* Internal: Bought-at (procurement) rate panel */}
             {showBoughtRates && product.bulkRates && product.bulkRates.length > 0 && (
@@ -328,6 +343,7 @@ export function ProductDetail() {
               {/* Buy Now Button */}
               <button
                 onClick={handleBuyNow}
+                disabled={product.comingSoon}
                 className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white py-4 px-6 rounded-2xl font-semibold transition-all duration-300 flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] group"
               >
                 <Zap className="h-5 w-5 group-hover:animate-pulse" />
@@ -337,6 +353,7 @@ export function ProductDetail() {
               {/* Add to Cart Button */}
               <button
                 onClick={handleAddToCart}
+                disabled={product.comingSoon}
                 className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white py-4 px-6 rounded-2xl font-semibold transition-all duration-300 flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] group"
               >
                 <ShoppingCart className="h-5 w-5 group-hover:animate-bounce" />

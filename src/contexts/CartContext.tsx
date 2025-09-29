@@ -18,6 +18,8 @@ export interface Product {
   variations?: (string | { label: string; price?: number; image?: string | string[] })[]; // support per-variation price and image(s)
   // Optional schema that defines ordered variation tiers and human titles
   variationSchema?: { keys: string[]; titles?: Record<string, string> };
+  // Flag to mark products that are not yet available for purchase
+  comingSoon?: boolean;
   // New: internal procurement tiers (optional)
   unitsSold?: number;                // manually edited in products.ts
   bulkRates?: BulkRate[];            // supports total-price or per-unit-price tiers
@@ -62,10 +64,18 @@ const initialState: CartState = {
   backupItems: null
 };
 
+const isDev = typeof process !== 'undefined' && process.env && process.env.NODE_ENV !== 'production';
+
 function cartReducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
     case 'ADD_ITEM': {
       const { product, selectedVariation } = action.payload;
+      // Prevent adding products marked as coming soon
+      if (product.comingSoon) {
+        // no-op: warn in dev
+        if (isDev) console.warn(`Attempted to add coming-soon product to cart: ${product.id}`);
+        return state;
+      }
       const key = makeKey(product.id, selectedVariation);
       const unitPrice = getVariationPrice(product.price, product.variations, selectedVariation);
       // Ensure line-item image is a single string (first image)
@@ -140,6 +150,11 @@ function cartReducer(state: CartState, action: CartAction): CartState {
 
     case 'SET_DIRECT_ORDER': {
       const { product, selectedVariation, quantity } = action.payload;
+      // Prevent direct orders for coming-soon products
+      if (product.comingSoon) {
+        if (isDev) console.warn(`Attempted to buy-now coming-soon product: ${product.id}`);
+        return state;
+      }
       const key = makeKey(product.id, selectedVariation);
       const unitPrice = getVariationPrice(product.price, product.variations, selectedVariation);
       const resolvedImage = getVariationImage(product.image, product.variations, selectedVariation);

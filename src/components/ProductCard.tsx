@@ -15,6 +15,7 @@ export function ProductCard({ product }: ProductCardProps) {
   const { categoryLabel } = useI18n();
   const [imageLoaded, setImageLoaded] = useState(false);
   // simple loaded state for fade-in
+  const { t } = useI18n();
   
 
   // product.image can be string or string[]; prefer first element
@@ -55,6 +56,13 @@ export function ProductCard({ product }: ProductCardProps) {
             {min !== max && (
               <div className="absolute top-3 left-3 bg-gradient-to-r from-red-500 to-red-600 text-white px-3 py-1 rounded-full text-xs font-semibold transition-opacity duration-300">
                 From ৳{min}
+              </div>
+            )}
+
+            {/* Coming Soon Badge */}
+            {product.comingSoon && (
+              <div className="absolute top-3 right-3 bg-yellow-400 text-black px-3 py-1 rounded-full text-xs font-semibold transition-opacity duration-300">
+                {t('product.comingSoon.badge')}
               </div>
             )}
           </div>
