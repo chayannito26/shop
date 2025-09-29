@@ -6,12 +6,14 @@ interface ImageZoomProps {
   activeIndex: number;
   onImageChange: (index: number) => void;
   alt: string;
+  // optional thumbnail(s) to use for the small previews; if omitted, derive from images[0]
+  thumbnail?: string | string[];
 }
 
-export function ImageZoom({ images, activeIndex, onImageChange, alt }: ImageZoomProps) {
+export function ImageZoom({ images, activeIndex, onImageChange, alt, thumbnail }: ImageZoomProps) {
   const [isZoomed, setIsZoomed] = useState(false);
   const [zoomPosition, setZoomPosition] = useState({ x: 50, y: 50 });
-  const [isPortrait, setIsPortrait] = useState<boolean | null>(null);
+  // portrait detection removed - kept previously for future UX tweaks
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!isZoomed) return;
@@ -34,6 +36,14 @@ export function ImageZoom({ images, activeIndex, onImageChange, alt }: ImageZoom
   };
 
   const currentImage = images[activeIndex];
+
+  // Resolve thumbnail(s): prefer explicit `thumbnail` prop (string or array), otherwise
+  // use the first image in `images`. Normalize to string[] for thumbnails list.
+  const resolvedThumbnails: string[] = (() => {
+    if (thumbnail) return Array.isArray(thumbnail) ? thumbnail.filter(Boolean) : [thumbnail];
+    if (images && images.length > 0) return [images[0]];
+    return [];
+  })();
 
   // Derive .avif and .webp variants from an existing image URL.
   // If the URL is a data: URI or doesn't look like it has an extension, return the original for variants.
@@ -66,8 +76,8 @@ export function ImageZoom({ images, activeIndex, onImageChange, alt }: ImageZoom
         onMouseMove={handleMouseMove}
         onMouseLeave={() => setIsZoomed(false)}
       >
-  <div className="w-full">
-          {/* Prefer modern formats: AVIF -> WebP -> original. Thumbnails remain unchanged per requirements. */}
+          <div className="w-full">
+          {/* Prefer modern formats: AVIF -> WebP -> original. Thumbnails will be normalized below. */}
           {currentImage ? (
             (() => {
               const v = makeVariants(currentImage);
@@ -90,15 +100,8 @@ export function ImageZoom({ images, activeIndex, onImageChange, alt }: ImageZoom
                         : {}
                     }
                     onClick={toggleZoom}
-                    onLoad={(e) => {
-                      try {
-                        const imgEl = e.currentTarget as HTMLImageElement;
-                        if (imgEl.naturalWidth && imgEl.naturalHeight) {
-                          setIsPortrait(imgEl.naturalHeight > imgEl.naturalWidth);
-                        }
-                      } catch {
-                        setIsPortrait(null);
-                      }
+                    onLoad={() => {
+                      // no-op: we previously detected orientation here but it's unused
                     }}
                     onError={(e) => {
                       // Fallback for broken images
@@ -155,9 +158,9 @@ export function ImageZoom({ images, activeIndex, onImageChange, alt }: ImageZoom
       </div>
 
       {/* Thumbnail Navigation */}
-      {images.length > 1 && (
+      {resolvedThumbnails.length > 1 && (
         <div className="mt-4 flex space-x-3 justify-center">
-          {images.map((image, index) => (
+          {resolvedThumbnails.map((image, index) => (
             <button
               key={index}
               onClick={() => onImageChange(index)}
