@@ -11,6 +11,8 @@ import { CouponInput } from '../components/CouponInput';
 import { trackInitiateCheckout, trackPurchase, trackAddPaymentInfo } from '../analytics/metaPixel';
 import { useI18n } from '../i18n';
 import { useModal } from '../contexts/ModalContext';
+import { SEOHead } from '../components/SEO/SEOHead';
+import { generateWebPageJsonLd } from '../components/SEO/jsonLdHelpers';
 
 export function Checkout() {
   const { state: cartState, dispatch: cartDispatch } = useCart();
@@ -393,8 +395,34 @@ export function Checkout() {
     );
   }
 
+  // Generate SEO data for checkout
+  const checkoutTitle = 'Secure Checkout - Complete Your Order';
+  const checkoutDescription = `Complete your order for ${cartState.items.length} item${cartState.items.length !== 1 ? 's' : ''} from Chayannito 26. Secure payment and fast delivery. Total: ৳${cartState.total}.`;
+  
+  const breadcrumbs = [
+    { name: 'Home', url: '/' },
+    { name: 'Shopping Cart', url: '/cart' },
+    { name: 'Checkout', url: '/checkout' }
+  ];
+
+  const keywords = ['checkout', 'secure payment', 'order', 'Chayannito 26', 'buy now', 'purchase'];
+
+  // JSON-LD structured data
+  const webPageJsonLd = generateWebPageJsonLd(checkoutTitle, checkoutDescription, '/checkout');
+
   return (
-    <div className="min-h-screen bg-theme-bg-primary">
+    <>
+      <SEOHead
+        title={checkoutTitle}
+        description={checkoutDescription}
+        canonical="/checkout"
+        type="website"
+        keywords={keywords}
+        breadcrumbs={breadcrumbs}
+        jsonLd={[webPageJsonLd]}
+        noIndex={true} // Don't index checkout pages for privacy
+      />
+      <div className="min-h-screen bg-theme-bg-primary">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <h1 className="text-3xl font-bold text-theme-text-primary mb-8">{t('checkout.title')}</h1>
 
@@ -664,5 +692,6 @@ export function Checkout() {
         </div>
       </div>
     </div>
+    </>
   );
 }

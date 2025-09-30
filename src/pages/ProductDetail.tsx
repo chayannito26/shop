@@ -10,6 +10,8 @@ import { useI18n } from '../i18n';
 import { useModal } from '../contexts/ModalContext';
 import { VariationSelector } from '../components/VariationSelector';
 import { ImageZoom } from '../components/ImageZoom';
+import { SEOHead } from '../components/SEO/SEOHead';
+import { generateProductJsonLd, generateWebPageJsonLd } from '../components/SEO/jsonLdHelpers';
 
 export function ProductDetail() {
   const { id } = useParams<{ id: string }>();
@@ -152,8 +154,63 @@ export function ProductDetail() {
     navigate('/checkout');
   };
 
+  // Generate SEO data
+  const productTitle = productName(product.id, product.name);
+  const productDesc = productDescription(product.id, product.description);
+  const currentPrice = selectedVariation ? unitPrice : (min === max ? min : Math.round((min + max) / 2));
+  const availability = product.comingSoon ? 'PreOrder' : 'InStock';
+  const currentVariation = selectedVariation ? product.variations?.find(v => 
+    typeof v === 'string' ? v === selectedVariation : v.label === selectedVariation
+  ) : undefined;
+
+  const breadcrumbs = [
+    { name: 'Home', url: '/' },
+    { name: categoryLabel(product.category), url: `/?category=${product.category}` },
+    { name: productTitle, url: `/product/${product.id}` }
+  ];
+
+  const keywords = [
+    productTitle,
+    `Chayannito 26 ${productTitle}`,
+    categoryLabel(product.category),
+    'merchandise',
+    'official',
+    'premium quality'
+  ];
+
+  // JSON-LD structured data
+  const productJsonLd = generateProductJsonLd({
+    product: { ...product, availability, condition: 'NewCondition' },
+    selectedVariation: currentVariation,
+    currency: 'BDT'
+  });
+
+  const webPageJsonLd = generateWebPageJsonLd(
+    `${productTitle} | Chayannito 26 Official Merchandise Store`, 
+    productDesc, 
+    `https://shop.chayannito26.com/product/${product.id}`
+  );
+
   return (
-    <div className="min-h-screen bg-theme-bg-primary">
+    <>
+      <SEOHead
+        title={productTitle}
+        description={productDesc}
+        canonical={`/product/${product.id}`}
+        image={displayImage}
+        imageAlt={`${productTitle} - Chayannito 26 Official Merchandise`}
+        type="product"
+        price={currentPrice}
+        currency="BDT"
+        availability={availability}
+        brand="Chayannito 26"
+        category={categoryLabel(product.category)}
+        sku={product.id}
+        keywords={keywords}
+        breadcrumbs={breadcrumbs}
+        jsonLd={[productJsonLd, webPageJsonLd]}
+      />
+      <div className="min-h-screen bg-theme-bg-primary">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <button
           onClick={() => navigate('/')}
@@ -386,5 +443,6 @@ export function ProductDetail() {
         </div>
       </div>
     </div>
+    </>
   );
 }

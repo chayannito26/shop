@@ -6,6 +6,8 @@ import { useCoupon } from '../contexts/CouponContext';
 import { CouponInput } from '../components/CouponInput';
 import { useI18n } from '../i18n';
 import { products } from '../data/products';
+import { SEOHead } from '../components/SEO/SEOHead';
+import { generateShoppingCartJsonLd, generateWebPageJsonLd } from '../components/SEO/jsonLdHelpers';
 
 export function Cart() {
   const { state: cartState, dispatch: cartDispatch } = useCart();
@@ -14,7 +16,7 @@ export function Cart() {
 
   // One-time normalization to squash any historical duplicates
   React.useEffect(() => {
-    cartDispatch({ type: 'SQUASH_DUPLICATES' as any });
+    cartDispatch({ type: 'SQUASH_DUPLICATES' } as any);
   }, [cartDispatch]);
 
   const updateQuantity = (cartItemId: string, quantity: number) => {
@@ -31,13 +33,13 @@ export function Cart() {
     });
   };
 
-  const variationLabel = (item: any) => {
+  const variationLabel = (item: { id: string; category: string }) => {
     if (item.id === 'phonecover') return t('cart.variation.model');
     if (item.category === 'clothing') return t('cart.variation.size');
     return t('cart.variation.option');
   };
 
-  const variationValue = (item: any) => {
+  const variationValue = (item: { id: string; selectedVariation?: string }) => {
     const prod = products.find(p => p.id === item.id);
     const schema = prod?.variationSchema;
     return localizeVariationLabel(item.id, item.selectedVariation, schema);
@@ -61,8 +63,46 @@ export function Cart() {
     );
   }
 
+  // Generate SEO data for cart
+  const cartItemCount = cartState.items.length;
+  const totalQuantity = cartState.items.reduce((sum, item) => sum + item.quantity, 0);
+  const cartTitle = `Shopping Cart (${cartItemCount} ${cartItemCount === 1 ? 'item' : 'items'})`;
+  const cartDescription = cartItemCount > 0 
+    ? `Your cart contains ${totalQuantity} item${totalQuantity !== 1 ? 's' : ''} from Chayannito 26 official merchandise. Total: ৳${cartState.total}`
+    : 'Your shopping cart is currently empty. Browse our collection of premium Chayannito 26 merchandise.';
+
+  const breadcrumbs = [
+    { name: 'Home', url: '/' },
+    { name: 'Shopping Cart', url: '/cart' }
+  ];
+
+  const keywords = ['shopping cart', 'checkout', 'Chayannito 26', 'merchandise', 'order'];
+
+  // JSON-LD structured data for cart
+  const cartItems = cartState.items.map(item => ({
+    id: item.id,
+    name: productName(item.id, item.name),
+    price: item.price,
+    quantity: item.quantity
+  }));
+
+  const cartJsonLd = cartItemCount > 0 ? generateShoppingCartJsonLd(cartItems, cartState.total) : null;
+  const webPageJsonLd = generateWebPageJsonLd(cartTitle, cartDescription, '/cart');
+  const jsonLdSchemas = cartJsonLd ? [cartJsonLd, webPageJsonLd] : [webPageJsonLd];
+
   return (
-    <div className="min-h-screen bg-theme-bg-primary">
+    <>
+      <SEOHead
+        title={cartTitle}
+        description={cartDescription}
+        canonical="/cart"
+        type="website"
+        keywords={keywords}
+        breadcrumbs={breadcrumbs}
+        jsonLd={jsonLdSchemas}
+        noIndex={cartItemCount === 0} // Don't index empty cart pages
+      />
+      <div className="min-h-screen bg-theme-bg-primary">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <h1 className="text-3xl font-bold text-theme-text-primary mb-8">{t('cart.title')}</h1>
 
@@ -164,5 +204,6 @@ export function Cart() {
         </div>
       </div>
     </div>
+    </>
   );
 }

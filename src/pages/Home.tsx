@@ -4,6 +4,8 @@ import { products } from '../data/products';
 import { useSearchParams } from 'react-router-dom';
 import { trackSearch } from '../analytics/metaPixel';
 import { useI18n } from '../i18n';
+import { SEOHead } from '../components/SEO/SEOHead';
+import { generateCollectionPageJsonLd, generateWebPageJsonLd } from '../components/SEO/jsonLdHelpers';
 
 export function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -64,8 +66,40 @@ export function Home() {
     // Note: trackSearch is called from the effect above when the URL param changes
   };
 
+  // Generate SEO data
+  const pageTitle = selectedCategory 
+    ? `${categoryLabel(selectedCategory)} - Chayannito 26 Official Merchandise`
+    : 'Chayannito 26 Official Merchandise Store';
+  
+  const pageDescription = selectedCategory
+    ? `Shop premium ${categoryLabel(selectedCategory).toLowerCase()} from Chayannito 26. High-quality merchandise with fast shipping and secure checkout.`
+    : 'Shop official Chayannito 26 merch: premium t‑shirts, caps, hoodies, mugs, stickers and more. Fast shipping, secure checkout, limited drops.';
+
+  const breadcrumbs = selectedCategory ? [
+    { name: 'Home', url: '/' },
+    { name: categoryLabel(selectedCategory), url: `/?category=${selectedCategory}` }
+  ] : [];
+
+  const keywords = selectedCategory 
+    ? [`${selectedCategory}`, `Chayannito 26 ${selectedCategory}`, `batch 26 ${selectedCategory}`]
+    : ['merchandise', 'apparel', 'accessories', 'premium quality', 'limited edition'];
+
+  // JSON-LD structured data
+  const collectionJsonLd = generateCollectionPageJsonLd(filteredProducts);
+  const webPageJsonLd = generateWebPageJsonLd(pageTitle, pageDescription, selectedCategory ? `/?category=${selectedCategory}` : '/');
+
   return (
-    <div className="min-h-screen bg-theme-bg-primary transition-colors">
+    <>
+      <SEOHead
+        title={pageTitle}
+        description={pageDescription}
+        canonical={selectedCategory ? `/?category=${selectedCategory}` : '/'}
+        type="website"
+        keywords={keywords}
+        breadcrumbs={breadcrumbs}
+        jsonLd={[collectionJsonLd, webPageJsonLd]}
+      />
+      <div className="min-h-screen bg-theme-bg-primary transition-colors">
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-red-600 to-red-800 dark:from-red-700 dark:to-red-900 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -138,5 +172,6 @@ export function Home() {
         )}
       </div>
     </div>
+    </>
   );
 }
