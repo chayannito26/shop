@@ -98,13 +98,13 @@ export const products: Product[] = [
     id: 'totebag',
     name: 'Chayannito 26 Tote Bag',
   price: 299,
-    image: ['https://shop.chayannito26.com/images/tote_1.jpg','https://shop.chayannito26.com/images/tote_2.jpg','https://shop.chayannito26.com/images/tote_3.jpg','https://shop.chayannito26.com/images/tote_4.jpg'],
-    thumbnail: 'https://shop.chayannito26.com/images/tote_1.webp',
+    image: ['https://shop.chayannito26.com/images/tote_white_1.jpg','https://shop.chayannito26.com/images/tote_white_3.jpg','https://shop.chayannito26.com/images/tote_black_1.jpg','https://shop.chayannito26.com/images/tote_black_3.jpg'],
+    thumbnail: 'https://shop.chayannito26.com/images/tote_white_1.webp',
     description: 'Durable canvas tote bag with stylish Chayannito 26 print. Eco-friendly and practical.',
     category: 'accessories',
     variations: [
-  { label: 'White', price: 299 , 'image': ['https://shop.chayannito26.com/images/tote_1.jpg']},
-  { label: 'Black', price: 299 },
+  { label: 'White', price: 299 , 'image': ['https://shop.chayannito26.com/images/tote_white_1.jpg', 'https://shop.chayannito26.com/images/tote_white_2.jpg', 'https://shop.chayannito26.com/images/tote_white_3.jpg', 'https://shop.chayannito26.com/images/tote_white_4.jpg']},
+  { label: 'Black', price: 299 , 'image': ['https://shop.chayannito26.com/images/tote_black_1.jpg', 'https://shop.chayannito26.com/images/tote_black_2.jpg', 'https://shop.chayannito26.com/images/tote_black_3.jpg', 'https://shop.chayannito26.com/images/tote_black_4.jpg']},
     ]
   },
   // {
@@ -119,7 +119,7 @@ export const products: Product[] = [
     id: 'notebook',
     name: 'Chayannito 26 Notebook',
   price: 189,
-    image: ['https://shop.chayannito26.com/images/notebook_1.jpg','https://shop.chayannito26.com/images/notebook_a5.jpg','https://shop.chayannito26.com/images/notebook_a4.jpg','https://shop.chayannito26.com/images/notebook_2.jpg','https://shop.chayannito26.com/images/notebook_3.jpg','https://shop.chayannito26.com/images/notebook_lined.jpg','https://shop.chayannito26.com/images/notebook_blank.jpg'],
+    image: ['https://shop.chayannito26.com/images/notebook_1.jpg', 'https://shop.chayannito26.com/images/notebook_2.jpg','https://shop.chayannito26.com/images/notebook_3.jpg', 'https://shop.chayannito26.com/images/notebook_lined.jpg'],
     thumbnail: 'https://shop.chayannito26.com/images/notebook_1.webp',
     description: 'Premium notebooks in A4 and A5 sizes with durable 300 gsm Ambush card cover. A4 comes with 150 or 300 blank pages (70 gsm). A5 comes with 160 pages (blank or lined, 100 gsm). Note: Page count is calculated double-sided.',
     category: 'stationery',
