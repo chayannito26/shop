@@ -8,7 +8,7 @@ export const products: Product[] = [
     image: [
       'https://shop.chayannito26.com/images/tshirt.jpg'
     ],
-    thumbnail: 'https://shop.chayannito26.com/images/tshirt_thumb.webp',
+    thumbnail: 'https://shop.chayannito26.com/images/tshirt.webp',
     description: 'Premium cotton t-shirt with Chayannito 26 batch design. Perfect for representing your batch pride.',
     category: 'clothing',
     comingSoon: true,
@@ -66,7 +66,7 @@ export const products: Product[] = [
     image: [
       'https://shop.chayannito26.com/images/hoodie.jpg'
     ],
-    thumbnail: 'https://shop.chayannito26.com/images/hoodie_thumb.webp',
+    thumbnail: 'https://shop.chayannito26.com/images/hoodie.webp',
     description: 'Cozy hoodie with embroidered Chayannito 26 logo. Stay warm while showing your batch spirit.',
     category: 'clothing',
   variationSchema: { keys: ['color', 'size'], titles: { color: 'Color', size: 'Size' } },
@@ -139,7 +139,7 @@ export const products: Product[] = [
   comingSoon: true,
   price: 149,
     image: ['https://shop.chayannito26.com/images/cap.jpg'],
-    thumbnail: 'https://shop.chayannito26.com/images/cap_thumb.webp',
+    thumbnail: 'https://shop.chayannito26.com/images/cap.webp',
     description: 'A high quality cap with Chayannito 26 branding on the front. ',
     category: 'clothing',
     variations: [
