@@ -5,12 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "npm run generate:catalog && vite",
-  "build": "vite build",
-  "prebuild": "npm run generate:catalog && npm run generate:product-pages",
+    "build": "vite build",
+    "prebuild": "npm run generate:catalog",
     "lint": "eslint .",
     "preview": "vite preview",
-    "generate:catalog": "tsx scripts/generate-catalog.ts",
-    "generate:product-pages": "tsx scripts/generate-product-pages.ts"
+    "generate:catalog": "tsx scripts/generate-catalog.ts"
   },
   "dependencies": {
     "@frostoven/squoosh-cli": "^0.9.1",
