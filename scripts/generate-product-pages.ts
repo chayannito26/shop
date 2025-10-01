@@ -21,26 +21,35 @@ function makeHtml(product: Product, siteBase = '') {
   const title = String((product as any).name || slug);
   const description = String((product as any).description || '');
   const image = firstImage(product as any) || '/image.jpg';
-  const url = `${siteBase}/product/${slug}/`;
+  const url = `${siteBase}/product/${slug}.html`;
+
+  const images = Array.isArray((product as any).image)
+    ? (product as any).image
+    : [image];
 
   const jsonLd: any = {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: title,
     description: description,
-    image: Array.isArray((product as any).image) ? (product as any).image : [image],
+    image: images,
     sku: slug,
     url,
   };
 
+  // Optional fields
+  if ((product as any).category) jsonLd.category = (product as any).category;
+  if ((product as any).brand) jsonLd.brand = { '@type': 'Brand', name: (product as any).brand };
+  if ((product as any).aggregateRating) jsonLd.aggregateRating = (product as any).aggregateRating;
+
   if (typeof (product as any).price !== 'undefined') {
     const price = (product as any).price;
     const comingSoon = !!(product as any).comingSoon;
+    const currency = process.env.PRODUCT_PAGE_CURRENCY || 'USD';
     jsonLd.offers = {
       '@type': 'Offer',
       price: String(price),
-      // Default currency is USD — change if your store uses another currency
-      priceCurrency: 'USD',
+      priceCurrency: currency,
       availability: comingSoon ? 'https://schema.org/PreOrder' : 'https://schema.org/InStock',
     };
   }
@@ -54,14 +63,14 @@ function makeHtml(product: Product, siteBase = '') {
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>${escapeHtml(title)}</title>
     <meta name="description" content="${escapeHtml(description)}" />
-    <link rel="canonical" href="${escapeHtml(url)}" />
+  <link rel="canonical" href="${escapeHtml(url)}" />
 
     <!-- Open Graph / Social -->
     <meta property="og:type" content="product" />
     <meta property="og:title" content="${escapeHtml(title)}" />
     <meta property="og:description" content="${escapeHtml(description)}" />
     <meta property="og:image" content="${escapeHtml(image)}" />
-    <meta property="og:url" content="${escapeHtml(url)}" />
+  <meta property="og:url" content="${escapeHtml(url)}" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${escapeHtml(title)}" />
@@ -77,7 +86,7 @@ function makeHtml(product: Product, siteBase = '') {
     <h1>${escapeHtml(title)}</h1>
     <p>${escapeHtml(description)}</p>
     <p><img src="${escapeHtml(image)}" alt="${escapeHtml(title)}" style="max-width:420px;width:100%;height:auto"/></p>
-    <p><a href="/product/${encodeURIComponent(slug)}/">Open product in the shop</a></p>
+  <p><a href="/product/${encodeURIComponent(slug)}.html">Open product in the shop</a></p>
     <p><small>This is a pre-rendered product page generated at build time for crawlers and social cards.</small></p>
   </body>
 </html>`;
@@ -95,10 +104,10 @@ function escapeHtml(s: string) {
 function writeProductPage(product: Product) {
   const slug = product.id;
   if (!slug) return;
-  const outDir = path.join(process.cwd(), 'public', 'products', slug);
+  const outDir = path.join(process.cwd(), 'public', 'products');
   ensureDir(outDir);
   const html = makeHtml(product);
-  const outPath = path.join(outDir, 'index.html');
+  const outPath = path.join(outDir, `${slug}.html`);
   fs.writeFileSync(outPath, html, 'utf8');
   console.log('Wrote', outPath);
 }
