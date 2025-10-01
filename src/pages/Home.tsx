@@ -1,14 +1,19 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { ProductCard } from '../components/ProductCard';
 import { products } from '../data/products';
-import { useSearchParams } from 'react-router-dom';
 import { trackSearch } from '../analytics/metaPixel';
 import { useI18n } from '../i18n';
 import { SEOHead } from '../components/SEO/SEOHead';
 import { generateCollectionPageJsonLd, generateWebPageJsonLd } from '../components/SEO/jsonLdHelpers';
 
 export function Home() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  // Get search params from window location
+  const getSearchParam = (key: string) => {
+    if (typeof window === 'undefined') return null;
+    const params = new URLSearchParams(window.location.search);
+    return params.get(key);
+  };
+
   const { t, categoryLabel, localizeProduct } = useI18n();
 
   const categories = useMemo(
@@ -27,7 +32,7 @@ export function Home() {
 
   // Read and validate category from URL (?category=...)
   useEffect(() => {
-    const raw = searchParams.get('category');
+    const raw = getSearchParam('category');
     if (!raw) {
       setSelectedCategory(null);
       return;
@@ -36,16 +41,11 @@ export function Home() {
     const match = categories.find(c => c.toLowerCase() === normalized) || null;
     setSelectedCategory(match);
 
-    // Strip invalid category params
-    if (!match) {
-      const sp = new URLSearchParams(searchParams);
-      sp.delete('category');
-      setSearchParams(sp, { replace: true });
-    } else {
+    if (match) {
       // Track category filter as a "Search" event
       trackSearch(match, match);
     }
-  }, [searchParams, categories, setSearchParams]);
+  }, [categories]);
 
   const filteredProducts = useMemo(() => {
     if (!selectedCategory) return products;
@@ -56,13 +56,13 @@ export function Home() {
     const newSelection = selectedCategory === cat ? null : cat;
     setSelectedCategory(newSelection);
 
-    const sp = new URLSearchParams(searchParams);
+    const url = new URL(window.location.href);
     if (newSelection) {
-      sp.set('category', newSelection);
+      url.searchParams.set('category', newSelection);
     } else {
-      sp.delete('category');
+      url.searchParams.delete('category');
     }
-    setSearchParams(sp);
+    window.history.pushState({}, '', url.toString());
     // Note: trackSearch is called from the effect above when the URL param changes
   };
 

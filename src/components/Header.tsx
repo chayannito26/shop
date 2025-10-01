@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { ShoppingCart } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { useI18n } from '../i18n';
@@ -13,21 +12,21 @@ export function Header() {
     <header className="bg-theme-bg-secondary shadow-theme-lg sticky top-0 z-50 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <Link to="/" className="flex items-center space-x-2">
+          <a href="/" className="flex items-center space-x-2">
             <img src="./logo.png" alt="Chayannito 26 logo" className="h-8 w-8 rounded object-cover" />
             <div>
               <h1 className="text-xl font-bold text-theme-text-primary">{t('header.title')}</h1>
               <p className="text-xs text-theme-text-secondary">{t('header.subtitle')}</p>
             </div>
-          </Link>
+          </a>
 
           <nav className="hidden md:flex items-center space-x-8">
-            <Link to="/" className="text-theme-text-secondary hover:text-theme-accent transition-colors">
+            <a href="/" className="text-theme-text-secondary hover:text-theme-accent transition-colors">
               {t('header.nav.home')}
-            </Link>
-            <Link to="/cart" className="text-theme-text-secondary hover:text-theme-accent transition-colors">
+            </a>
+            <a href="/cart.html" className="text-theme-text-secondary hover:text-theme-accent transition-colors">
               {t('header.nav.cart')}
-            </Link>
+            </a>
           </nav>
 
           <div className="flex items-center space-x-3">
@@ -41,8 +40,8 @@ export function Header() {
               {lang === 'en' ? t('header.switch.toBengali') : t('header.switch.toEnglish')}
             </button>
 
-            <Link
-              to="/cart"
+            <a
+              href="/cart.html"
               className="relative p-2 text-theme-text-secondary hover:text-theme-accent transition-colors"
             >
               <ShoppingCart className="h-6 w-6" />
@@ -51,7 +50,7 @@ export function Header() {
                   {itemCount}
                 </span>
               )}
-            </Link>
+            </a>
           </div>
         </div>
       </div>
