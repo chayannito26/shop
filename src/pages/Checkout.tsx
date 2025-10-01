@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { collection, addDoc, doc, runTransaction } from 'firebase/firestore';
 import { v4 as uuidv4 } from 'uuid';
 import { CheckCircle, CreditCard } from 'lucide-react';
@@ -18,7 +17,6 @@ export function Checkout() {
   const { state: cartState, dispatch: cartDispatch } = useCart();
   const { appliedCoupon, discount, removeCoupon } = useCoupon();
   const { t, productName } = useI18n();
-  const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [orderPlaced, setOrderPlaced] = useState(false);
   const [orderId, setOrderId] = useState('');
@@ -359,7 +357,7 @@ export function Checkout() {
   };
 
   if (cartState.items.length === 0 && !orderPlaced) {
-    navigate('/cart');
+    window.location.href = '/cart.html';
     return null;
   }
 
@@ -377,18 +375,18 @@ export function Checkout() {
             <p className="font-mono text-lg text-theme-text-primary">{orderId}</p>
           </div>
           <div className="space-y-3">
-            <button
-              onClick={() => navigate('/')}
-              className="w-full bg-red-600 dark:bg-red-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-red-700 dark:hover:bg-red-700 transition-colors"
+            <a
+              href="/"
+              className="w-full bg-red-600 dark:bg-red-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-red-700 dark:hover:bg-red-700 transition-colors block text-center"
             >
               {t('checkout.placed.continue')}
-            </button>
-            <button
-              onClick={() => navigate('/cart')}
-              className="w-full border border-theme-border text-zinc-700 dark:text-zinc-300 py-3 px-6 rounded-lg font-medium hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors"
+            </a>
+            <a
+              href="/cart.html"
+              className="w-full border border-theme-border text-zinc-700 dark:text-zinc-300 py-3 px-6 rounded-lg font-medium hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors block text-center"
             >
               {t('checkout.placed.viewCart')}
-            </button>
+            </a>
           </div>
         </div>
       </div>

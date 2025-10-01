@@ -1,5 +1,4 @@
 import { useState, useMemo, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
 import { ShoppingCart, ArrowLeft, Zap } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { products } from '../data/products';
@@ -14,8 +13,14 @@ import { SEOHead } from '../components/SEO/SEOHead';
 import { generateProductJsonLd, generateWebPageJsonLd } from '../components/SEO/jsonLdHelpers';
 
 export function ProductDetail() {
-  const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
+  // Extract product ID from URL path (e.g., /product/mug.html -> mug)
+  const getProductIdFromPath = () => {
+    const path = window.location.pathname;
+    const match = path.match(/\/product\/([^/.]+)/);
+    return match ? match[1] : null;
+  };
+  
+  const id = getProductIdFromPath();
   const { dispatch } = useCart();
   const [selectedVariation, setSelectedVariation] = useState<string>('');
   const [quantity, setQuantity] = useState<number>(1);
@@ -82,12 +87,12 @@ export function ProductDetail() {
       <div className="min-h-screen bg-theme-bg-primary flex items-center justify-center">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-theme-text-primary mb-4">{t('product.notFound')}</h2>
-          <button
-            onClick={() => navigate('/')}
+          <a
+            href="/"
             className="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300"
           >
             {t('product.returnHome')}
-          </button>
+          </a>
         </div>
       </div>
     );
@@ -151,7 +156,7 @@ export function ProductDetail() {
       }
     });
 
-    navigate('/checkout');
+    window.location.href = '/checkout.html';
   };
 
   // Generate SEO data
@@ -212,13 +217,13 @@ export function ProductDetail() {
       />
       <div className="min-h-screen bg-theme-bg-primary">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <button
-          onClick={() => navigate('/')}
+        <a
+          href="/"
           className="flex items-center text-theme-text-secondary hover:text-theme-text-primary mb-8 transition-colors"
         >
           <ArrowLeft className="h-5 w-5 mr-2" />
           {t('product.back')}
-        </button>
+        </a>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Product Image with Zoom */}

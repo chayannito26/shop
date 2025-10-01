@@ -4,12 +4,13 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "npm run generate:catalog && vite",
+    "dev": "npm run generate:catalog && npm run generate:pages && vite",
     "build": "vite build",
-    "prebuild": "npm run generate:catalog",
+    "prebuild": "npm run generate:catalog && npm run generate:pages",
     "lint": "eslint .",
     "preview": "vite preview",
-    "generate:catalog": "tsx scripts/generate-catalog.ts"
+    "generate:catalog": "tsx scripts/generate-catalog.ts",
+    "generate:pages": "tsx scripts/generate-pages.ts"
   },
   "dependencies": {
     "@frostoven/squoosh-cli": "^0.9.1",
@@ -19,7 +20,6 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-helmet-async": "^2.0.5",
-    "react-router-dom": "^7.8.1",
     "uuid": "^11.1.0"
   },
   "devDependencies": {

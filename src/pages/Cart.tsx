@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Trash2, Plus, Minus, ShoppingBag } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { useCoupon } from '../contexts/CouponContext';
@@ -52,12 +51,12 @@ export function Cart() {
           <ShoppingBag className="h-16 w-16 text-zinc-400 dark:text-zinc-500 mx-auto mb-4" />
           <h2 className="text-2xl font-bold text-theme-text-primary mb-4">{t('cart.empty.title')}</h2>
           <p className="text-zinc-600 dark:text-zinc-300 mb-8">{t('cart.empty.subtitle')}</p>
-          <Link
-            to="/"
-            className="bg-red-600 dark:bg-red-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-red-700 dark:hover:bg-red-700 transition-colors"
+          <a
+            href="/"
+            className="bg-red-600 dark:bg-red-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-red-700 dark:hover:bg-red-700 transition-colors inline-block"
           >
             {t('cart.empty.continue')}
-          </Link>
+          </a>
         </div>
       </div>
     );
@@ -186,19 +185,19 @@ export function Cart() {
                 <CouponInput />
               </div>
 
-              <Link
-                to="/checkout"
+              <a
+                href="/checkout.html"
                 className="w-full bg-red-600 dark:bg-red-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-red-700 dark:hover:bg-red-700 transition-colors mt-6 block text-center"
               >
                 {t('cart.summary.checkout')}
-              </Link>
+              </a>
 
-              <Link
-                to="/"
+              <a
+                href="/"
                 className="w-full border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 py-3 px-6 rounded-lg font-medium hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors mt-3 block text-center"
               >
                 {t('cart.summary.continue')}
-              </Link>
+              </a>
             </div>
           </div>
         </div>

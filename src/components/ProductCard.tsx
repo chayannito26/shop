@@ -1,5 +1,4 @@
 // React namespace not required with JSX transform; keep imports minimal
-import { Link } from 'react-router-dom';
 import { Product } from '../contexts/CartContext';
 import { getMinMaxPrice } from '../utils/pricing';
 import { useI18n } from '../i18n';
@@ -29,7 +28,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
   return (
     <div className="group relative h-full">
-      <Link to={`/product/${product.id}`}>
+      <a href={`/product/${product.id}.html`}>
         <div className="bg-theme-bg-secondary rounded-2xl shadow-theme-lg overflow-hidden transition-all duration-300 group-hover:scale-[1.02] group-hover:shadow-theme-lg border border-theme-border h-full flex flex-col">
 
           {/* Image Container with adaptive aspect (supports portrait and landscape) */}
@@ -83,7 +82,7 @@ export function ProductCard({ product }: ProductCardProps) {
             </div>
           </div>
         </div>
-      </Link>
+      </a>
     </div>
   );
 }
